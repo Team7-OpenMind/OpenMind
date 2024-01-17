@@ -1,5 +1,6 @@
 import { subjectUrl } from "api/questionApi";
 import { CenteredContainer } from "components";
+import Error from "components/error/Error";
 import Loading from "components/loading/Loading";
 import QuestionList from "components/question/QuestionList";
 import useQuery from "hooks/useQuery";
@@ -9,10 +10,15 @@ function Post(props) {
 
   const {
     data: { questionCount },
+    error,
     isLoading,
   } = useQuery(subjectUrl(id), {
     data: [],
   });
+
+  if (error) {
+    return <Error />;
+  }
 
   if (isLoading) {
     return (
