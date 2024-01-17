@@ -1,4 +1,5 @@
 module.exports = {
+  root: true,
   env: {
     browser: true,
     commonjs: true,
@@ -6,17 +7,19 @@ module.exports = {
     node: true,
   },
   extends: [
-    "airbnb-base",
-    "prettier",
+    "eslint:recommended",
     "plugin:react/recommended",
+    "plugin:react-hooks/recommended",
+    "plugin:import/recommended",
     "plugin:storybook/recommended",
+    "prettier",
   ],
   overrides: [
     {
       env: {
         node: true,
       },
-      files: [".eslintrc.{js,cjs}"],
+      files: [".eslintrc.{cjs,js}"],
       parserOptions: {
         sourceType: "script",
       },
@@ -29,8 +32,9 @@ module.exports = {
     ecmaVersion: "latest",
     jsx: true,
   },
-  plugins: ["react", "jsx-a11y", "import", "react-hooks", "prettier"],
+  plugins: ["react", "jsx-a11y", "import", "react-hooks"],
   rules: {
+    "import/no-named-as-default": 0,
     "import/extensions": [
       "error",
       "ignorePackages",
