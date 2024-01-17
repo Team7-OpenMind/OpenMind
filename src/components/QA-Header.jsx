@@ -24,7 +24,7 @@ const ShareButton = styled.span`
   height: 40px;
 `;
 
-const ShateButtonBox = styled.div`
+const ShareButtonBox = styled.div`
   gap: 12px;
   display: flex;
   width: 144px;
@@ -32,7 +32,7 @@ const ShateButtonBox = styled.div`
 `;
 
 // 유저 데이터 받아와야함 - 잠시 아이콘으로 대체
-// 컴포넌트 스타일로 만들어야 할 것 - 유저 프로필, 공유하기 버튼, 공유하기 버튼 레이아웃, 유저명?, header큰 레이아웃,
+// 컴포넌트 스타일로 만들어야 할 것 - 유저 프로필, 유저명?, header큰 레이아웃,
 function QaHeader() {
   return (
     <header>
@@ -41,7 +41,7 @@ function QaHeader() {
         <img src={logoSvg} />
         <img src={personSvg} />
         <span>유저명</span>
-        <ShateButtonBox>
+        <ShareButtonBox>
           <ShareButton icon="link">
             <img src={linkSvg} />
           </ShareButton>
@@ -51,7 +51,7 @@ function QaHeader() {
           <ShareButton icon="facebook">
             <img src={facebookSvg} />
           </ShareButton>
-        </ShateButtonBox>
+        </ShareButtonBox>
       </div>
     </header>
   );
