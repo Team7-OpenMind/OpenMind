@@ -2,7 +2,7 @@
 :root {
   --Grayscale-10: #ffffff;
   --Grayscale-20: #f9f9f9;
-  --Grayscale-30: #CFCFCF;
+  --Grayscale-30: #cfcfcf;
   --Grayscale-40: #818181;
   --Grayscale-50: #515151;
   --Grayscale-60: #000;
@@ -10,24 +10,25 @@
 
 /* Brown Colors */
 :root {
-  --Brown-10: #F5F1EE;
-  --Brown-20: #E4D5C9;
-  --Brown-30: #C7BBB5;
-  --Brown-40: #542F1A;
+  --Brown-10: #f5f1ee;
+  --Brown-20: #e4d5c9;
+  --Brown-30: #c7bbb5;
+  --Brown-40: #542f1a;
   --Brown-50: #341909;
 }
 
 /* Accent Colors */
 :root {
-  --Blue-50: #1877F2;
-  --Yellow-50: #FEE500;
-  --Red-50: #B93333;
+  --Blue-50: #1877f2;
+  --Yellow-50: #fee500;
+  --Red-50: #b93333;
 }
 
 /* Font Settings */
 body {
-  font-family: 'Pretendard', sans-serif;
+  font-family: "Pretendard", sans-serif;
   font-size: 20px;
+  margin: 0;
 }
 
 h1 {

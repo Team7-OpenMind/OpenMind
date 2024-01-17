@@ -8,6 +8,7 @@ import linkSvg from "../assets/Link.svg";
 import kakaotalkSvg from "../assets/Kakaotalk.svg";
 import facebookSvg from "../assets/Facebook.svg";
 
+// Styled Component들
 const COLOR = {
   link: "--Brown-40",
   kakaotalk: "--Yellow-50",
@@ -21,7 +22,7 @@ const ShareButton = styled.span`
   justify-content: center;
   align-items: center;
   width: 40px;
-  height: 40p x;
+  height: 40px;
 `;
 
 const ShareButtonBox = styled.div`
@@ -36,28 +37,58 @@ const Logo = styled.img`
   height: 49px;
 `;
 
-// 유저 데이터 받아와야함 - 잠시 아이콘으로 대체
-// 컴포넌트 스타일로 만들어야 할 것 - 유저 프로필, 유저명?, header큰 레이아웃,
+const UserImg = styled.img`
+  width: 104px;
+  height: 104px;
+  border-radius: 50%;
+  border: 1px solid black;
+`;
+
+const UserName = styled.span`
+  font-size: 24px;
+  font-family: Actor;
+  font-weight: 400;
+  line-height: 30px;
+`;
+
+const HeaderContentBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding-top: 40px;
+`;
+
+const HeaderBg = styled.div`
+  background-image: url(${headerPng});
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  height: 177px;
+`;
+
+// 유저 데이터 받아와야함 - 잠시 아이콘으로 대체함
 function QaHeader() {
   return (
     <header>
-      <img src={headerPng} />
-      <div>
-        <Logo src={logoSvg} alt="로고" />
-        <img src={personSvg} />
-        <span>유저명</span>
-        <ShareButtonBox>
-          <ShareButton icon="link">
-            <img src={linkSvg} alt="링크 아이콘" />
-          </ShareButton>
-          <ShareButton icon="kakaotalk">
-            <img src={kakaotalkSvg} alt="카카오톡 아이콘" />
-          </ShareButton>
-          <ShareButton icon="facebook">
-            <img src={facebookSvg} alt="페이스북 아이콘" />
-          </ShareButton>
-        </ShareButtonBox>
-      </div>
+      <HeaderBg>
+        <HeaderContentBox>
+          <Logo src={logoSvg} alt="로고" />
+          <UserImg src={personSvg} />
+          <UserName>유저명</UserName>
+          <ShareButtonBox>
+            <ShareButton icon="link">
+              <img src={linkSvg} alt="링크 아이콘" />
+            </ShareButton>
+            <ShareButton icon="kakaotalk">
+              <img src={kakaotalkSvg} alt="카카오톡 아이콘" />
+            </ShareButton>
+            <ShareButton icon="facebook">
+              <img src={facebookSvg} alt="페이스북 아이콘" />
+            </ShareButton>
+          </ShareButtonBox>
+        </HeaderContentBox>
+      </HeaderBg>
     </header>
   );
 }
