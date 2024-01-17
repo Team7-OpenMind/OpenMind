@@ -1,0 +1,80 @@
+/* Grayscale Colors */
+:root {
+  --Grayscale-10: #ffffff;
+  --Grayscale-20: #f9f9f9;
+  --Grayscale-30: #cfcfcf;
+  --Grayscale-40: #818181;
+  --Grayscale-50: #515151;
+  --Grayscale-60: #000;
+}
+
+/* Brown Colors */
+:root {
+  --Brown-10: #f5f1ee;
+  --Brown-20: #e4d5c9;
+  --Brown-30: #c7bbb5;
+  --Brown-40: #542f1a;
+  --Brown-50: #341909;
+}
+
+/* Accent Colors */
+:root {
+  --Blue-50: #1877f2;
+  --Yellow-50: #fee500;
+  --Red-50: #b93333;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body,
+input,
+a {
+  all: unset;
+}
+
+/* Font Settings */
+body {
+  font-family: "Pretendard", sans-serif;
+  font-size: 20px;
+}
+
+h1 {
+  font-size: 40px;
+}
+
+h2 {
+  font-size: 32px;
+}
+
+h3 {
+  font-size: 24px;
+}
+
+regular {
+  font-size: 16px;
+}
+
+/* Font Style and Weight */
+.normal-text {
+  font-style: normal;
+  font-weight: 400;
+}
+
+.medium-text {
+  font-weight: 500;
+}
+
+/* Box Shadows */
+.shadow-1pt {
+  box-shadow: 0px 4px 4px 0px rgba(140, 140, 140, 0.25);
+}
+
+.shadow-2pt {
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+}
+
+.shadow-3pt {
+  box-shadow: 0px 16px 20px 0px rgba(48, 48, 48, 0.62);
+}
