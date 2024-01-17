@@ -1,4 +1,6 @@
 import { subjectUrl } from "api/questionApi";
+import { CenteredContainer } from "components";
+import Loading from "components/loading/Loading";
 import QuestionList from "components/question/QuestionList";
 import useQuery from "hooks/useQuery";
 
@@ -7,9 +9,18 @@ function Post(props) {
 
   const {
     data: { questionCount },
+    isLoading,
   } = useQuery(subjectUrl(id), {
     data: [],
   });
+
+  if (isLoading) {
+    return (
+      <CenteredContainer>
+        <Loading />
+      </CenteredContainer>
+    );
+  }
 
   const notification =
     questionCount === 0
