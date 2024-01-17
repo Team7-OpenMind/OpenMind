@@ -43,7 +43,7 @@ function QaHeader() {
         <span>유저명</span>
         <ShateButtonBox>
           <ShareButton icon="link">
-            <img src={linkSvg} width="18" height="18" />
+            <img src={linkSvg} />
           </ShareButton>
           <ShareButton icon="kakaotalk">
             <img src={kakaotalkSvg} />
