@@ -35,7 +35,9 @@ module.exports = {
   },
   plugins: ["react", "jsx-a11y", "import", "react-hooks"],
   rules: {
-    "import/no-named-as-default": 0,
+    "import/no-named-as-default": "off",
+    "no-unused-vars": "warn",
+    "react/prop-types": "off",
     "import/extensions": [
       "error",
       "ignorePackages",
