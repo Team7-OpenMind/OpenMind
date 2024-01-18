@@ -6,7 +6,7 @@ import Card from "./Card";
 const dummyCards = Array(10).fill({
   id: 1,
   name: "아초는 고양이",
-  imgaeSource: "https://picsum.photos/200/300",
+  imageSource: "https://picsum.photos/200/300",
   questionCount: 9,
   createAt: "2021-07-08",
   team: "팀1",
@@ -14,17 +14,35 @@ const dummyCards = Array(10).fill({
 
 const CardStyled = styled(Card)`
   display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  background-color: #ff00ff;
-  width: 50%;
-  color: #000;
+  flex-direction: column;
+
+  justify-content: space-between;
+  align-items: flex-start;
+
+  width: 100%;
+  height: 187px;
+
+  border-radius: 16px;
+  border: 1px solid var(--Grayscale-40);
+  background: var(--Grayscale-10);
+
+  padding: 16px;
+
+  transition: transform 0.3s ease-in-out;
 `;
 
-export function CardList({ className, orderNew, pageIndex = 1 }) {
-  const [showCardCount, setShowCardCount] = useState(6);
+export function CardList({
+  className,
+  showCardCount,
+  pageIndex,
+  orderNew,
+  onShowMore,
+}) {
   const [cards, setCards] = useState([]);
+
+  function onShowMoreCallback(flag) {
+    onShowMore(flag);
+  }
 
   useEffect(() => {
     // 이름순 or 최신순으로 정렬
@@ -39,8 +57,8 @@ export function CardList({ className, orderNew, pageIndex = 1 }) {
 
     // page index에 해당하는 카드만 보여주기
     const showCards = dummyCards.slice(
+      (pageIndex - 1) * showCardCount,
       pageIndex * showCardCount,
-      (pageIndex + 1) * showCardCount,
     );
     console.log("showCard " + showCards.length);
 
@@ -53,10 +71,10 @@ export function CardList({ className, orderNew, pageIndex = 1 }) {
           name={name}
           imageSource={imageSource}
           questionCount={questionCount}
+          onShowMore={onShowMoreCallback}
         />
       );
     });
-    console.log("cards " + tempCards);
     setCards(tempCards);
   }, [showCardCount, orderNew, pageIndex]);
 
