@@ -81,15 +81,15 @@ const DropdownItems = styled.div`
 `;
 
 // component
-export function Dropdown({ items }) {
+export function Dropdown({ items, onSelect }) {
   const [item, setItem] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const arrowRef = useRef(null);
   const dropdownRef = useRef(null);
 
   function dropDownItems() {
-    return items.map((item) => (
-      <div key={item} onClick={onClickDropdownItem}>
+    return items.map((item, index) => (
+      <div key={index} onClick={onClickDropdownItem}>
         {item}
       </div>
     ));
@@ -103,7 +103,6 @@ export function Dropdown({ items }) {
   function onClickDropdownItem(e) {
     e.stopPropagation();
     setItem(e.target.innerText);
-    console.log(e.target.innerText);
     openDropdown(false);
   }
 
@@ -131,6 +130,7 @@ export function Dropdown({ items }) {
     if (item == "" && items.length > 0) {
       setItem(items[0]);
     }
+    onSelect(item); // FIXME : warning cause
   }, [item, items]);
 
   useEffect(() => {

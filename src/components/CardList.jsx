@@ -18,12 +18,11 @@ const CardStyled = styled(Card)`
   justify-content: center;
   align-items: center;
   background-color: #ff00ff;
-  width: 50%;
+  width: 100%;
   color: #000;
 `;
 
-export function CardList({ className, orderNew, pageIndex = 1 }) {
-  const [showCardCount, setShowCardCount] = useState(6);
+export function CardList({ className, showCardCount, pageIndex, orderNew }) {
   const [cards, setCards] = useState([]);
 
   useEffect(() => {
@@ -39,8 +38,8 @@ export function CardList({ className, orderNew, pageIndex = 1 }) {
 
     // page index에 해당하는 카드만 보여주기
     const showCards = dummyCards.slice(
+      (pageIndex - 1) * showCardCount,
       pageIndex * showCardCount,
-      (pageIndex + 1) * showCardCount,
     );
     console.log("showCard " + showCards.length);
 
