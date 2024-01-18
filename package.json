@@ -5,9 +5,11 @@
   "dependencies": {
     "@reduxjs/toolkit": "^2.0.1",
     "@storybook/test": "^7.6.8",
+    "@tanstack/react-query": "^5.17.15",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
+    "axios": "^1.6.5",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.21.2",
@@ -42,6 +44,7 @@
     ]
   },
   "devDependencies": {
+    "@babel/preset-react": "^7.23.3",
     "@storybook/addon-essentials": "^7.6.8",
     "@storybook/addon-interactions": "^7.6.8",
     "@storybook/addon-links": "^7.6.8",
@@ -51,14 +54,13 @@
     "@storybook/react": "^7.6.8",
     "@storybook/react-webpack5": "^7.6.8",
     "eslint": "^8.56.0",
-    "eslint-config-airbnb": "^19.0.4",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-import": "^2.29.1",
     "eslint-plugin-jsx-a11y": "^6.8.0",
     "eslint-plugin-react": "^7.33.2",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-storybook": "^0.6.15",
-    "prettier": "^3.2.2",
+    "prettier": "^3.2.3",
     "prop-types": "^15.8.1",
     "storybook": "^7.6.8",
     "webpack": "^5.89.0"
