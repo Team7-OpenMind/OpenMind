@@ -65,6 +65,7 @@ const HeaderBg = styled.div`
   background-size: cover;
   background-position: center;
   height: 177px;
+  margin-bottom: 145px;
 `;
 
 // 유저 데이터 받아와야함 - 잠시 아이콘으로 대체함
