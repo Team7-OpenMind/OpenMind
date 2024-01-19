@@ -138,10 +138,6 @@ export function List() {
   }
 
   useEffect(() => {
-    console.log("TODO : 질문 목록 아이템 정렬");
-  }, [orderNew]);
-
-  useEffect(() => {
     window.addEventListener("resize", onResize);
   }, [showCardCount]);
 
