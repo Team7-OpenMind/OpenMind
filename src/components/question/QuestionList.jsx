@@ -42,14 +42,14 @@ const Notification = styled.p`
 
 export function QuestionList({ id, notification }) {
   return (
-    <CenteredContainer>
+    <>
       <QuestionContainer>
         <Notification>
           <img src={messageSvg} alt="message" />
           {notification}
         </Notification>
       </QuestionContainer>
-    </CenteredContainer>
+    </>
   );
 }
 
