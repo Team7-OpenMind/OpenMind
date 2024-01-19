@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { subjectListUrl } from "api/questionApi";
 import Loading from "components/loading/Loading";
@@ -41,8 +41,18 @@ export function CardList({
   onShowMore,
 }) {
   const [searchParams, setSearchParams] = useSearchParams();
-  const limit = searchParams.get("limit");
-  const offset = searchParams.get("offset");
+  const [offset, setOffset] = useState(0);
+  const [limit, setLimit] = useState(0);
+
+  const limitParam = searchParams.get("limit");
+  const offsetParam = searchParams.get("offset");
+
+  if (offset != offsetParam) {
+    setOffset(offsetParam);
+  }
+  if (limit != limitParam) {
+    setLimit(limitParam);
+  }
 
   const { data, isLoading } = useQuery(subjectListUrl(limit, offset), {
     data: [],
