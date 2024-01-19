@@ -13,13 +13,17 @@ const ErrorStyled = styled.div`
   color: var(--Brown-40);
 `;
 
-export function Error() {
+export function Error(props) {
   return (
     <ErrorStyled>
       <img src={logo} alt="logo" />
-      에러가 발생했습니다.
+      {props.message}
     </ErrorStyled>
   );
 }
+
+Error.defaultProps = {
+  message: "에러가 발생했습니다",
+};
 
 export default Error;

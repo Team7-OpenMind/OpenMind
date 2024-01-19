@@ -17,7 +17,11 @@ function Post(props) {
   });
 
   if (error) {
-    return <Error />;
+    const status = error.response?.status;
+    const message = status
+      ? `HTTP ${status} 에러가 발생했습니다.`
+      : error.message;
+    return <Error message={message} />;
   }
 
   if (isLoading) {
