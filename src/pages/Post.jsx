@@ -1,16 +1,3 @@
-<<<<<<< HEAD
-// 테스트 하려고 Post에 잠깐 import해서 사용중
-
-import Answer from "./Answer";
-
-function Post() {
-  return (
-    <>
-      <div>Post</div>
-      <Answer />
-    </>
-  );
-=======
 import { subjectUrl } from "api/questionApi";
 import { CenteredContainer } from "components";
 import Loading from "components/loading/Loading";
@@ -40,7 +27,6 @@ function Post(props) {
       ? "아직 질문이 없습니다"
       : `${questionCount}개의 질문이 있습니다.`;
   return <QuestionList id={id} notification={notification} />;
->>>>>>> develope
 }
 
 Post.defaultProps = {
