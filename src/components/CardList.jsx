@@ -29,13 +29,10 @@ const CardStyled = styled(Card)`
   padding: 16px;
 
   transition: transform 0.3s ease-in-out;
-<<<<<<< HEAD
-=======
 
   @media screen and (min-width: 768px) {
     padding: 20px;
   }
->>>>>>> a5f730a6af5df85d7ef9fd4ec6e09f4018f9a1de
 `;
 
 export function CardList({
