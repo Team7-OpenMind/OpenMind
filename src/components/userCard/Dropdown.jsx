@@ -10,6 +10,10 @@ const DropdownStyled = styled.div`
   justify-content: space-between;
 
   gap: 4px;
+
+  > div {
+    font-size: 14px;
+  }
 `;
 
 const SelectItem = styled.div`
@@ -20,7 +24,8 @@ const SelectItem = styled.div`
 
   color: #818181;
   border-radius: 8px;
-  border: 1px solid ${(props) => (props.isOpen ? "#000000" : "#818181")};
+  border: 1px solid
+    ${(props) => (props.isOpen ? "var(--Grayscale-60)" : "var(--Grayscale-40)")};
   background: var(--Grayscale-10, #fff);
 
   padding: 8px 12px;
@@ -32,7 +37,8 @@ const SelectItem = styled.div`
     justify-content: center;
     align-items: center;
 
-    color: ${(props) => (props.isOpen ? "#000000" : "#818181")};
+    color: ${(props) =>
+      props.isOpen ? "var(--Grayscale-60)" : "var(--Grayscale-40)"};
   }
 `;
 
@@ -42,23 +48,29 @@ const Arrow = styled(arrowUp)`
   transition: transform 0.3s ease-in-out;
 
   path {
-    fill: ${(props) => (props.isOpen ? "#000000" : "#818181")};
+    fill: ${(props) =>
+      props.isOpen ? "var(--Grayscale-60)" : "var(--Grayscale-40)"};
   }
 `;
 
 const DropdownItems = styled.div`
+  position: absolute;
+  top: calc(100% + 5px);
+  width: 100%;
+  z-index: 1;
+
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background: var(--Grayscale-10, #fff);
+  background: var(--Grayscale-10);
   transform-origin: 50% 0%;
   transform: scaleY(0);
   transition: transform 0.3s ease-in-out;
 
   border-radius: 8px;
-  border: 1px solid var(--Grayscale-30, #cfcfcf);
-  background: var(--Grayscale-10, #fff);
+  border: 1px solid var(--Grayscale-30);
+  background: var(--Grayscale-10);
   /* 1pt */
   box-shadow: 0px 4px 4px 0px rgba(140, 140, 140, 0.25);
   overflow: hidden;
@@ -72,11 +84,11 @@ const DropdownItems = styled.div`
     font-style: normal;
     font-weight: 500;
     line-height: 18px;
-    background: var(--Grayscale-10, #fff);
+    background: var(--Grayscale-10);
   }
 
   > div:hover {
-    color: #1877f2;
+    color: var(--Blue-50);
   }
 `;
 
