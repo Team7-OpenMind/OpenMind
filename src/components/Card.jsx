@@ -15,6 +15,11 @@ const ProfileImage = styled.div`
     width: 100%;
     height: 100%;
   }
+
+  @media screen and (min-width: 768px) {
+    width: 60px;
+    height: 60px;
+  }
 `;
 
 const ProfileName = styled.div`
@@ -23,6 +28,10 @@ const ProfileName = styled.div`
   font-size: 18px;
   font-weight: 400;
   line-height: 24px; /* 133.333% */
+
+  @media screen and (min-width: 768px) {
+    font-size: 20px;
+  }
 `;
 
 const QuestionContainer = styled.div`
@@ -38,6 +47,11 @@ const QuestionContainer = styled.div`
     font-size: 14px;
     font-weight: 400;
     line-height: 18px; /* 128.571% */
+
+    @media screen and (min-width: 768px) {
+      font-size: 16px;
+      line-height: 22px;
+    }
   }
 `;
 
@@ -51,15 +65,19 @@ const QuestionTitle = styled.div`
   > img {
     width: 16px;
     height: 16px;
+
+    @media screen and (min-width: 768px) {
+      width: 18px;
+      height: 18px;
+    }
   }
 
-  > div {
+  /* > div {
     color: var(--Grayscale-40);
     font-family: Pretendard;
     font-size: 14px;
     font-weight: 400;
     line-height: 18px; /* 128.571% */
-  }
 `;
 
 export function Card({
