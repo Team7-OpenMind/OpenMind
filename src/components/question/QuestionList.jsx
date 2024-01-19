@@ -1,16 +1,8 @@
 import messageSvg from "assets/Messages.svg";
+import { CenteredContainer } from "components";
 import styled from "styled-components";
 
 import "common.css";
-
-const QuestionWrapper = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  height: 100%;
-  background-color: var(--Grayscale-20);
-`;
 
 const QuestionContainer = styled.div`
   display: flex;
@@ -50,14 +42,14 @@ const Notification = styled.p`
 
 export function QuestionList({ id, notification }) {
   return (
-    <QuestionWrapper>
+    <CenteredContainer>
       <QuestionContainer>
         <Notification>
           <img src={messageSvg} alt="message" />
           {notification}
         </Notification>
       </QuestionContainer>
-    </QuestionWrapper>
+    </CenteredContainer>
   );
 }
 
