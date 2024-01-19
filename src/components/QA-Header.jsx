@@ -36,12 +36,12 @@ const Logo = styled.img`
   width: 124px;
   height: 49px;
 `;
-
+// userimg랑 username 컴포넌트로 만들어도 될듯
 const UserImg = styled.img`
   width: 104px;
   height: 104px;
   border-radius: 50%;
-  border: 1px solid black;
+  border: 1px solid black; //보더 나중에 삭제
 `;
 
 const UserName = styled.span`
