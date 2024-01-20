@@ -1,4 +1,3 @@
-import "common.css";
 import loadingGif from "assets/loading.gif";
 import styled from "styled-components";
 

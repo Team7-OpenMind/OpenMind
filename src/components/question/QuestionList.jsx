@@ -5,8 +5,6 @@ import Error from "components/error/Error";
 import useQuery from "hooks/useQuery";
 import styled from "styled-components";
 
-import "common.css";
-
 const QuestionContainer = styled.div`
   display: flex;
   flex-direction: column;

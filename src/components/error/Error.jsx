@@ -1,5 +1,4 @@
 import logo from "assets/logo.svg";
-import "common.css";
 import styled from "styled-components";
 
 const ErrorStyled = styled.div`
