@@ -21,13 +21,13 @@ const QuestionButton = styled(FloatingButton)`
 function Post(props) {
   const isMobile = useMediaQuery("(max-width: 767px)");
   const { id } = props; // test 용도
-  const { postId } = useParams(); // router의 url parameter
+  const { subjectId } = useParams(); // router의 url parameter
 
   const {
     data: { questionCount },
     error,
     isLoading,
-  } = useQuery(subjectUrl(postId || id), {
+  } = useQuery(subjectUrl(subjectId || id), {
     data: [],
   });
 

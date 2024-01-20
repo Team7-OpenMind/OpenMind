@@ -11,7 +11,7 @@ function App() {
           <Route index element={<Home />} />
           <Route path="list" element={<List />} />
           <Route path="post" element={<Post />}>
-            <Route path=":postId" element={<Post />} />
+            <Route path=":subjectId" element={<Post />} />
           </Route>
         </Route>
       </Routes>
