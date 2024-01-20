@@ -18,16 +18,15 @@ const QuestionButton = styled(FloatingButton)`
   padding: 15px 40px;
 `;
 
-function Post(props) {
+function Post() {
   const isMobile = useMediaQuery("(max-width: 767px)");
-  const { id } = props; // test 용도
   const { subjectId } = useParams(); // router의 url parameter
 
   const {
     data: { questionCount },
     error,
     isLoading,
-  } = useQuery(subjectUrl(subjectId || id), {
+  } = useQuery(subjectUrl(subjectId), {
     data: [],
   });
 
@@ -56,14 +55,10 @@ function Post(props) {
 
   return (
     <CenteredContainer>
-      <QuestionList id={id} notification={notification} />
+      <QuestionList id={subjectId} notification={notification} />
       <QuestionButton className="shadow-2pt">{buttonText}</QuestionButton>
     </CenteredContainer>
   );
 }
-
-Post.defaultProps = {
-  id: 2375,
-};
 
 export default Post;
