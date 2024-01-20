@@ -10,8 +10,9 @@ function App() {
         <Route path="/">
           <Route index element={<Home />} />
           <Route path="list" element={<List />} />
-          <Route path="post" element={<Post />} />
-          <Route path="post/:postId" element={<Post />} />
+          <Route path="post" element={<Post />}>
+            <Route path=":postId" element={<Post />} />
+          </Route>
         </Route>
       </Routes>
     </BrowserRouter>
