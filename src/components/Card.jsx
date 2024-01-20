@@ -88,10 +88,11 @@ export function Card({
     const angleX = (x - midX) / midX;
     const angleY = (y - midY) / midY;
 
-    const rotateY = angleX * 20;
-    const rotateX = angleY * -20;
+    const rotateY = angleX * 15;
+    const rotateX = angleY * -15;
 
     element.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+    element.style.boxShadow = `${angleX * -3}px ${angleY * -3}px 6px 3px rgba(0, 0, 0, 0.1)`;
   }
 
   function onMouseOut() {
@@ -99,6 +100,7 @@ export function Card({
     if (!element) return;
 
     element.style.transform = `rotateX(0deg) rotateY(0deg)`;
+    element.style.boxShadow = `0px 0px 0px 0px rgba(0, 0, 0, 0.1)`;
   }
 
   useEffect(() => {
@@ -126,9 +128,14 @@ export function Card({
 
     element.addEventListener("mouseover", onMouseOver);
     element.addEventListener("mouseout", onMouseOut);
+    element.addEventListener("mousemove", onMouseOver);
 
     return () => {
       observer.unobserve(element);
+
+      element.removeEventListener("mouseover", onMouseOver);
+      element.removeEventListener("mouseout", onMouseOut);
+      element.removeEventListener("mousemove", onMouseOver);
     };
   }, []);
 
