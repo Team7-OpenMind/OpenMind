@@ -163,6 +163,9 @@ export function List() {
 
   useEffect(() => {
     window.addEventListener("resize", onResize);
+    return () => {
+      window.removeEventListener("resize", onResize);
+    };
   }, [showCardCount]);
 
   return (

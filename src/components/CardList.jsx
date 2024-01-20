@@ -42,7 +42,7 @@ export function CardList({
 }) {
   const [searchParams, setSearchParams] = useSearchParams();
   const [offset, setOffset] = useState(0);
-  const [limit, setLimit] = useState(0);
+  const [limit, setLimit] = useState(showCardCount);
 
   const limitParam = searchParams.get("limit");
   const offsetParam = searchParams.get("offset");
