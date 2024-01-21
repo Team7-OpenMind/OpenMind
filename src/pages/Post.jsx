@@ -1,6 +1,7 @@
 import { subjectUrl } from "api/questionApi";
 import { CenteredContainer } from "components";
 import FloatingButton from "components/button/FloatingButton";
+import Error from "components/error/Error";
 import Loading from "components/loading/Loading";
 import QuestionList from "components/question/QuestionList";
 import useMediaQuery from "hooks/useMediaQuery";
@@ -21,7 +22,7 @@ function Post(props) {
   const isMobile = useMediaQuery("(max-width: 767px)");
 
   const {
-    data: { questionCount },
+    data: { questionCount, ...question },
     error,
     isLoading,
   } = useQuery(subjectUrl(id), {
@@ -53,7 +54,7 @@ function Post(props) {
 
   return (
     <CenteredContainer>
-      <QuestionList id={id} notification={notification} />
+      <QuestionList notification={notification} question={question} />
       <QuestionButton className="shadow-2pt">{buttonText}</QuestionButton>
     </CenteredContainer>
   );
