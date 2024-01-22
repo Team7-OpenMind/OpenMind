@@ -101,7 +101,7 @@ const FilterStyled = styled.div`
   > div {
     color: var(--Grayscale-60, #000);
     text-align: center;
-    font-family: Actor; // TODO : add font
+    font-family: "Black Han Sans"; // TODO : add font
     font-size: 24px;
     font-weight: 400;
 
