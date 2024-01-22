@@ -1,15 +1,3 @@
-<<<<<<< HEAD
-// 테스트 하려고 Post에 잠깐 import해서 사용중
-import QaHeader from "components/QA-Header";
-
-function Post() {
-  return (
-    <>
-      <div>Post</div>
-      <QaHeader />
-    </>
-  );
-=======
 import { subjectUrl } from "api/questionApi";
 import { CenteredContainer } from "components";
 import FloatingButton from "components/button/FloatingButton";
@@ -62,10 +50,6 @@ function Post() {
     questionCount === 0
       ? "아직 질문이 없습니다"
       : `${questionCount}개의 질문이 있습니다.`;
-<<<<<<< HEAD
-  return <QuestionList id={id} notification={notification} />;
->>>>>>> develope
-=======
 
   const buttonText = isMobile ? "질문 작성" : "질문 작성하기";
 
@@ -75,7 +59,6 @@ function Post() {
       <QuestionButton className="shadow-2pt">{buttonText}</QuestionButton>
     </CenteredContainer>
   );
->>>>>>> develope
 }
 
 export default Post;
