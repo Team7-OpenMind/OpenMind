@@ -1,10 +1,12 @@
 import { subjectUrl } from "api/questionApi";
 import { CenteredContainer } from "components";
 import FloatingButton from "components/button/FloatingButton";
+import Error from "components/error/Error";
 import Loading from "components/loading/Loading";
 import QuestionList from "components/question/QuestionList";
 import useMediaQuery from "hooks/useMediaQuery";
 import useQuery from "hooks/useQuery";
+import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import Error from "components/error/Error";
 const QuestionButton = styled(FloatingButton)`
@@ -16,15 +18,15 @@ const QuestionButton = styled(FloatingButton)`
   padding: 15px 40px;
 `;
 
-function Post(props) {
-  const { id } = props;
+function Post() {
   const isMobile = useMediaQuery("(max-width: 767px)");
+  const { subjectId } = useParams(); // router의 url parameter
 
   const {
-    data: { questionCount },
+    data: { questionCount, ...question },
     error,
     isLoading,
-  } = useQuery(subjectUrl(id), {
+  } = useQuery(subjectUrl(subjectId), {
     data: [],
   });
 
@@ -53,14 +55,10 @@ function Post(props) {
 
   return (
     <CenteredContainer>
-      <QuestionList id={id} notification={notification} />
+      <QuestionList notification={notification} question={question} />
       <QuestionButton className="shadow-2pt">{buttonText}</QuestionButton>
     </CenteredContainer>
   );
 }
-
-Post.defaultProps = {
-  id: 2375,
-};
 
 export default Post;
