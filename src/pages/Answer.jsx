@@ -19,7 +19,7 @@ const TextArea = styled.textarea`
   background-color: var(--Grayscale-20);
   border-radius: 8px;
   padding: 16px;
-  width: 203px; //반응형 만들때 100%로 바꿔서 양쪽 마진이나 패딩에 맞게 줄게 해야할듯?
+  width: 203px;
   height: 186px;
   margin-bottom: 8px;
 
@@ -27,11 +27,11 @@ const TextArea = styled.textarea`
     color: var(--Grayscale-40);
   }
   @media (min-width: 375px) {
-    width: 548px; //반응형 만들때 100%로 바꿔서 양쪽 마진이나 패딩에 맞게 줄게 해야할듯?
+    width: 548px;
     height: 186px;
   }
   @media (min-width: 786px) {
-    width: 560px; //반응형 만들때 100%로 바꿔서 양쪽 마진이나 패딩에 맞게 줄게 해야할듯?
+    width: 560px;
     height: 186px;
   }
 `;
@@ -60,26 +60,16 @@ const UserImg = styled.img`
 `;
 
 const AnswerButton = styled(Button)`
-  width: 203px; //반응형 만들때 100%로 바꿔서 양쪽 마진이나 패딩에 맞게 줄게 해야할듯?
-  height: 46px;
-  color: var(--Grayscale-10);
-  font-family: Pretendard;
+  text-align: center;
   font-size: 16px;
   font-weight: 400;
   line-height: 22px;
-  @media (min-width: 375px) {
-    width: 548px; //반응형 만들때 100%로 바꿔서 양쪽 마진이나 패딩에 맞게 줄게 해야할듯?
-    height: 46px;
-  }
-  @media (min-width: 786px) {
-    width: 560px; //반응형 만들때 100%로 바꿔서 양쪽 마진이나 패딩에 맞게 줄게 해야할듯?
-    height: 46px;
-  }
 `;
 
 const DeleteButton = styled(Button)`
+  text-align: center;
   padding: 0;
-  width: 70px; //반응형 만들때 100%로 바꿔서 양쪽 마진이나 패딩에 맞게 줄게 해야할듯?
+  width: 70px;
   height: 25px;
   font-family: Pretendard;
   font-size: 10px;
@@ -88,14 +78,15 @@ const DeleteButton = styled(Button)`
   border-radius: 200px;
   @media (min-width: 375px) {
     font-size: 15px;
-    width: 100px; //반응형 만들때 100%로 바꿔서 양쪽 마진이나 패딩에 맞게 줄게 해야할듯?
+    width: 100px;
     height: 35px;
   }
 `;
 
 const AnswerTag = styled(Button)`
+  text-align: center;
   padding: 0;
-  width: 76px; //반응형 만들때 100%로 바꿔서 양쪽 마진이나 패딩에 맞게 줄게 해야할듯?
+  width: 76px;
   height: 26px;
   font-family: Pretendard;
   font-size: 14px;

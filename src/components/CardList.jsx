@@ -1,16 +1,12 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
+import { subjectListUrl } from "api/questionApi";
+import Loading from "components/loading/Loading";
+import { CenteredContainer } from "components";
+import useQuery from "hooks/useQuery";
 
 import Card from "./Card";
-
-const dummyCards = Array(10).fill({
-  id: 1,
-  name: "아초는 고양이",
-  imageSource: "https://picsum.photos/200/300",
-  questionCount: 9,
-  createAt: "2021-07-08",
-  team: "팀1",
-});
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 const CardStyled = styled(Card)`
   display: flex;
@@ -28,7 +24,9 @@ const CardStyled = styled(Card)`
 
   padding: 16px;
 
-  transition: transform 0.3s ease-in-out;
+  transition:
+    transform 0.3s ease-in-out,
+    box-shadow 0.1s ease-in-out;
 
   @media screen and (min-width: 768px) {
     padding: 20px;
@@ -42,47 +40,78 @@ export function CardList({
   orderNew,
   onShowMore,
 }) {
-  const [cards, setCards] = useState([]);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [offset, setOffset] = useState(0);
+  const [limit, setLimit] = useState(showCardCount);
+  const navigate = useNavigate();
+
+  const limitParam = searchParams.get("limit");
+  const offsetParam = searchParams.get("offset");
+
+  if (offset != offsetParam) {
+    setOffset(offsetParam);
+  }
+  if (limit != limitParam) {
+    setLimit(limitParam);
+  }
+
+  const { data, isLoading } = useQuery(subjectListUrl(limit, offset), {
+    data: [],
+  });
+
+  function handleClick(card) {
+    navigate(`/post/${card.id}`);
+  }
 
   function onShowMoreCallback(flag) {
     onShowMore(flag);
   }
 
-  useEffect(() => {
-    // 이름순 or 최신순으로 정렬
-    dummyCards.sort((a, b) => {
-      if (orderNew) {
-        a.createAt - b.createAt;
-      } else {
-        a.name - b.name;
-      }
-    });
-    console.log("dummy " + dummyCards.length);
+  if (!data.results) return;
 
-    // page index에 해당하는 카드만 보여주기
-    const showCards = dummyCards.slice(
-      (pageIndex - 1) * showCardCount,
-      pageIndex * showCardCount,
+  console.log(data.results);
+  data.results.sort((a, b) => {
+    if (orderNew) {
+      a.createAt - b.createAt;
+    } else {
+      a.name - b.name;
+    }
+  });
+  console.log(orderNew);
+
+  // INFO : 필요 없을 수도 있음 (페이지네이션) url string query로 대체 가능
+  const showCards = data.results.slice(
+    (pageIndex - 1) * showCardCount,
+    pageIndex * showCardCount,
+  );
+
+  // 카드 속성에 따라 카드 생성
+  const resultCards = showCards.map((card) => {
+    const { id, name, imageSource, questionCount } = card;
+    return (
+      <CardStyled
+        key={id}
+        name={name}
+        imageSource={imageSource}
+        questionCount={questionCount}
+        onClick={() => handleClick(card)}
+        onShowMore={onShowMoreCallback}
+      />
     );
-    console.log("showCard " + showCards.length);
+  });
 
-    // 카드 속성에 따라 카드 생성
-    const tempCards = showCards.map((card) => {
-      const { id, name, imageSource, questionCount } = card;
+  if (resultCards) return <div className={className}>{resultCards}</div>;
+  else {
+    if (isLoading) {
       return (
-        <CardStyled
-          key={id}
-          name={name}
-          imageSource={imageSource}
-          questionCount={questionCount}
-          onShowMore={onShowMoreCallback}
-        />
+        <CenteredContainer>
+          <Loading />
+        </CenteredContainer>
       );
-    });
-    setCards(tempCards);
-  }, [showCardCount, orderNew, pageIndex]);
-
-  return <div className={className}>{cards}</div>;
+    } else {
+      return <div className={className}>{}</div>;
+    }
+  }
 }
 
 export default CardList;
