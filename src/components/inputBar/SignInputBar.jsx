@@ -3,8 +3,8 @@ import styled from "styled-components";
 
 const Person = styled(PersonSVG)`
   position: absolute;
-  top: 35px;
-  left: 40px;
+  top: 43px;
+  left: 47px;
   path {
     fill: var(--Grayscale-40);
   }

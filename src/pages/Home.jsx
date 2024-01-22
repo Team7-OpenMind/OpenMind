@@ -31,6 +31,10 @@ const InputBox = styled.div`
   flex-direction: column;
   align-items: center;
   gap: 16px;
+
+  @media (min-width: 768px) {
+    padding: 32px;
+  }
 `;
 
 const SubmitButton = styled(Button)`
