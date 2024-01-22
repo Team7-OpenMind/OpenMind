@@ -7,7 +7,6 @@ import logo from "assets/logo.svg";
 import Dropdown from "components/userCard/Dropdown";
 import Button from "components/button/Button";
 import Arrow from "assets/Arrow.svg";
-import { LOCAL_URL, shareKakao } from "utils/share";
 
 const ListStyled = styled.div`
   display: flex;
@@ -163,10 +162,7 @@ export function List() {
     if (e.target.innerWidth > 1200) setShowCardCount(8);
   }
 
-  function onClickLogo() {
-    const shareURL = `${LOCAL_URL}/list`;
-    shareKakao(shareURL);
-  }
+  function onClickLogo() {}
 
   useEffect(() => {
     window.addEventListener("resize", onResize);

@@ -12,14 +12,10 @@ const imageURL = document
   .getAttribute("content");
 
 if (!window.Kakao.isInitialized()) {
-  console.log("Kakao pre init");
   window.Kakao.init(process.env.REACT_APP_KAKAO_APPKEY_JS);
-  console.log("Kakao init");
 }
 
-export const shareKakao = (shareURL = "") => {
-  console.log(shareURL);
-
+export function shareKakao(shareURL) {
   window.Kakao.Share.sendDefault({
     objectType: "feed",
     content: {
@@ -32,4 +28,21 @@ export const shareKakao = (shareURL = "") => {
       },
     },
   });
-};
+}
+
+export function shareFacebook(shareURL) {
+  // TODO : Facebook 공유 배포 후 테스트 필요
+  const url = encodeURIComponent(shareURL);
+  window.open("https://www.facebook.com/sharer.php?u=" + url);
+}
+
+export function copyClipboard(shareURL) {
+  console.log(shareURL);
+  window.navigator.clipboard
+    .writeText(shareURL)
+    .then((rsp) => {
+      alert(`${shareURL} 링크가 복사되었습니다.`);
+      return rsp;
+    })
+    .catch(() => alert("링크 복사에 실패했습니다."));
+}
