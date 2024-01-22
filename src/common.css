@@ -115,6 +115,7 @@ html {
 }
 
 body,
+button,
 input,
 a {
   all: unset;

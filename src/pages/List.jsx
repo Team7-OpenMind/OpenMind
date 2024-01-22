@@ -5,6 +5,8 @@ import CardList from "components/CardList";
 
 import logo from "assets/logo.svg";
 import Dropdown from "components/userCard/Dropdown";
+import Button from "components/button/Button";
+import Arrow from "assets/Arrow.svg";
 
 const ListStyled = styled.div`
   display: flex;
@@ -62,6 +64,28 @@ const ListBot = styled.div`
   align-items: center;
 
   width: 100%;
+`;
+
+const AnswerButton = styled(Button)`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+
+  font-size: 14px;
+  line-height: 18px; /* 128.571% */
+  color: var(--Brown-40, #542f1a);
+  padding: 8px 12px;
+  gap: 4px;
+
+  border-radius: 8px;
+  border: 1px solid var(--Brown-40);
+  background: var(--Brown-10);
+
+  @media screen and (min-width: 768px) {
+    font-size: 16px;
+    line-height: 22px; /* 137.5% */
+  }
 `;
 
 const FilterStyled = styled.div`
@@ -138,18 +162,20 @@ export function List() {
   }
 
   useEffect(() => {
-    console.log("TODO : 질문 목록 아이템 정렬");
-  }, [orderNew]);
-
-  useEffect(() => {
     window.addEventListener("resize", onResize);
+    return () => {
+      window.removeEventListener("resize", onResize);
+    };
   }, [showCardCount]);
 
   return (
     <ListStyled onShowMore={onShowMore}>
       <ListTop>
         <img src={logo} alt="logo" />
-        <div>답변하러가기 ＞</div>
+        <AnswerButton>
+          <div>답변하러 가기</div>
+          <img src={Arrow} />
+        </AnswerButton>
       </ListTop>
       <ListMid>
         <FilterStyled>

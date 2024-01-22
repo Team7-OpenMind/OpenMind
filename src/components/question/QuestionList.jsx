@@ -1,8 +1,9 @@
+import { questionUrl } from "api/questionApi";
 import messageSvg from "assets/Messages.svg";
 import { CenteredContainer } from "components";
+import Error from "components/error/Error";
+import useQuery from "hooks/useQuery";
 import styled from "styled-components";
-
-import "common.css";
 
 const QuestionContainer = styled.div`
   display: flex;
@@ -41,15 +42,30 @@ const Notification = styled.p`
 `;
 
 export function QuestionList({ id, notification }) {
+  const {
+    data: { count },
+    error,
+  } = useQuery(
+    questionUrl(id),
+    {
+      data: {},
+    },
+    1000,
+  );
+
+  if (error) {
+    return <Error />;
+  }
+
   return (
-    <CenteredContainer>
+    <>
       <QuestionContainer>
         <Notification>
           <img src={messageSvg} alt="message" />
           {notification}
         </Notification>
       </QuestionContainer>
-    </CenteredContainer>
+    </>
   );
 }
 
