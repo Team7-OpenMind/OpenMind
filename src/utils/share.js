@@ -13,7 +13,7 @@ const imageURL = document
 
 if (!window.Kakao.isInitialized()) {
   console.log("Kakao pre init");
-  window.Kakao.init(process.env.KAKAO_APPKEY_JS);
+  window.Kakao.init(process.env.REACT_APP_KAKAO_APPKEY_JS);
   console.log("Kakao init");
 }
 
