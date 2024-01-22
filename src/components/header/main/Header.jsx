@@ -8,12 +8,13 @@ const Wrapper = styled.header`
 `;
 
 const ButtonWrapper = styled.div`
+  max-width: 1200px;
   padding-right: 50px;
   display: flex;
   justify-content: end;
 
   @media (min-width: 1200px) {
-    padding-right: 130px;
+    margin: 0 auto;
   }
 `;
 
