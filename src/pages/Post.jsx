@@ -6,7 +6,7 @@ import QuestionList from "components/question/QuestionList";
 import useMediaQuery from "hooks/useMediaQuery";
 import useQuery from "hooks/useQuery";
 import styled from "styled-components";
-
+import Error from "components/error/Error";
 const QuestionButton = styled(FloatingButton)`
   position: fixed;
   right: 24px;

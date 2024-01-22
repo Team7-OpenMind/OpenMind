@@ -7,6 +7,7 @@ import logo from "assets/logo.svg";
 import Dropdown from "components/userCard/Dropdown";
 import Button from "components/button/Button";
 import Arrow from "assets/Arrow.svg";
+import { LOCAL_URL, shareKakao } from "utils/share";
 
 const ListStyled = styled.div`
   display: flex;
@@ -14,7 +15,7 @@ const ListStyled = styled.div`
   justify-content: center;
   align-items: center;
 
-  min-width: 375px;
+  min-width: 327px;
   background-color: #f9f9f9; // TODO : change color variable
   padding-left: 24px; // TODO : change max(24px, ??)
   padding-right: 24px; // TODO : change max(24px, ??)
@@ -35,6 +36,7 @@ const ListTop = styled.div`
   width: 100%;
 
   > img {
+    width: 146px;
     margin-bottom: 20px;
   }
 
@@ -123,7 +125,7 @@ const CardListStyled = styled(CardList)`
   position: relative;
 
   display: grid;
-  grid-template-columns: repeat(2, minmax(186px, 220px));
+  grid-template-columns: repeat(2, 1fr);
 
   justify-content: center;
   align-items: center;
@@ -161,6 +163,11 @@ export function List() {
     if (e.target.innerWidth > 1200) setShowCardCount(8);
   }
 
+  function onClickLogo() {
+    const shareURL = `${LOCAL_URL}/list`;
+    shareKakao(shareURL);
+  }
+
   useEffect(() => {
     window.addEventListener("resize", onResize);
     return () => {
@@ -171,7 +178,7 @@ export function List() {
   return (
     <ListStyled onShowMore={onShowMore}>
       <ListTop>
-        <img src={logo} alt="logo" />
+        <img src={logo} alt="logo" onClick={onClickLogo} />
         <AnswerButton>
           <div>답변하러 가기</div>
           <img src={Arrow} />
