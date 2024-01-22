@@ -64,6 +64,7 @@ const AnswerStyled = styled.div`
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
+  align-items: center;
 `;
 
 const AnswerContent = styled.div`
