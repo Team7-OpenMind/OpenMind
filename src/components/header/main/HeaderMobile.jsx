@@ -9,10 +9,6 @@ const Wrapper = styled.header`
   gap: 24px;
 `;
 
-const Logo = styled(LogoSVG)`
-  padding: 0;
-`;
-
 const StyledButton = styled(Button)`
   border-style: none;
   outline: 1px solid var(--Brown-40);
@@ -35,26 +31,26 @@ const StyledButton = styled(Button)`
   }
 `;
 
-const ColoredArrow = styled(ArrowSVG)`
+const Arrow = styled(ArrowSVG)`
   width: 18px;
   path {
     fill: var(--Brown-40);
   }
 `;
 
-function Header() {
+function HeaderMobile() {
   return (
     <Wrapper>
-      <Logo />
+      <LogoMobile />
       <StyledButton>
         질문하러 가기
-        <ColoredArrow />
+        <Arrow />
       </StyledButton>
     </Wrapper>
   );
 }
 
-function LogoSVG() {
+function LogoMobile() {
   return (
     <svg
       width="248"
@@ -150,4 +146,4 @@ function LogoSVG() {
   );
 }
 
-export default Header;
+export default HeaderMobile;

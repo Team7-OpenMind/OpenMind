@@ -1,7 +1,9 @@
 import Button from "components/button/Button";
-import Header from "components/header/Header";
 import styled from "styled-components";
 import SignInputBar from "components/inputBar/SignInputBar";
+import useMediaQuery from "hooks/useMediaQuery";
+import HeaderMobile from "components/header/main/HeaderMobile";
+import Header from "components/header/main/Header";
 
 const Wrapper = styled.div`
   position: relative;
@@ -12,11 +14,16 @@ const Wrapper = styled.div`
   flex-direction: column;
   align-items: center;
   gap: 24px;
+
+  @media (min-width: 768px) {
+    padding-top: 45px;
+  }
 `;
 
 const InputBox = styled.div`
   position: relative;
   width: 80%;
+  max-width: 400px;
   border-radius: 16px;
   padding: 24px;
   background-color: var(--Grayscale-10);
@@ -39,12 +46,18 @@ const MainImage = styled(ImageSVG)`
   width: 120%;
   bottom: 0;
   z-index: -1;
+
+  @media (min-width: 768px) {
+    width: 100%;
+  }
 `;
 
 function Home() {
+  const isMobile = useMediaQuery("(max-width: 767px");
+  console.log(isMobile);
   return (
     <Wrapper>
-      <Header />
+      {isMobile ? <HeaderMobile /> : <Header />}
       <InputBox>
         <SignInputBar placeholder="이름을 입력하세요" />
         <SubmitButton>질문 받기</SubmitButton>
