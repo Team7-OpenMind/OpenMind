@@ -3,10 +3,15 @@ import styled from "styled-components";
 
 const Person = styled(PersonSVG)`
   position: absolute;
-  top: 43px;
-  left: 47px;
+  top: 35px;
+  left: 40px;
   path {
     fill: var(--Grayscale-40);
+  }
+
+  @media (min-width: 768px) {
+    top: 43px;
+    left: 47px;
   }
 `;
 
@@ -21,11 +26,16 @@ const Input = styled.input`
   line-height: 22px;
 `;
 
-function SignInputBar({ placeholder }) {
+function SignInputBar({ placeholder, value, onChange }) {
   return (
     <>
       <Person />
-      <Input placeholder={placeholder} />
+      <Input
+        name="name"
+        placeholder={placeholder}
+        value={value}
+        onChange={onChange}
+      />
     </>
   );
 }
