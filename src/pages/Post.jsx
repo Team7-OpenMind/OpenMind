@@ -23,7 +23,7 @@ function Post() {
   const { subjectId } = useParams(); // router의 url parameter
 
   const {
-    data: { questionCount },
+    data: { questionCount, ...question },
     error,
     isLoading,
   } = useQuery(subjectUrl(subjectId), {
@@ -55,7 +55,7 @@ function Post() {
 
   return (
     <CenteredContainer>
-      <QuestionList id={subjectId} notification={notification} />
+      <QuestionList notification={notification} question={question} />
       <QuestionButton className="shadow-2pt">{buttonText}</QuestionButton>
     </CenteredContainer>
   );
