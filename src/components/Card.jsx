@@ -67,6 +67,7 @@ export function Card({
   name,
   imageSource,
   questionCount,
+  onClick,
   onShowMore,
 }) {
   const cardRef = useRef(null);
@@ -142,7 +143,7 @@ export function Card({
   useEffect(() => {});
 
   return (
-    <div className={className} ref={cardRef}>
+    <div className={className} ref={cardRef} onClick={onClick}>
       <ProfileContainer>
         <ProfileImage>
           <img src={imageSource} alt="profile" />

@@ -6,7 +6,7 @@ import { CenteredContainer } from "components";
 import useQuery from "hooks/useQuery";
 
 import Card from "./Card";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 const CardStyled = styled(Card)`
   display: flex;
@@ -43,6 +43,7 @@ export function CardList({
   const [searchParams, setSearchParams] = useSearchParams();
   const [offset, setOffset] = useState(0);
   const [limit, setLimit] = useState(showCardCount);
+  const navigate = useNavigate();
 
   const limitParam = searchParams.get("limit");
   const offsetParam = searchParams.get("offset");
@@ -57,6 +58,10 @@ export function CardList({
   const { data, isLoading } = useQuery(subjectListUrl(limit, offset), {
     data: [],
   });
+
+  function handleClick(card) {
+    navigate(`/post/${card.id}`);
+  }
 
   function onShowMoreCallback(flag) {
     onShowMore(flag);
@@ -89,6 +94,7 @@ export function CardList({
         name={name}
         imageSource={imageSource}
         questionCount={questionCount}
+        onClick={() => handleClick(card)}
         onShowMore={onShowMoreCallback}
       />
     );
