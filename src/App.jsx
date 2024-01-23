@@ -12,8 +12,9 @@ function App() {
           <Route index element={<Home />} />
           <Route path="list" element={<List />} />
           <Route path="test" element={<Answer />} />
-          <Route path="post" element={<Post />}>
-            <Route path=":subjectId" element={<Post />} />
+          <Route path="post/:subjectId">
+            <Route index element={<Post />} />
+            <Route path="answer" element={<Answer />} />
           </Route>
         </Route>
       </Routes>
