@@ -5,6 +5,8 @@ import CardList from "components/CardList";
 
 import logo from "assets/logo.svg";
 import Dropdown from "components/userCard/Dropdown";
+import Button from "components/button/Button";
+import Arrow from "assets/Arrow.svg";
 
 const ListStyled = styled.div`
   display: flex;
@@ -12,7 +14,7 @@ const ListStyled = styled.div`
   justify-content: center;
   align-items: center;
 
-  min-width: 375px;
+  min-width: 327px;
   background-color: #f9f9f9; // TODO : change color variable
   padding-left: 24px; // TODO : change max(24px, ??)
   padding-right: 24px; // TODO : change max(24px, ??)
@@ -33,6 +35,7 @@ const ListTop = styled.div`
   width: 100%;
 
   > img {
+    width: 146px;
     margin-bottom: 20px;
   }
 
@@ -64,6 +67,28 @@ const ListBot = styled.div`
   width: 100%;
 `;
 
+const AnswerButton = styled(Button)`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+
+  font-size: 14px;
+  line-height: 18px; /* 128.571% */
+  color: var(--Brown-40, #542f1a);
+  padding: 8px 12px;
+  gap: 4px;
+
+  border-radius: 8px;
+  border: 1px solid var(--Brown-40);
+  background: var(--Brown-10);
+
+  @media screen and (min-width: 768px) {
+    font-size: 16px;
+    line-height: 22px; /* 137.5% */
+  }
+`;
+
 const FilterStyled = styled.div`
   display: flex;
   flex-direction: row;
@@ -76,7 +101,7 @@ const FilterStyled = styled.div`
   > div {
     color: var(--Grayscale-60, #000);
     text-align: center;
-    font-family: Actor; // TODO : add font
+    font-family: "Black Han Sans"; // TODO : add font
     font-size: 24px;
     font-weight: 400;
 
@@ -99,7 +124,7 @@ const CardListStyled = styled(CardList)`
   position: relative;
 
   display: grid;
-  grid-template-columns: repeat(2, minmax(186px, 220px));
+  grid-template-columns: repeat(2, 1fr);
 
   justify-content: center;
   align-items: center;
@@ -137,19 +162,23 @@ export function List() {
     if (e.target.innerWidth > 1200) setShowCardCount(8);
   }
 
-  useEffect(() => {
-    console.log("TODO : 질문 목록 아이템 정렬");
-  }, [orderNew]);
+  function onClickLogo() {}
 
   useEffect(() => {
     window.addEventListener("resize", onResize);
+    return () => {
+      window.removeEventListener("resize", onResize);
+    };
   }, [showCardCount]);
 
   return (
     <ListStyled onShowMore={onShowMore}>
       <ListTop>
-        <img src={logo} alt="logo" />
-        <div>답변하러가기 ＞</div>
+        <img src={logo} alt="logo" onClick={onClickLogo} />
+        <AnswerButton>
+          <div>답변하러 가기</div>
+          <img src={Arrow} />
+        </AnswerButton>
       </ListTop>
       <ListMid>
         <FilterStyled>

@@ -19,10 +19,11 @@ export function useQuery(url, initialData, loadingDelay) {
     // 실제 데이터를 가져오는 비동기 함수
     async queryFn() {
       const res = await axios.get(url);
-      const { status } = res;
+      const { status, statusText } = res;
       if (status >= 400) {
-        const message = `An error has occured: ${status}`;
-        throw new Error(message);
+        const error = new Error(statusText);
+        error.response = res;
+        throw error;
       }
       await delay(loadingDelay);
       return res.data;
