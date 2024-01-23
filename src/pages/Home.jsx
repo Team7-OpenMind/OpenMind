@@ -84,6 +84,7 @@ function Home() {
       }
 
       const { data } = response;
+      localStorage.setItem("subjectId", data.id);
       navigate(`/post/${data.id}/answer`);
     } catch (error) {
       console.error(error);
