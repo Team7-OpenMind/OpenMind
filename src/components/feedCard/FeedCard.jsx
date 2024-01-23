@@ -4,14 +4,18 @@ import { getTimeAgo } from "utils/date";
 const FeedCardStyled = styled.div`
   display: flex;
   flex-direction: column;
+  width: 100%;
   padding: 24px;
+  gap: 24px;
+
   border-radius: 16px;
   background-color: var(--Grayscale-10);
-  gap: 24px;
-  width: 100%;
 
-  @media (min-width: 768px) {
-    gap: 32px;
+  @media (min-width: 769px) and (max-width: 1200px) {
+    padding: 32px;
+  }
+
+  @media (min-width: 1201px) {
     padding: 32px;
   }
 `;

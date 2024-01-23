@@ -14,28 +14,14 @@ const QuestionContainer = styled.div`
   width: 100%;
   margin: 30px 24px 126px;
   max-width: 900px;
+  padding: 16px;
 
   border-radius: 16px;
   background-color: var(--Brown-10);
   border: 1px solid var(--Brown-20);
 
-  @media (min-width: 769px) {
-    margin: 50px 150px 130px;
-    padding: 16px;
-  }
-
-  @media (min-width: 1124px) {
-    margin: 50px 150px 130px;
-    padding: 16px;
-  }
-
-  @media (max-width: 768px) {
-    padding: 16px;
+  @media (min-width: 769px) and (max-width: 1200px) {
     margin: 54px 32px 136px;
-  }
-
-  @media (max-width: 414px) {
-    padding: 16px;
   }
 `;
 
@@ -58,7 +44,13 @@ const Notification = styled.div`
 const EmptySvg = styled.img`
   display: flex;
   flex-direction: column;
-  margin: 106px;
+  margin: 70px;
+  @media (min-width: 769px) and (max-width: 1200px) {
+    margin: 106px;
+  }
+  @media (min-width: 1201px) {
+    margin: 120px;
+  }
 `;
 
 export function QuestionList(props) {
