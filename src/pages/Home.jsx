@@ -65,6 +65,8 @@ function Home() {
   const isMobile = useMediaQuery("(max-width: 767px");
   const navigate = useNavigate();
 
+  const handleNavigate = () => navigate("/list");
+
   const handleInputChange = (e) => {
     setInputValue(e.target.value);
   };
@@ -90,7 +92,11 @@ function Home() {
 
   return (
     <Wrapper>
-      {isMobile ? <HeaderMobile /> : <Header />}
+      {isMobile ? (
+        <HeaderMobile onClick={handleNavigate} />
+      ) : (
+        <Header onClick={handleNavigate} />
+      )}
       <InputBox>
         <SignInputBar
           placeholder="이름을 입력하세요"
