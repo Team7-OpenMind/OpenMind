@@ -124,7 +124,7 @@ const CardListStyled = styled(CardList)`
   position: relative;
 
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(2, minmax(154px, 220px));
 
   justify-content: center;
   align-items: center;
