@@ -14,7 +14,7 @@ const ListStyled = styled.div`
   justify-content: center;
   align-items: center;
 
-  min-width: 375px;
+  min-width: 327px;
   background-color: #f9f9f9; // TODO : change color variable
   padding-left: 24px; // TODO : change max(24px, ??)
   padding-right: 24px; // TODO : change max(24px, ??)
@@ -35,6 +35,7 @@ const ListTop = styled.div`
   width: 100%;
 
   > img {
+    width: 146px;
     margin-bottom: 20px;
   }
 
@@ -123,7 +124,7 @@ const CardListStyled = styled(CardList)`
   position: relative;
 
   display: grid;
-  grid-template-columns: repeat(2, minmax(186px, 220px));
+  grid-template-columns: repeat(2, minmax(154px, 220px));
 
   justify-content: center;
   align-items: center;
