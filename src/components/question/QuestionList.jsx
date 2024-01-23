@@ -21,11 +21,13 @@ const QuestionContainer = styled.div`
   border: 1px solid var(--Brown-20);
 
   @media (min-width: 768px) {
-    margin: 423px 32px 136px;
+    margin: 423px 32px 0;
+    margin-bottom: 136px;
   }
 
   @media (min-width: 1201px) {
-    margin: 423px 242px 136px;
+    margin: 423px 32px 0;
+    margin-bottom: 136px;
   }
 `;
 
