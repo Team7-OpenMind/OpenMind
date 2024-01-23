@@ -17,7 +17,7 @@ const FeedCardStyled = styled.div`
   border-radius: 16px;
   background-color: var(--Grayscale-10);
 
-  @media (min-width: 769px) and (max-width: 1200px) {
+  @media (min-width: 768px) {
     padding: 32px;
   }
 

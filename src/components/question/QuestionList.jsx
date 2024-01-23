@@ -12,7 +12,7 @@ const QuestionContainer = styled.div`
   justify-content: center;
   align-items: center;
   width: 100%;
-  margin: 30px 24px 126px;
+  margin: 353px 24px 126px;
   max-width: 900px;
   padding: 16px;
 
@@ -20,8 +20,12 @@ const QuestionContainer = styled.div`
   background-color: var(--Brown-10);
   border: 1px solid var(--Brown-20);
 
-  @media (min-width: 769px) and (max-width: 1200px) {
-    margin: 54px 32px 136px;
+  @media (min-width: 768px) {
+    margin: 423px 32px 136px;
+  }
+
+  @media (min-width: 1201px) {
+    margin: 423px 242px 136px;
   }
 `;
 
