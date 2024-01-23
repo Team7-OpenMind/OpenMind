@@ -101,7 +101,7 @@ const FilterStyled = styled.div`
   > div {
     color: var(--Grayscale-60, #000);
     text-align: center;
-    font-family: Actor; // TODO : add font
+    font-family: "Black Han Sans"; // TODO : add font
     font-size: 24px;
     font-weight: 400;
 
@@ -162,6 +162,8 @@ export function List() {
     if (e.target.innerWidth > 1200) setShowCardCount(8);
   }
 
+  function onClickLogo() {}
+
   useEffect(() => {
     window.addEventListener("resize", onResize);
     return () => {
@@ -172,7 +174,7 @@ export function List() {
   return (
     <ListStyled onShowMore={onShowMore}>
       <ListTop>
-        <img src={logo} alt="logo" />
+        <img src={logo} alt="logo" onClick={onClickLogo} />
         <AnswerButton>
           <div>답변하러 가기</div>
           <img src={Arrow} />
