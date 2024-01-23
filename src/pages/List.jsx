@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 
 import styled from "styled-components";
-import CardList from "components/CardList";
+import UserCardList from "components/userCard/UserCardList";
 
 import logo from "assets/logo.svg";
-import Dropdown from "components/userCard/Dropdown";
+import Dropdown from "components/button/Dropdown";
 import Button from "components/button/Button";
 import Arrow from "assets/Arrow.svg";
 
@@ -120,7 +120,7 @@ const FilterStyled = styled.div`
   }
 `;
 
-const CardListStyled = styled(CardList)`
+const UserCardListStyled = styled(UserCardList)`
   position: relative;
 
   display: grid;
@@ -183,9 +183,9 @@ export function List() {
       <ListMid>
         <FilterStyled>
           <div>누구에게 질문할까요?</div>
-          <Dropdown items={["이름순", "최신순"]} onSelect={onSelectOrder} />
+          <Dropdown items={["최신순", "이름순"]} onSelect={onSelectOrder} />
         </FilterStyled>
-        <CardListStyled
+        <UserCardListStyled
           showCardCount={showCardCount}
           pageIndex={pageIndex}
           orderNew={orderNew}
