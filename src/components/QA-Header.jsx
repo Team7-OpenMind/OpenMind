@@ -15,7 +15,7 @@ const COLOR = {
   facebook: "--Blue-50",
 };
 
-const ShareButton = styled.span`
+const ShareButton = styled.button`
   background-color: var(${({ icon }) => COLOR[icon]});
   border-radius: 50%;
   display: flex;
