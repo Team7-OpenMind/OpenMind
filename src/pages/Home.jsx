@@ -79,7 +79,7 @@ function Home() {
         team: "3-7",
       });
 
-      if (!response.status === 201) {
+      if (response.status !== 201) {
         throw new Error("subject 생성에 실패했습니다.");
       }
 
