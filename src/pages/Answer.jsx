@@ -1,10 +1,70 @@
 import styled from "styled-components";
 import "../common.css";
+import "../components/answer.css";
 //컴포넌트
 import Button from "components/button/Button";
 import QaHeader from "components/QA-Header";
 // 이미지 파일들
 import personSvg from "../assets/Person.svg";
+import { getQuestion, createAnswer, getAnswer } from "api/CUD-Api";
+import { useEffect, useState } from "react";
+import AnswerCard from "components/AnswerCard";
+
+function Answer() {
+  const [answerText, setAnswerText] = useState("");
+  const [resAnswer, setResAnswer] = useState("");
+
+  const question = async (answerObj) => {
+    const { id: answerId } = await createAnswer(answerObj);
+    const { content } = await getAnswer(answerId);
+    setResAnswer(content);
+  };
+
+  const handleOnChange = (event) => {
+    setAnswerText(event.target.value);
+  };
+
+  const handleClickAnswerButton = (event) => {
+    event.preventDefault();
+    console.log(answerText);
+    const answerObj = {
+      questionId: 3717,
+      content: answerText,
+      isRejected: false,
+      team: "3-7",
+    };
+    question(answerObj);
+    //여기서 답변 생성하는 api사용
+  };
+
+  return (
+    <>
+      <QaHeader />
+      <DeleteButton>삭제하기</DeleteButton>
+      <AnswerTag>답변 완료</AnswerTag>
+      <ImgNameTextBox>
+        <UserImg src={personSvg} />
+        <NameTextBox>
+          <UserName>유저명</UserName>
+          <TextArea
+            onChange={handleOnChange}
+            name="answer"
+            placeholder="답변을 입력해주세요"
+            value={answerText}
+          ></TextArea>
+          <AnswerButton
+            onClick={handleClickAnswerButton}
+            className={answerText === "" ? "disabled" : ""}
+          >
+            답변 완료
+          </AnswerButton>
+        </NameTextBox>
+      </ImgNameTextBox>
+      <h1>{answerText}</h1>
+      <AnswerCard answer={resAnswer} />
+    </>
+  );
+}
 
 // 반응형에 따라 textarea, 버튼, 유저명, 유저사진 변경해줘야함
 const TextArea = styled.textarea`
@@ -106,23 +166,5 @@ const ImgNameTextBox = styled.div`
   display: flex;
   gap: 12px;
 `;
-
-function Answer() {
-  return (
-    <>
-      <QaHeader />
-      <DeleteButton>삭제하기</DeleteButton>
-      <AnswerTag>답변 완료</AnswerTag>
-      <ImgNameTextBox>
-        <UserImg src={personSvg} />
-        <NameTextBox>
-          <UserName>유저명</UserName>
-          <TextArea name="answer" placeholder="답변을 입력해주세요"></TextArea>
-          <AnswerButton>답변 완료</AnswerButton>
-        </NameTextBox>
-      </ImgNameTextBox>
-    </>
-  );
-}
 
 export default Answer;
