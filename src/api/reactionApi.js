@@ -1,7 +1,6 @@
 import axios from "axios";
 
-// const REACTION_API_URL = `https://openmind-api.vercel.app/3-7/questions/${questionId}/reaction/`;
-
+//질문 가져오는 api
 export const getQuestion = async () => {
   const res = await axios.get(
     `https://openmind-api.vercel.app/3-7/questions/3693/`,
@@ -10,6 +9,7 @@ export const getQuestion = async () => {
   return data;
 };
 
+//리약션 카운트 하는 api
 export const countReaction = async (questionId, reaction) => {
   const res = await axios.post(
     `https://openmind-api.vercel.app/3-7/questions/${questionId}/reaction/`,
@@ -22,5 +22,6 @@ export const countReaction = async (questionId, reaction) => {
       },
     },
   );
-  console.log(res.data.like, res.data.dislike);
+  const data = res.data;
+  return data;
 };

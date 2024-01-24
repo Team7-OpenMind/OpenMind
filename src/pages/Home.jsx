@@ -1,4 +1,4 @@
-import Reaction from "components/Reaction";
+import Reaction from "components/reaction/Reaction";
 
 function Home() {
   return (
