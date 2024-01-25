@@ -4,6 +4,9 @@ import { questionUrl } from "api/questionApi";
 import emptySvg from "assets/Empty.svg";
 import messageSvg from "assets/Messages.svg";
 import arrowDownSvg from "assets/Arrow-down.svg";
+import { ReactComponent as infinitySvg } from "assets/infinity.svg";
+import { ReactComponent as toggleOnSvg } from "assets/toggle_on.svg";
+import { ReactComponent as toggleOffSvg } from "assets/toggle_off.svg";
 import Error from "components/error/Error";
 import FeedCard from "components/feedCard/FeedCard";
 import useQuery from "hooks/useQuery";
@@ -55,8 +58,10 @@ const FeedContainer = styled.div`
 `;
 
 const Notification = styled.div`
+  position: relative;
   display: flex;
   justify-content: center;
+  align-items: center;
   width: 100%;
   gap: 8px;
   margin: 0 0 16px;
@@ -76,6 +81,40 @@ const EmptySvg = styled.img`
   }
 `;
 
+const InfinitySvg = styled(infinitySvg)`
+  position: absolute;
+
+  right: 52px;
+  width: 32px;
+  height: 32px;
+  path {
+    fill: ${(props) =>
+      props.isInfinity ? "var(--Brown-40)" : "var(--Grayscale-30)"};
+  }
+`;
+
+const ToggleOnSvg = styled(toggleOnSvg)`
+  position: absolute;
+
+  right: 0;
+  width: 48px;
+  height: 48px;
+  path {
+    fill: var(--Blue-50);
+  }
+`;
+
+const ToggleOffSvg = styled(toggleOffSvg)`
+  position: absolute;
+
+  right: 0;
+  width: 48px;
+  height: 48px;
+  path {
+    fill: var(--Red-50);
+  }
+`;
+
 export function QuestionList(props) {
   const {
     notification,
@@ -84,6 +123,8 @@ export function QuestionList(props) {
   const limitRef = useRef(8);
   const [offset, setOffset] = useState(0);
   const [questionItems, setQuestionItems] = useState([]);
+  const infinityRef = useRef(false);
+  const [drawTrigger, setDrawTrigger] = useState(false);
 
   const {
     data: { count, next, results },
@@ -102,8 +143,26 @@ export function QuestionList(props) {
     }
   }
 
+  function onScroll() {
+    if (!infinityRef.current) return;
+
+    if (
+      window.innerHeight + window.scrollY >=
+      document.documentElement.scrollHeight - 100
+    ) {
+      if (!isLoading && next) onClickShowMore();
+    }
+  }
+
+  function onClickInfinityToggle(event, flag) {
+    console.log(flag);
+    infinityRef.current = flag;
+    setDrawTrigger(!drawTrigger);
+  }
+
   useEffect(() => {
     setQuestionItems([...questionItems, ...results]);
+    document.addEventListener("scroll", onScroll);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [results]);
 
@@ -117,6 +176,20 @@ export function QuestionList(props) {
         <Notification>
           <img src={messageSvg} alt="message" />
           {notification}
+          <InfinitySvg
+            src={infinitySvg}
+            isInfinity={infinityRef.current}
+            alt="infinity"
+          />
+          {infinityRef.current ? (
+            <ToggleOnSvg
+              onClick={(event) => onClickInfinityToggle(event, false)}
+            />
+          ) : (
+            <ToggleOffSvg
+              onClick={(event) => onClickInfinityToggle(event, true)}
+            />
+          )}
         </Notification>
         <FeedContainer>
           {count === 0 ? (
