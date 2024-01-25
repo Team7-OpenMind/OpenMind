@@ -3,9 +3,9 @@ import "../common.css";
 
 import personSvg from "../assets/Person.svg";
 //나중에 공통 컴포로 빼도 될듯 답변입력 컴포랑 답변보여주는 컴포 스타일 같음
-function AnswerCard({ answer }) {
+function AnswerCard({ answer, statusCode }) {
   return (
-    <ImgNameTimeAnswerBox>
+    <ImgNameTimeAnswerBox statusCode={statusCode}>
       <UserImg src={personSvg} />
       <NameTimeAnswerBox>
         <NameTimeBox>
@@ -83,6 +83,7 @@ const NameTimeBox = styled.div`
 const ImgNameTimeAnswerBox = styled.div`
   display: flex;
   gap: 12px;
+  display: ${({ statusCode }) => (statusCode === 200 ? "" : "none")};
 `;
 
 export default AnswerCard;

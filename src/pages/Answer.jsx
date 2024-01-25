@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import "../common.css";
-import "../components/answer.css";
+
 //컴포넌트
 import Button from "components/button/Button";
 import QaHeader from "components/QA-Header";
@@ -13,11 +13,17 @@ import AnswerCard from "components/AnswerCard";
 function Answer() {
   const [answerText, setAnswerText] = useState("");
   const [resAnswer, setResAnswer] = useState("");
+  const [updateAnswer, setUpdateAnswer] = useState(true);
+  const [statusCode, setStatusCode] = useState(0);
 
   const question = async (answerObj) => {
     const { id: answerId } = await createAnswer(answerObj);
-    const { content } = await getAnswer(answerId);
+    const {
+      data: { content },
+      status,
+    } = await getAnswer(answerId);
     setResAnswer(content);
+    setStatusCode(status);
   };
 
   const handleOnChange = (event) => {
@@ -28,7 +34,7 @@ function Answer() {
     event.preventDefault();
     console.log(answerText);
     const answerObj = {
-      questionId: 3717,
+      questionId: 3939,
       content: answerText,
       isRejected: false,
       team: "3-7",
@@ -37,12 +43,16 @@ function Answer() {
     //여기서 답변 생성하는 api사용
   };
 
+  const handleClickUpdateAnswerButton = (event) => {
+    event.preventDefault();
+    console.log("update햇");
+  };
+
   return (
     <>
       <QaHeader />
       <DeleteButton>삭제하기</DeleteButton>
-      <AnswerTag>답변 완료</AnswerTag>
-      <ImgNameTextBox>
+      <ImgNameTextBox statusCode={statusCode}>
         <UserImg src={personSvg} />
         <NameTextBox>
           <UserName>유저명</UserName>
@@ -53,15 +63,24 @@ function Answer() {
             value={answerText}
           ></TextArea>
           <AnswerButton
+            isEmpty={answerText}
+            isUpdate={updateAnswer}
             onClick={handleClickAnswerButton}
-            className={answerText === "" ? "disabled" : ""}
           >
             답변 완료
           </AnswerButton>
+          <UpdateAnswerButton
+            isEmpty={answerText}
+            isUpdate={updateAnswer}
+            onClick={handleClickUpdateAnswerButton}
+          >
+            수정 완료
+          </UpdateAnswerButton>
         </NameTextBox>
       </ImgNameTextBox>
       <h1>{answerText}</h1>
-      <AnswerCard answer={resAnswer} />
+
+      <AnswerCard answer={resAnswer} statusCode={statusCode} />
     </>
   );
 }
@@ -124,6 +143,21 @@ const AnswerButton = styled(Button)`
   font-size: 16px;
   font-weight: 400;
   line-height: 22px;
+  background-color: ${({ isEmpty }) => (isEmpty === "" ? "#c7bbb5" : "")};
+  outline: ${({ isEmpty }) => (isEmpty === "" ? "none" : "")};
+  pointer-events: ${({ isEmpty }) => (isEmpty === "" ? "none" : "")};
+  display: ${({ isUpdate }) => (isUpdate ? "none" : "")};
+`;
+
+const UpdateAnswerButton = styled(Button)`
+  text-align: center;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 22px;
+  background-color: ${({ isEmpty }) => (isEmpty === "" ? "#c7bbb5" : "")};
+  outline: ${({ isEmpty }) => (isEmpty === "" ? "none" : "")};
+  pointer-events: ${({ isEmpty }) => (isEmpty === "" ? "none" : "")};
+  display: ${({ isUpdate }) => (isUpdate ? "" : "none")};
 `;
 
 const DeleteButton = styled(Button)`
@@ -143,20 +177,6 @@ const DeleteButton = styled(Button)`
   }
 `;
 
-const AnswerTag = styled(Button)`
-  text-align: center;
-  padding: 0;
-  width: 76px;
-  height: 26px;
-  font-family: Pretendard;
-  font-size: 14px;
-  font-weight: 500;
-  line-height: 18px;
-  background-color: var(--Grayscale-10);
-  color: var(--Brown-40);
-  border: 1px solid var(--Brown-40);
-`;
-
 const NameTextBox = styled.div`
   display: flex;
   flex-direction: column;
@@ -165,6 +185,7 @@ const NameTextBox = styled.div`
 const ImgNameTextBox = styled.div`
   display: flex;
   gap: 12px;
+  display: ${({ statusCode }) => (statusCode === 200 ? "none" : "")};
 `;
 
 export default Answer;

@@ -38,9 +38,10 @@ export const getAnswer = async (answerId) => {
   const res = await axios.get(
     `https://openmind-api.vercel.app/3-7/answers/${answerId}/`,
   );
-  const data = res.data;
+  const data = res;
   console.log(data.content);
   console.log(data);
+  console.log(res.status);
   return data;
 };
 
