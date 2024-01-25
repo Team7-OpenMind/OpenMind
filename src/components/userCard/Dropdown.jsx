@@ -12,6 +12,7 @@ const DropdownStyled = styled.div`
   gap: 4px;
 
   > div {
+    font-family: Pretendard;
     font-size: 14px;
   }
 `;

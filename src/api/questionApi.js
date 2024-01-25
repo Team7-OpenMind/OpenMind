@@ -1,5 +1,7 @@
 import { BASE_URL } from "api";
 
+export const createSubjectUrl = () => `${BASE_URL}/subjects/`;
+
 export const subjectListUrl = (limit, offset) =>
   `${BASE_URL}/subjects/?limit=${limit}&offset=${offset}`;
 

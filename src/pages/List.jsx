@@ -14,7 +14,7 @@ const ListStyled = styled.div`
   justify-content: center;
   align-items: center;
 
-  min-width: 375px;
+  min-width: 327px;
   background-color: #f9f9f9; // TODO : change color variable
   padding-left: 24px; // TODO : change max(24px, ??)
   padding-right: 24px; // TODO : change max(24px, ??)
@@ -35,6 +35,7 @@ const ListTop = styled.div`
   width: 100%;
 
   > img {
+    width: 146px;
     margin-bottom: 20px;
   }
 
@@ -100,7 +101,7 @@ const FilterStyled = styled.div`
   > div {
     color: var(--Grayscale-60, #000);
     text-align: center;
-    font-family: Actor; // TODO : add font
+    font-family: "Black Han Sans"; // TODO : add font
     font-size: 24px;
     font-weight: 400;
 
@@ -123,7 +124,7 @@ const CardListStyled = styled(CardList)`
   position: relative;
 
   display: grid;
-  grid-template-columns: repeat(2, minmax(186px, 220px));
+  grid-template-columns: repeat(2, minmax(154px, 220px));
 
   justify-content: center;
   align-items: center;
@@ -161,6 +162,8 @@ export function List() {
     if (e.target.innerWidth > 1200) setShowCardCount(8);
   }
 
+  function onClickLogo() {}
+
   useEffect(() => {
     window.addEventListener("resize", onResize);
     return () => {
@@ -171,7 +174,7 @@ export function List() {
   return (
     <ListStyled onShowMore={onShowMore}>
       <ListTop>
-        <img src={logo} alt="logo" />
+        <img src={logo} alt="logo" onClick={onClickLogo} />
         <AnswerButton>
           <div>답변하러 가기</div>
           <img src={Arrow} />
