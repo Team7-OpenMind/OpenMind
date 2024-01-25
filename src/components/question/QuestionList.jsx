@@ -68,13 +68,9 @@ export function QuestionList(props) {
   const {
     data: { count, results },
     error,
-  } = useQuery(
-    questionUrl(id),
-    {
-      results: [],
-    },
-    1000,
-  );
+  } = useQuery(questionUrl(id), {
+    results: [],
+  });
 
   if (error) {
     return <Error />;
