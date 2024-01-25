@@ -86,7 +86,7 @@ export function QuestionList(props) {
   const [questionItems, setQuestionItems] = useState([]);
 
   const {
-    data: { count, results },
+    data: { count, next, results },
     isLoading,
     error,
   } = useQuery(
@@ -137,11 +137,13 @@ export function QuestionList(props) {
           {isLoading ? (
             <Loading />
           ) : (
-            <img
-              src={arrowDownSvg}
-              alt="arrow-down"
-              onClick={onClickShowMore}
-            />
+            next && (
+              <img
+                src={arrowDownSvg}
+                alt="arrow-down"
+                onClick={onClickShowMore}
+              />
+            )
           )}
         </FeedContainer>
       </QuestionContainer>
