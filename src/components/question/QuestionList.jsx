@@ -1,10 +1,14 @@
+import React, { useState, useRef, useEffect } from "react";
+
 import { questionUrl } from "api/questionApi";
 import emptySvg from "assets/Empty.svg";
 import messageSvg from "assets/Messages.svg";
+import arrowDownSvg from "assets/Arrow-down.svg";
 import Error from "components/error/Error";
 import FeedCard from "components/feedCard/FeedCard";
 import useQuery from "hooks/useQuery";
 import styled from "styled-components";
+import Loading from "components/loading/Loading";
 
 const QuestionContainer = styled.div`
   display: flex;
@@ -34,8 +38,20 @@ const QuestionContainer = styled.div`
 const FeedContainer = styled.div`
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: 20px;
   width: 100%;
+
+  > img {
+    width: 30px;
+    height: 30px;
+
+    &:hover {
+      cursor: pointer;
+      transform: scale(1.3);
+      transition: transform 0.3s ease-in-out;
+    }
+  }
 `;
 
 const Notification = styled.div`
@@ -65,12 +81,31 @@ export function QuestionList(props) {
     notification,
     question: { id, ...question }, // id를 제외한 name, imageSource, questionCount, createdAt은 question으로 받아옴
   } = props;
+  const limitRef = useRef(8);
+  const [offset, setOffset] = useState(0);
+  const [questionItems, setQuestionItems] = useState([]);
+
   const {
-    data: { count, results },
+    data: { count, next, results },
+    isLoading,
     error,
-  } = useQuery(questionUrl(id), {
+  } = useQuery(questionUrl(id, limitRef.current, offset), {
     results: [],
   });
+
+  function onClickShowMore() {
+    if (count <= offset) {
+      setOffset(count);
+      return;
+    } else {
+      setOffset(offset + limitRef.current);
+    }
+  }
+
+  useEffect(() => {
+    setQuestionItems([...questionItems, ...results]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [results]);
 
   if (error) {
     return <Error />;
@@ -87,7 +122,7 @@ export function QuestionList(props) {
           {count === 0 ? (
             <EmptySvg src={emptySvg} alt="empty" />
           ) : (
-            results.map((result) => (
+            questionItems.map((result) => (
               <FeedCard
                 key={result.id}
                 answer={result.answer}
@@ -95,6 +130,17 @@ export function QuestionList(props) {
                 question={question}
               />
             ))
+          )}
+          {isLoading ? (
+            <Loading />
+          ) : (
+            next && (
+              <img
+                src={arrowDownSvg}
+                alt="arrow-down"
+                onClick={onClickShowMore}
+              />
+            )
           )}
         </FeedContainer>
       </QuestionContainer>
