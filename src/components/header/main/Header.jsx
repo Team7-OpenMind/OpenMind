@@ -52,11 +52,11 @@ const Logo = styled(LogoSVG)`
   margin: 70px auto 0;
 `;
 
-function Header() {
+function Header({ onClick }) {
   return (
     <Wrapper>
       <ButtonWrapper>
-        <StyledButton>
+        <StyledButton onClick={onClick}>
           질문하러 가기
           <Arrow />
         </StyledButton>
