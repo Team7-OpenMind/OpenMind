@@ -1,5 +1,6 @@
 import { subjectUrl } from "api/questionApi";
 import { CenteredContainer } from "components";
+import QaHeader from "components/QA-Header";
 import FloatingButton from "components/button/FloatingButton";
 import Error from "components/error/Error";
 import Loading from "components/loading/Loading";
@@ -54,10 +55,13 @@ function Post() {
   const buttonText = isMobile ? "질문 작성" : "질문 작성하기";
 
   return (
-    <CenteredContainer>
-      <QuestionList notification={notification} question={question} />
-      <QuestionButton className="shadow-2pt">{buttonText}</QuestionButton>
-    </CenteredContainer>
+    <>
+      <QaHeader />
+      <CenteredContainer>
+        <QuestionList notification={notification} question={question} />
+        <QuestionButton className="shadow-2pt">{buttonText}</QuestionButton>
+      </CenteredContainer>
+    </>
   );
 }
 
