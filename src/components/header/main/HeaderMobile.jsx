@@ -39,11 +39,11 @@ const Arrow = styled(ArrowSVG)`
   }
 `;
 
-function HeaderMobile() {
+function HeaderMobile({ onClick }) {
   return (
     <Wrapper>
       <LogoSVGMobile />
-      <StyledButton>
+      <StyledButton onClick={onClick}>
         질문하러 가기
         <Arrow />
       </StyledButton>

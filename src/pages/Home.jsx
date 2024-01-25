@@ -1,9 +1,13 @@
+import { useState } from "react";
+import { createSubjectUrl } from "api/questionApi";
+import { useNavigate } from "react-router-dom";
 import Button from "components/button/Button";
 import styled from "styled-components";
 import SignInputBar from "components/inputBar/SignInputBar";
 import useMediaQuery from "hooks/useMediaQuery";
 import HeaderMobile from "components/header/main/HeaderMobile";
 import Header from "components/header/main/Header";
+import axios from "axios";
 
 const Wrapper = styled.div`
   position: relative;
@@ -20,7 +24,7 @@ const Wrapper = styled.div`
   }
 `;
 
-const InputBox = styled.div`
+const InputBox = styled.form`
   position: relative;
   width: 80%;
   max-width: 400px;
@@ -31,6 +35,10 @@ const InputBox = styled.div`
   flex-direction: column;
   align-items: center;
   gap: 16px;
+
+  @media (min-width: 768px) {
+    padding: 32px;
+  }
 `;
 
 const SubmitButton = styled(Button)`
@@ -53,14 +61,50 @@ const MainImage = styled(ImageSVG)`
 `;
 
 function Home() {
+  const [inputValue, setInputValue] = useState("");
   const isMobile = useMediaQuery("(max-width: 767px");
-  console.log(isMobile);
+  const navigate = useNavigate();
+
+  const handleNavigate = () => navigate("/list");
+
+  const handleInputChange = (e) => {
+    setInputValue(e.target.value);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post(createSubjectUrl(), {
+        name: inputValue,
+        team: "3-7",
+      });
+
+      if (response.status !== 201) {
+        throw new Error("subject 생성에 실패했습니다.");
+      }
+
+      const { data } = response;
+      localStorage.setItem("subjectId", data.id);
+      navigate(`/post/${data.id}/answer`);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <Wrapper>
-      {isMobile ? <HeaderMobile /> : <Header />}
+      {isMobile ? (
+        <HeaderMobile onClick={handleNavigate} />
+      ) : (
+        <Header onClick={handleNavigate} />
+      )}
       <InputBox>
-        <SignInputBar placeholder="이름을 입력하세요" />
-        <SubmitButton>질문 받기</SubmitButton>
+        <SignInputBar
+          placeholder="이름을 입력하세요"
+          value={inputValue}
+          onChange={handleInputChange}
+        />
+        <SubmitButton onClick={handleSubmit}>질문 받기</SubmitButton>
       </InputBox>
       <MainImage />
     </Wrapper>
