@@ -6,6 +6,7 @@ import Loading from "components/loading/Loading";
 import QuestionList from "components/question/QuestionList";
 import useMediaQuery from "hooks/useMediaQuery";
 import useQuery from "hooks/useQuery";
+import { useRef, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
 
@@ -21,6 +22,7 @@ const QuestionButton = styled(FloatingButton)`
 function Post() {
   const isMobile = useMediaQuery("(max-width: 767px)");
   const { subjectId } = useParams(); // router의 url parameter
+  const mountRef = useRef(false);
 
   const {
     data: { questionCount, ...question },
@@ -30,6 +32,14 @@ function Post() {
     data: [],
   });
 
+  useEffect(() => {
+    mountRef.current = true;
+
+    return () => {
+      mountRef.current = false;
+    };
+  }, []);
+
   if (error) {
     const status = error.response?.status;
     const message = status
@@ -38,7 +48,7 @@ function Post() {
     return <Error message={message} />;
   }
 
-  if (isLoading) {
+  if (isLoading && mountRef.current) {
     return (
       <CenteredContainer>
         <Loading />
