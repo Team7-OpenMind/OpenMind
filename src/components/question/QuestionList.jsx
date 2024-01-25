@@ -123,7 +123,8 @@ export function QuestionList(props) {
   const limitRef = useRef(8);
   const [offset, setOffset] = useState(0);
   const [questionItems, setQuestionItems] = useState([]);
-  const [isInfinity, setIsInfinity] = useState(false);
+  const infinityRef = useRef(false);
+  const [drawTrigger, setDrawTrigger] = useState(false);
 
   const {
     data: { count, next, results },
@@ -147,7 +148,7 @@ export function QuestionList(props) {
   }
 
   function onScroll() {
-    if (!isInfinity) return;
+    if (!infinityRef.current) return;
 
     if (
       window.innerHeight + window.scrollY >=
@@ -157,8 +158,10 @@ export function QuestionList(props) {
     }
   }
 
-  function onClickInfinityToggle() {
-    setIsInfinity(!isInfinity);
+  function onClickInfinityToggle(event, flag) {
+    console.log(flag);
+    infinityRef.current = flag;
+    setDrawTrigger(!drawTrigger);
   }
 
   useEffect(() => {
@@ -178,13 +181,17 @@ export function QuestionList(props) {
           {notification}
           <InfinitySvg
             src={infinitySvg}
-            isInfinity={isInfinity}
+            isInfinity={infinityRef.current}
             alt="infinity"
           />
-          {isInfinity ? (
-            <ToggleOnSvg onClick={onClickInfinityToggle} />
+          {infinityRef.current ? (
+            <ToggleOnSvg
+              onClick={(event) => onClickInfinityToggle(event, false)}
+            />
           ) : (
-            <ToggleOffSvg onClick={onClickInfinityToggle} />
+            <ToggleOffSvg
+              onClick={(event) => onClickInfinityToggle(event, true)}
+            />
           )}
         </Notification>
         <FeedContainer>
