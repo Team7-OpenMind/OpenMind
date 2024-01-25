@@ -4,9 +4,9 @@ import "../common.css";
 import headerPng from "../assets/header.png";
 import logoSvg from "../assets/logo.svg";
 import personSvg from "../assets/Person.svg";
-import linkSvg from "../assets/Link.svg";
+import { ReactComponent as LinkSvg } from "../assets/Link.svg";
 import kakaotalkSvg from "../assets/Kakaotalk.svg";
-import facebookSvg from "../assets/Facebook.svg";
+import { ReactComponent as FacebookSvg } from "../assets/Facebook.svg";
 
 // Styled Component들
 const COLOR = {
@@ -15,7 +15,7 @@ const COLOR = {
   facebook: "--Blue-50",
 };
 
-const ShareButton = styled.span`
+const ShareButton = styled.button`
   background-color: var(${({ icon }) => COLOR[icon]});
   border-radius: 50%;
   display: flex;
@@ -36,12 +36,12 @@ const Logo = styled.img`
   width: 124px;
   height: 49px;
 `;
-
+// userimg랑 username 컴포넌트로 만들어도 될듯
 const UserImg = styled.img`
   width: 104px;
   height: 104px;
   border-radius: 50%;
-  border: 1px solid black;
+  border: 1px solid black; //보더 나중에 삭제
 `;
 
 const UserName = styled.span`
@@ -65,6 +65,7 @@ const HeaderBg = styled.div`
   background-size: cover;
   background-position: center;
   height: 177px;
+  margin-bottom: 145px;
 `;
 
 // Todo: 유저 데이터 받아와야함 - 잠시 아이콘으로 대체함
@@ -78,13 +79,13 @@ function QaHeader() {
           <UserName>유저명</UserName>
           <ShareButtonBox>
             <ShareButton icon="link">
-              <img src={linkSvg} alt="링크 아이콘" />
+              <LinkSvg fill="white" />
             </ShareButton>
             <ShareButton icon="kakaotalk">
               <img src={kakaotalkSvg} alt="카카오톡 아이콘" />
             </ShareButton>
             <ShareButton icon="facebook">
-              <img src={facebookSvg} alt="페이스북 아이콘" />
+              <FacebookSvg fill="white" />
             </ShareButton>
           </ShareButtonBox>
         </HeaderContentBox>
