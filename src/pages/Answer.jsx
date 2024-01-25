@@ -6,7 +6,12 @@ import Button from "components/button/Button";
 import QaHeader from "components/QA-Header";
 // 이미지 파일들
 import personSvg from "../assets/Person.svg";
-import { getQuestion, createAnswer, getAnswer } from "api/CUD-Api";
+import {
+  getQuestion,
+  createAnswer,
+  getAnswer,
+  putUpdateAnswer,
+} from "api/CUD-Api";
 import { useEffect, useState } from "react";
 import AnswerCard from "components/AnswerCard";
 
@@ -15,6 +20,7 @@ function Answer() {
   const [resAnswer, setResAnswer] = useState("");
   const [updateAnswer, setUpdateAnswer] = useState(true);
   const [statusCode, setStatusCode] = useState(0);
+  const [getAnswerForUpdate, setGetAnswerForUpdate] = useState("");
 
   const question = async (answerObj) => {
     const { id: answerId } = await createAnswer(answerObj);
@@ -22,6 +28,7 @@ function Answer() {
       data: { content },
       status,
     } = await getAnswer(answerId);
+
     setResAnswer(content);
     setStatusCode(status);
   };
@@ -43,9 +50,41 @@ function Answer() {
     //여기서 답변 생성하는 api사용
   };
 
+  const UpdateAnswer = async (updateAnswerObj) => {
+    const {
+      data: { content },
+      status,
+    } = await putUpdateAnswer(2085, updateAnswerObj);
+
+    setResAnswer(content);
+    setStatusCode(status);
+    setResAnswer(content);
+    // setStaus state 따로만들어 줘야할듯
+  };
+
   const handleClickUpdateAnswerButton = (event) => {
+    // 받은 content put req 보내는 작업
     event.preventDefault();
     console.log("update햇");
+    const updateAnswerObj = {
+      content: answerText,
+      isRejected: false,
+    };
+    UpdateAnswer(updateAnswerObj);
+  };
+
+  const setAnswer = async (answerId) => {
+    const {
+      data: { content },
+      status,
+    } = await getAnswer(answerId);
+    console.log(status);
+    setAnswerText(content);
+  };
+
+  const handleGetAnswerForUpdate = (event) => {
+    event.preventDefault();
+    setAnswer(2085);
   };
 
   return (
@@ -79,7 +118,9 @@ function Answer() {
         </NameTextBox>
       </ImgNameTextBox>
       <h1>{answerText}</h1>
-
+      <button onClick={handleGetAnswerForUpdate}>수정하기</button>
+      <p>{getAnswerForUpdate}</p>
+      <h1>{statusCode}</h1>
       <AnswerCard answer={resAnswer} statusCode={statusCode} />
     </>
   );
@@ -91,7 +132,6 @@ const TextArea = styled.textarea`
   outline: none; //테두리
   resize: none;
   color: var(--Grayscale-60);
-  font-family: Pretendard;
   font-size: 16px;
   font-weight: 400;
   line-height: 22px;

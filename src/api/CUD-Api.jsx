@@ -45,23 +45,24 @@ export const getAnswer = async (answerId) => {
   return data;
 };
 
-// // 답변 수정하는 기능
-// export async function UpdateAnswer(answerId) {
-//   const res = await axios.put(
-//     `https://openmind-api.vercel.app/3-7/answers/${answerId}/`,
-//     {
-//       content: "답변내용 수정",
-//       isRejected: true,
-//     },
-//     {
-//       headers: {
-//         "Content-Type": "application/json",
-//       },
-//     },
-//   );
-//   const result = res.json();
-//   // answerId, questionId, 수정내용, isRejected, createdAt줌
-// }
+// 답변 수정하는 기능
+export const putUpdateAnswer = async (answerId, { content, isRejected }) => {
+  const res = await axios.put(
+    `https://openmind-api.vercel.app/3-7/answers/${answerId}/`,
+    {
+      content,
+      isRejected,
+    },
+    {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    },
+  );
+  const data = res;
+  return data;
+  // answerId, questionId, 수정내용, isRejected, createdAt줌
+};
 
 // // 답변 일부 수정하는 기능
 // export async function PartialUpdateAnswer(answerId) {
