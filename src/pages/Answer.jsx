@@ -11,7 +11,7 @@ import {
   createAnswer,
   getAnswer,
   putUpdateAnswer,
-} from "api/CUD-Api";
+} from "api/answerApi";
 import { useEffect, useState } from "react";
 
 function Answer() {
