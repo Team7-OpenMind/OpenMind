@@ -18,11 +18,17 @@ function Pagination({ initPage, onClick }) {
   const { count, next, previous } = data;
   const currentPageArray = getCurrentPageArray(page, count);
 
-  const handlePrevClick = () => {
-    console.log(previous);
+  const handlePageClick = (pageIndex) => {
+    onClick(pageIndex);
+    setPage(pageIndex);
   };
+
+  const handlePrevClick = () => {
+    handlePageClick(page - 1);
+  };
+
   const handleNextClick = () => {
-    console.log(next);
+    handlePageClick(page + 1);
   };
 
   return (
@@ -34,7 +40,7 @@ function Pagination({ initPage, onClick }) {
             <PageButton
               key={idx}
               pageIndex={idx}
-              onClick={onClick}
+              onClick={handlePageClick}
               page={page}
             />
           ))}
@@ -46,14 +52,13 @@ function Pagination({ initPage, onClick }) {
 
 function PageIndex({ className, pageIndex, onClick, page }) {
   const isNow = page == pageIndex;
-  const handlePageClick = () => {
+  const handleClick = () => {
     onClick(pageIndex);
-    console.log(pageIndex);
   };
   return (
     <button
       className={`${className} ${isNow ? "now" : ""}`}
-      onClick={handlePageClick}
+      onClick={handleClick}
       disabled={isNow}
     >
       {pageIndex}

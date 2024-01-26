@@ -1,12 +1,12 @@
 import { ReactComponent as ArrowLeft } from "assets/Arrow-left.svg";
 import styled from "styled-components";
 
-function LeftButton({ className, disabled }) {
+function LeftButton({ className, onClick, disabled }) {
   return (
     <button
       className={`${className} ${disabled ? "disabled" : ""}`}
       disabled={disabled}
-      onClick={() => console.log("hi")}
+      onClick={onClick}
     >
       <ArrowLeft />
     </button>

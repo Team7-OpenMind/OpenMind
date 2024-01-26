@@ -1,12 +1,12 @@
 import { ReactComponent as ArrowRight } from "assets/Arrow-right.svg";
 import styled from "styled-components";
 
-function RightButton({ className, disabled }) {
+function RightButton({ className, onClick, disabled }) {
   return (
     <button
       className={`${className} ${disabled ? "disabled" : ""}`}
       disabled={disabled}
-      onClick={() => console.log("hi")}
+      onClick={onClick}
     >
       <ArrowRight />
     </button>
