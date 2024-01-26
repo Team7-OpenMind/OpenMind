@@ -4,8 +4,8 @@ import { getQuestion, countReaction } from "../../api/reactionApi";
 //css
 import "./reaction.css";
 // img
-import { ReactComponent as ThumbsUpSvg } from "../../assets/thumbs-up.svg";
-import { ReactComponent as ThumbsDownSvg } from "../../assets/thumbs-down.svg";
+import { ReactComponent as ThumbsUpSvg } from "assets/thumbs-up.svg";
+import { ReactComponent as ThumbsDownSvg } from "assets/thumbs-down.svg";
 
 const SELECTED = "selected";
 const REACTION = "reaction";
