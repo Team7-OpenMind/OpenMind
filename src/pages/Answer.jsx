@@ -4,15 +4,11 @@ import "../common.css";
 import Button from "components/button/Button";
 import QaHeader from "components/QA-Header";
 import AnswerCard from "components/AnswerCard";
+import DeleteQA from "components/Delete-QA";
 // 이미지 파일들
 import personSvg from "../assets/Person.svg";
-import {
-  getQuestion,
-  createAnswer,
-  getAnswer,
-  putUpdateAnswer,
-} from "api/answerApi";
-import { useEffect, useState } from "react";
+import { createAnswer, getAnswer, putUpdateAnswer } from "../api/answerApi";
+import { useState } from "react";
 
 function Answer() {
   const [answerText, setAnswerText] = useState(""); //유저가 input애 실시간으로 입력하는 내용 저장
@@ -81,7 +77,7 @@ function Answer() {
   return (
     <>
       <QaHeader />
-      <DeleteButton>삭제하기</DeleteButton>
+      <DeleteQA />
       <ImgNameTextBox statusCode={getStatusCode}>
         <UserImg src={personSvg} />
         <NameTextBox>
@@ -186,23 +182,6 @@ const UpdateAnswerButton = styled(Button)`
   outline: ${({ isEmpty }) => (isEmpty === "" ? "none" : "")};
   pointer-events: ${({ isEmpty }) => (isEmpty === "" ? "none" : "")};
   display: ${({ isUpdate }) => (isUpdate ? "" : "none")};
-`;
-
-const DeleteButton = styled(Button)`
-  text-align: center;
-  padding: 0;
-  width: 70px;
-  height: 25px;
-  font-family: Pretendard;
-  font-size: 10px;
-  font-weight: 400;
-  line-height: 25px;
-  border-radius: 200px;
-  @media (min-width: 375px) {
-    font-size: 15px;
-    width: 100px;
-    height: 35px;
-  }
 `;
 
 const NameTextBox = styled.div`
