@@ -39,9 +39,6 @@ export const getAnswer = async (answerId) => {
     `https://openmind-api.vercel.app/3-7/answers/${answerId}/`,
   );
   const data = res;
-  console.log(data.content);
-  console.log(data);
-  console.log(res.status);
   return data;
 };
 
@@ -95,12 +92,11 @@ export const putUpdateAnswer = async (answerId, { content, isRejected }) => {
 // };
 
 // 질문 삭제하는 기능
-export const DeleteQuestion = async (questionId) => {
+export const deleteQuestion = async (questionId) => {
   const res = await axios.delete(
     `https://openmind-api.vercel.app/3-7/questions/${questionId}/`,
   );
   const data = res;
-  console.log(data);
   return data;
   // result로 삭제 성공여부 받기
 };

@@ -3,18 +3,17 @@ import "../common.css";
 //컴포넌트
 import Button from "components/button/Button";
 //api
-import { DeleteQuestion } from "../api/answerApi";
+import { deleteQuestion } from "../api/answerApi";
 
 function DeleteQA() {
   // 질문 삭제하면 답변도 같이 삭제됨
-  async function deleteQue(questionId) {
-    const { status } = await DeleteQuestion(questionId);
-    console.log(status);
+  async function deleteQuestions(questionId) {
+    const { status } = await deleteQuestion(questionId);
   }
 
   function handleClickDeleteQuestion(event) {
     event.preventDefault();
-    deleteQue(4409); // 질문 id 받아와서 써야함(전부 다 삭제하려면 forEach 써야할듯)
+    deleteQuestions(4409); // 질문 id 받아와서 써야함(전부 다 삭제하려면 forEach 써야할듯)
   }
 
   return (
