@@ -36,7 +36,7 @@ const Logo = styled.img`
   width: 124px;
   height: 49px;
 `;
-// userimg랑 username 컴포넌트로 만들어도 될듯
+
 const UserImg = styled.img`
   width: 104px;
   height: 104px;

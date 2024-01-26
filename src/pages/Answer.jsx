@@ -1,9 +1,9 @@
 import styled from "styled-components";
 import "../common.css";
-
 //컴포넌트
 import Button from "components/button/Button";
 import QaHeader from "components/QA-Header";
+import AnswerCard from "components/AnswerCard";
 // 이미지 파일들
 import personSvg from "../assets/Person.svg";
 import {
@@ -13,78 +13,69 @@ import {
   putUpdateAnswer,
 } from "api/CUD-Api";
 import { useEffect, useState } from "react";
-import AnswerCard from "components/AnswerCard";
 
 function Answer() {
-  const [answerText, setAnswerText] = useState("");
-  const [resAnswer, setResAnswer] = useState("");
-  const [updateAnswer, setUpdateAnswer] = useState(true);
-  const [statusCode, setStatusCode] = useState(0);
-  const [getAnswerForUpdate, setGetAnswerForUpdate] = useState("");
-
-  const question = async (answerObj) => {
-    const { id: answerId } = await createAnswer(answerObj);
+  const [answerText, setAnswerText] = useState(""); //유저가 input애 실시간으로 입력하는 내용 저장
+  const [resAnswer, setResAnswer] = useState(""); //res로 온 답변내용 저장 (답변완료 버튼 누른 후 답변내용 보여주기 위함)
+  const [updateAnswerMode, setUpdateAnswerMode] = useState(true); //Todo: 수정하기 버튼 누르면 setupdateAnswer사용해서 boolean값 변경하기
+  const [statusCode, setStatusCode] = useState(0); //status 코드 저장 (200이면 답변 보여주게함)
+  // 유저가 input에 입력하는 내용 실시간으로 반영하는 기능하는 함수
+  const handleOnChange = (event) => {
+    setAnswerText(event.target.value);
+  };
+  // 답변입력으로 답변객체 받아서 주면 answerId줌 + 그 아이디로 답변가져오는 req보내서 res로 답변 받아옴  +
+  const makeAnswer = async (answerObj) => {
+    const { answerId } = await createAnswer(answerObj);
     const {
       data: { content },
       status,
     } = await getAnswer(answerId);
 
-    setResAnswer(content);
-    setStatusCode(status);
+    setResAnswer(content); //답변 레이아웃에 답변 내용 줌
+    setStatusCode(status); //답변 잘 받아왔으면 답변입력 input 숨기고 답변보여주는 layout 보여줌
   };
-
-  const handleOnChange = (event) => {
-    setAnswerText(event.target.value);
-  };
-
+  // 답변완료 버튼 클릭하면 유저가 입력한 정보 담긴 answerObj makeAnswer에 넘김
   const handleClickAnswerButton = (event) => {
     event.preventDefault();
-    console.log(answerText);
     const answerObj = {
-      questionId: 3939,
+      questionId: 3939, //질문 정보에서 아이디 받아와야함
       content: answerText,
-      isRejected: false,
+      isRejected: false, //질문 정보에서 받아와야할듯
       team: "3-7",
     };
-    question(answerObj);
-    //여기서 답변 생성하는 api사용
+    makeAnswer(answerObj);
   };
-
-  const UpdateAnswer = async (updateAnswerObj) => {
+  // 수정완료 버튼 누르면 수정내용 받아서 put요청 보내는 함수에 전달 + 잘 보내졌으면 수정내용 받아오고 status 받아옴
+  const updateAnswer = async (updateAnswerObj) => {
     const {
       data: { content },
       status,
     } = await putUpdateAnswer(2085, updateAnswerObj);
 
-    setResAnswer(content);
-    setStatusCode(status);
-    setResAnswer(content);
-    // setStaus state 따로만들어 줘야할듯
+    setResAnswer(content); // 수정내용도 답변내용 보여주는 레이아웃에 전달해서 보여주게 하기
+    setStatusCode(status); // status 잘 받으면 답변 보여주는 레이아웃 보여주고 내용 입력하는 input 숨기기
   };
-
+  // 수정완료 버튼 누르면 수정내용 updateAnswer함수로 보냄
   const handleClickUpdateAnswerButton = (event) => {
-    // 받은 content put req 보내는 작업
     event.preventDefault();
-    console.log("update햇");
     const updateAnswerObj = {
       content: answerText,
       isRejected: false,
     };
-    UpdateAnswer(updateAnswerObj);
+    updateAnswer(updateAnswerObj);
   };
-
-  const setAnswer = async (answerId) => {
+  // 수정하기 버튼 클릭하면 기존의 답변을 가져옴 -> answerId를 getAnswer함수로 주고 해당 질문의 답변을 가져와서 setAnswerText함수로 기존의 답변을 저장함
+  const getAnswerToUpdateAnswer = async (answerId) => {
     const {
       data: { content },
       status,
     } = await getAnswer(answerId);
-    console.log(status);
     setAnswerText(content);
   };
-
+  // 수정하기 버튼 대신 임시로 사용 중
   const handleGetAnswerForUpdate = (event) => {
     event.preventDefault();
-    setAnswer(2085);
+    getAnswerToUpdateAnswer(2085); // 수정하기 버튼 클릭하면 answerId 받아야함
   };
 
   return (
@@ -103,30 +94,27 @@ function Answer() {
           ></TextArea>
           <AnswerButton
             isEmpty={answerText}
-            isUpdate={updateAnswer}
+            isUpdate={updateAnswerMode}
             onClick={handleClickAnswerButton}
           >
             답변 완료
           </AnswerButton>
           <UpdateAnswerButton
             isEmpty={answerText}
-            isUpdate={updateAnswer}
+            isUpdate={updateAnswerMode}
             onClick={handleClickUpdateAnswerButton}
           >
             수정 완료
           </UpdateAnswerButton>
         </NameTextBox>
       </ImgNameTextBox>
-      <h1>{answerText}</h1>
-      <button onClick={handleGetAnswerForUpdate}>수정하기</button>
-      <p>{getAnswerForUpdate}</p>
-      <h1>{statusCode}</h1>
       <AnswerCard answer={resAnswer} statusCode={statusCode} />
+      {/*수정하기 버튼 임시로 사용중*/}
+      <button onClick={handleGetAnswerForUpdate}>수정하기</button>
     </>
   );
 }
 
-// 반응형에 따라 textarea, 버튼, 유저명, 유저사진 변경해줘야함
 const TextArea = styled.textarea`
   border: 1px solid black;
   outline: none; //테두리
@@ -154,7 +142,7 @@ const TextArea = styled.textarea`
     height: 186px;
   }
 `;
-// userimg랑 username 컴포넌트로 만들어도 될듯
+
 const UserName = styled.span`
   color: var(--Grayscale-60);
   font-family: Actor;
@@ -166,7 +154,7 @@ const UserName = styled.span`
     font-size: 18px;
   }
 `;
-// userimg랑 username 컴포넌트로 만들어도 될듯
+
 const UserImg = styled.img`
   width: 32px;
   height: 32px;
@@ -177,7 +165,7 @@ const UserImg = styled.img`
     height: 48px;
   }
 `;
-
+//isEmpty는 input이 비어있으면 답변 완료 버튼 클릭 못하게하기 위해 사용
 const AnswerButton = styled(Button)`
   text-align: center;
   font-size: 16px;
@@ -221,7 +209,8 @@ const NameTextBox = styled.div`
   display: flex;
   flex-direction: column;
 `;
-
+// 답변 입력 input 보여주는 컴포넌트
+// statusCode가 200이면 정상적으로 응답 받아서 input창은 감추고 답변내용 보여주기 레이아웃을 보여줌
 const ImgNameTextBox = styled.div`
   display: flex;
   gap: 12px;

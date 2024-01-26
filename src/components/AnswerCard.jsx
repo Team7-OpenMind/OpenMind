@@ -2,7 +2,7 @@ import styled from "styled-components";
 import "../common.css";
 
 import personSvg from "../assets/Person.svg";
-
+//답변내용 보여주는 컴포넌트
 function AnswerCard({ answer, statusCode }) {
   return (
     <ImgNameTimeAnswerBox statusCode={statusCode}>
@@ -78,7 +78,7 @@ const NameTimeBox = styled.div`
   display: flex;
   gap: 8px;
 `;
-
+//statusCode가 200이면 정상적으로 응답 받아서 input창은 감추고 답변내용 보여주기 레이아웃을 보여줌
 const ImgNameTimeAnswerBox = styled.div`
   display: flex;
   gap: 12px;
