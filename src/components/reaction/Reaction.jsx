@@ -15,6 +15,7 @@ const DISLIKE = "dislike";
 function Reaction() {
   const likeRef = useRef();
   const dislikeRef = useRef();
+  const getKey = localStorage.getItem(REACTION);
 
   const [selected, setSelected] = useState(() => {
     const getSelected = localStorage.getItem(SELECTED);
@@ -24,9 +25,9 @@ function Reaction() {
       return false;
     }
   });
-  console.log(selected);
   const [liked, setLiked] = useState(localStorage.getItem(LIKE));
   const [disliked, setDisliked] = useState(localStorage.getItem(DISLIKE));
+
   const question = async (reaction) => {
     const { id } = await getQuestion();
     const { like, dislike } = await countReaction(id, reaction);
@@ -60,7 +61,6 @@ function Reaction() {
   function handleDislikeClick() {
     handleReactionClick(dislikeRef, DISLIKE);
   }
-  const getKey = localStorage.getItem(REACTION);
 
   return (
     <>
