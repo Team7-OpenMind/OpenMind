@@ -13,7 +13,7 @@ const ToastContainer = styled.div`
   align-items: center;
 
   border-radius: 8px;
-  background: var(--Grayscale-60, #000);
+  background: var(--Grayscale-60);
   box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
 
   color: var(--Grayscale-10, #fff);
