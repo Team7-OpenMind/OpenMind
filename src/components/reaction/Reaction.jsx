@@ -16,6 +16,8 @@ function Reaction() {
   const likeRef = useRef();
   const dislikeRef = useRef();
   const getKey = localStorage.getItem(REACTION);
+  const ADD_LIKE_STYLE = getKey === LIKE ? LIKE : "";
+  const ADD_DISLIKE_STYLE = getKey === DISLIKE ? DISLIKE : "";
 
   const [selected, setSelected] = useState(() => {
     const getSelected = localStorage.getItem(SELECTED);
@@ -70,8 +72,8 @@ function Reaction() {
           onClick={handleLikeClick}
           ref={likeRef}
         >
-          <ThumbsUpSvg fill="#818181" className={getKey === LIKE ? LIKE : ""} />
-          <ReactionText className={getKey === LIKE ? LIKE : ""}>
+          <ThumbsUpSvg fill="#818181" className={ADD_LIKE_STYLE} />
+          <ReactionText className={ADD_LIKE_STYLE}>
             좋아요 {selected ? (getKey === LIKE ? liked : "") : ""}
           </ReactionText>
         </ThumbsIconTextBox>
@@ -80,12 +82,9 @@ function Reaction() {
           onClick={handleDislikeClick}
           ref={dislikeRef}
         >
-          <ThumbsDownSvg
-            fill="#818181"
-            className={getKey === DISLIKE ? DISLIKE : ""}
-          />
-          <ReactionText className={getKey === DISLIKE ? DISLIKE : ""}>
-            싫어요 {selected ? (getKey === "dislike" ? disliked : "") : ""}
+          <ThumbsDownSvg fill="#818181" className={ADD_DISLIKE_STYLE} />
+          <ReactionText className={ADD_DISLIKE_STYLE}>
+            싫어요 {selected ? (getKey === DISLIKE ? disliked : "") : ""}
           </ReactionText>
         </ThumbsIconTextBox>
       </ReactionBox>
