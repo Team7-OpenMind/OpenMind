@@ -6,13 +6,8 @@ import QaHeader from "components/QA-Header";
 import AnswerCard from "components/AnswerCard";
 // 이미지 파일들
 import personSvg from "../assets/Person.svg";
-import {
-  getQuestion,
-  createAnswer,
-  getAnswer,
-  putUpdateAnswer,
-} from "api/answerApi";
-import { useEffect, useState } from "react";
+import { createAnswer, getAnswer, putUpdateAnswer } from "../api/answerApi";
+import { useState } from "react";
 
 function Answer() {
   const [answerText, setAnswerText] = useState(""); //유저가 input애 실시간으로 입력하는 내용 저장
