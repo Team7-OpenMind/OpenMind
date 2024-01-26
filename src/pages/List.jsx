@@ -7,8 +7,7 @@ import logo from "assets/logo.svg";
 import Dropdown from "components/userCard/Dropdown";
 import Button from "components/button/Button";
 import Arrow from "assets/Arrow.svg";
-import { copyClipboard } from "utils/share";
-import { Toast } from "components/toast/toast";
+import Pagination from "components/pagination/Pagination";
 
 const ListStyled = styled.div`
   display: flex;
@@ -139,7 +138,6 @@ export function List() {
   const [showCardCount, setShowCardCount] = useState(8); // Info : 6 ~ 8개씩 보여줌
   const [pageIndex, setPageIndex] = useState(1); // Info : 1부터 시작
   const [orderNew, setOrderNew] = useState(true);
-  const [toastMsg, setToastMsg] = useState("");
 
   function onSelectOrder(key) {
     setOrderNew("최신순" === key);
@@ -186,9 +184,8 @@ export function List() {
         />
       </ListMid>
       <ListBot>
-        <div>카드 리스트 인덱스</div>
+        <Pagination initPage={pageIndex} onClick={setPageIndex} />
       </ListBot>
-      <Toast msg={toastMsg} />
     </ListStyled>
   );
 }
