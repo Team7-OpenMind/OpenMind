@@ -69,7 +69,6 @@ export function CardList({
 
   if (!data.results) return;
 
-  console.log(data.results);
   data.results.sort((a, b) => {
     if (orderNew) {
       a.createAt - b.createAt;
@@ -77,7 +76,6 @@ export function CardList({
       a.name - b.name;
     }
   });
-  console.log(orderNew);
 
   // INFO : 필요 없을 수도 있음 (페이지네이션) url string query로 대체 가능
   const showCards = data.results.slice(

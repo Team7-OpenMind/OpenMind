@@ -37,12 +37,15 @@ export function shareFacebook(shareURL) {
 }
 
 export function copyClipboard(shareURL) {
-  console.log(shareURL);
-  window.navigator.clipboard
-    .writeText(shareURL)
-    .then((rsp) => {
-      alert(`${shareURL} 링크가 복사되었습니다.`);
-      return rsp;
-    })
-    .catch(() => alert("링크 복사에 실패했습니다."));
+  return window.navigator.clipboard.writeText(shareURL);
 }
+
+// How to use
+//
+// copyClipboard("https://www.naver.com")
+//       .then(() => {
+//         setToastMsg("클립보드에 복사되었습니다.");
+//       })
+//       .catch(() => {
+//         setToastMsg("클립보드 복사에 실패했습니다.");
+//       });
