@@ -2,7 +2,7 @@ import styled from "styled-components";
 import "../common.css";
 
 import personSvg from "../assets/Person.svg";
-//나중에 공통 컴포로 빼도 될듯 답변입력 컴포랑 답변보여주는 컴포 스타일 같음
+
 function AnswerCard({ answer, statusCode }) {
   return (
     <ImgNameTimeAnswerBox statusCode={statusCode}>
@@ -18,7 +18,6 @@ function AnswerCard({ answer, statusCode }) {
   );
 }
 
-// 반응형에 따라 textarea, 버튼, 유저명, 유저사진 변경해줘야함
 const Answer = styled.p`
   color: var(--Grayscale-60);
   font-size: 16px;
@@ -37,7 +36,7 @@ const Answer = styled.p`
     height: 186px;
   }
 `;
-// userimg랑 username 컴포넌트로 만들어도 될듯
+
 const UserName = styled.span`
   color: var(--Grayscale-60);
   font-family: Actor;
@@ -57,7 +56,7 @@ const Time = styled.span`
   font-weight: 500;
   line-height: 18px;
 `;
-// userimg랑 username 컴포넌트로 만들어도 될듯
+
 const UserImg = styled.img`
   width: 32px;
   height: 32px;
