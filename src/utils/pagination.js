@@ -1,9 +1,8 @@
-export const PAGE_LIMIT = 8;
-export const PAGE_ARRAY_LIMIT = 5;
+const PAGE_ARRAY_LIMIT = 5;
 
-export function getCurrentPageArray(currentPage, count) {
+export function getCurrentPageArray(currentPage, count, limit) {
   currentPage = currentPage >= 1 ? currentPage : 1;
-  const totalPage = calculateTotalPage(count);
+  const totalPage = calculateTotalPage(count, limit);
   const startIndex = getStratIndex(currentPage);
   const length = getCurrentPageArrayLength(startIndex, currentPage, totalPage);
 
@@ -16,8 +15,8 @@ export function getCurrentPageArray(currentPage, count) {
   });
 }
 
-function calculateTotalPage(count) {
-  return Math.ceil(count / PAGE_LIMIT);
+function calculateTotalPage(count, limit) {
+  return Math.ceil(count / limit);
 }
 
 function getStratIndex(currentPage) {
