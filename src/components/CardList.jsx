@@ -1,59 +1,24 @@
-import React, { useState, useEffect } from "react";
-import styled from "styled-components";
 import { subjectListUrl } from "api/questionApi";
-import Loading from "components/loading/Loading";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { CenteredContainer } from "components";
+import styled from "styled-components";
+import Loading from "components/loading/Loading";
 import useQuery from "hooks/useQuery";
 
 import Card from "./Card";
-import { useNavigate, useSearchParams } from "react-router-dom";
-
-const CardStyled = styled(Card)`
-  display: flex;
-  flex-direction: column;
-
-  justify-content: space-between;
-  align-items: flex-start;
-
-  width: 100%;
-  height: 187px;
-
-  border-radius: 16px;
-  border: 1px solid var(--Grayscale-40);
-  background: var(--Grayscale-10);
-
-  padding: 16px;
-
-  transition:
-    transform 0.3s ease-in-out,
-    box-shadow 0.1s ease-in-out;
-
-  @media screen and (min-width: 768px) {
-    padding: 20px;
-  }
-`;
 
 export function CardList({
   className,
-  showCardCount,
+  showCardCount: limit,
   pageIndex,
   orderNew,
   onShowMore,
 }) {
   const [searchParams, setSearchParams] = useSearchParams();
-  const [offset, setOffset] = useState(0);
-  const [limit, setLimit] = useState(showCardCount);
+  const pageParam = searchParams.get("page");
+  const page = Number(pageParam >= 1 ? pageParam : pageIndex);
+  const offset = (page - 1) * limit;
   const navigate = useNavigate();
-
-  const limitParam = searchParams.get("limit");
-  const offsetParam = searchParams.get("offset");
-
-  if (offset != offsetParam) {
-    setOffset(offsetParam);
-  }
-  if (limit != limitParam) {
-    setLimit(limitParam);
-  }
 
   const { data, isLoading } = useQuery(subjectListUrl(limit, offset), {
     data: [],
@@ -78,10 +43,7 @@ export function CardList({
   });
 
   // INFO : 필요 없을 수도 있음 (페이지네이션) url string query로 대체 가능
-  const showCards = data.results.slice(
-    (pageIndex - 1) * showCardCount,
-    pageIndex * showCardCount,
-  );
+  const showCards = data.results.slice(0, limit);
 
   // 카드 속성에 따라 카드 생성
   const resultCards = showCards.map((card) => {
@@ -111,5 +73,30 @@ export function CardList({
     }
   }
 }
+
+const CardStyled = styled(Card)`
+  display: flex;
+  flex-direction: column;
+
+  justify-content: space-between;
+  align-items: flex-start;
+
+  width: 100%;
+  height: 187px;
+
+  border-radius: 16px;
+  border: 1px solid var(--Grayscale-40);
+  background: var(--Grayscale-10);
+
+  padding: 16px;
+
+  transition:
+    transform 0.3s ease-in-out,
+    box-shadow 0.1s ease-in-out;
+
+  @media screen and (min-width: 768px) {
+    padding: 20px;
+  }
+`;
 
 export default CardList;

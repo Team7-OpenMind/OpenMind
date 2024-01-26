@@ -176,6 +176,7 @@ export function List() {
           <Dropdown items={["이름순", "최신순"]} onSelect={onSelectOrder} />
         </FilterStyled>
         <CardListStyled
+          key={pageIndex}
           showCardCount={showCardCount}
           pageIndex={pageIndex}
           orderNew={orderNew}
@@ -184,7 +185,11 @@ export function List() {
         />
       </ListMid>
       <ListBot>
-        <Pagination initPage={pageIndex} onClick={setPageIndex} />
+        <Pagination
+          showCardCount={showCardCount}
+          initPage={pageIndex}
+          onClick={setPageIndex}
+        />
       </ListBot>
     </ListStyled>
   );
