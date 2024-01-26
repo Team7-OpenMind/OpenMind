@@ -18,27 +18,27 @@ function Answer() {
   const [answerText, setAnswerText] = useState(""); //유저가 input애 실시간으로 입력하는 내용 저장
   const [resAnswer, setResAnswer] = useState(""); //res로 온 답변내용 저장 (답변완료 버튼 누른 후 답변내용 보여주기 위함)
   const [updateAnswerMode, setUpdateAnswerMode] = useState(true); //Todo: 수정하기 버튼 누르면 setupdateAnswer사용해서 boolean값 변경하기
-  const [statusCode, setStatusCode] = useState(0); //status 코드 저장 (200이면 답변 보여주게함)
+  const [getStatusCode, setGetStatusCode] = useState(0); //status 코드 저장 (200이면 답변 보여주게함)
   // 유저가 input에 입력하는 내용 실시간으로 반영하는 기능하는 함수
   const handleOnChange = (event) => {
     setAnswerText(event.target.value);
   };
   // 답변입력으로 답변객체 받아서 주면 answerId줌 + 그 아이디로 답변가져오는 req보내서 res로 답변 받아옴  +
   const makeAnswer = async (answerObj) => {
-    const { answerId } = await createAnswer(answerObj);
+    const { id: answerId } = await createAnswer(answerObj);
     const {
       data: { content },
       status,
     } = await getAnswer(answerId);
 
     setResAnswer(content); //답변 레이아웃에 답변 내용 줌
-    setStatusCode(status); //답변 잘 받아왔으면 답변입력 input 숨기고 답변보여주는 layout 보여줌
+    setGetStatusCode(status); //답변 잘 받아왔으면 답변입력 input 숨기고 답변보여주는 layout 보여줌
   };
   // 답변완료 버튼 클릭하면 유저가 입력한 정보 담긴 answerObj makeAnswer에 넘김
   const handleClickAnswerButton = (event) => {
     event.preventDefault();
     const answerObj = {
-      questionId: 3939, //질문 정보에서 아이디 받아와야함
+      questionId: 4334, //질문 정보에서 아이디 받아와야함
       content: answerText,
       isRejected: false, //질문 정보에서 받아와야할듯
       team: "3-7",
@@ -53,7 +53,7 @@ function Answer() {
     } = await putUpdateAnswer(2085, updateAnswerObj);
 
     setResAnswer(content); // 수정내용도 답변내용 보여주는 레이아웃에 전달해서 보여주게 하기
-    setStatusCode(status); // status 잘 받으면 답변 보여주는 레이아웃 보여주고 내용 입력하는 input 숨기기
+    setGetStatusCode(status); // status 잘 받으면 답변 보여주는 레이아웃 보여주고 내용 입력하는 input 숨기기
   };
   // 수정완료 버튼 누르면 수정내용 updateAnswer함수로 보냄
   const handleClickUpdateAnswerButton = (event) => {
@@ -82,7 +82,7 @@ function Answer() {
     <>
       <QaHeader />
       <DeleteButton>삭제하기</DeleteButton>
-      <ImgNameTextBox statusCode={statusCode}>
+      <ImgNameTextBox statusCode={getStatusCode}>
         <UserImg src={personSvg} />
         <NameTextBox>
           <UserName>유저명</UserName>
@@ -108,7 +108,7 @@ function Answer() {
           </UpdateAnswerButton>
         </NameTextBox>
       </ImgNameTextBox>
-      <AnswerCard answer={resAnswer} statusCode={statusCode} />
+      <AnswerCard answer={resAnswer} statusCode={getStatusCode} />
       {/*수정하기 버튼 임시로 사용중*/}
       <button onClick={handleGetAnswerForUpdate}>수정하기</button>
     </>
