@@ -155,7 +155,6 @@ export function QuestionList(props) {
   }
 
   function onClickInfinityToggle(event, flag) {
-    console.log(flag);
     infinityRef.current = flag;
     setDrawTrigger(!drawTrigger);
   }
