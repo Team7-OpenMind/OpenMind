@@ -41,7 +41,7 @@ const UserImg = styled.img`
   width: 104px;
   height: 104px;
   border-radius: 50%;
-  border: 1px solid black;
+  border: 1px solid black; //보더 나중에 삭제
 `;
 
 const UserName = styled.span`
@@ -65,6 +65,7 @@ const HeaderBg = styled.div`
   background-size: cover;
   background-position: center;
   height: 177px;
+  margin-bottom: 145px;
 `;
 
 // Todo: 유저 데이터 받아와야함 - 잠시 아이콘으로 대체함
