@@ -1,4 +1,4 @@
-import { BASE_URL } from "api";
+import { BASE_URL } from "./index";
 
 export const createSubjectUrl = () => `${BASE_URL}/subjects/`;
 
