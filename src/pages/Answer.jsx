@@ -4,12 +4,27 @@ import "../common.css";
 import Button from "components/button/Button";
 import QaHeader from "components/QA-Header";
 import AnswerCard from "components/AnswerCard";
+import QuestionList from "components/question/QuestionList";
+//api
+import useQuery from "hooks/useQuery";
+import { subjectUrl } from "api/questionApi";
 // 이미지 파일들
 import personSvg from "../assets/Person.svg";
 import { createAnswer, getAnswer, putUpdateAnswer } from "../api/answerApi";
 import { useState } from "react";
+import { useParams } from "react-router-dom";
 
 function Answer() {
+  const { subjectId } = useParams(); // router의 url parameter
+
+  const {
+    data: { questionCount, ...question },
+    error,
+    isLoading,
+  } = useQuery(subjectUrl(subjectId), {
+    data: [],
+  });
+
   const [answerText, setAnswerText] = useState(""); //유저가 input애 실시간으로 입력하는 내용 저장
   const [resAnswer, setResAnswer] = useState(""); //res로 온 답변내용 저장 (답변완료 버튼 누른 후 답변내용 보여주기 위함)
   const [updateAnswerMode, setUpdateAnswerMode] = useState(true); //Todo: 수정하기 버튼 누르면 setupdateAnswer사용해서 boolean값 변경하기
@@ -73,9 +88,15 @@ function Answer() {
     getAnswerToUpdateAnswer(2085); // 수정하기 버튼 클릭하면 answerId 받아야함
   };
 
+  const notification =
+    questionCount === 0
+      ? "아직 질문이 없습니다"
+      : `${questionCount}개의 질문이 있습니다.`;
+
   return (
     <>
-      <QaHeader />
+      <QaHeader question={question} />
+      <QuestionList notification={notification} question={question} />
       <DeleteButton>삭제하기</DeleteButton>
       <ImgNameTextBox statusCode={getStatusCode}>
         <UserImg src={personSvg} />

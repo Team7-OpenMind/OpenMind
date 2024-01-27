@@ -133,6 +133,7 @@ export function QuestionList(props) {
   } = useQuery(questionUrl(id, limitRef.current, offset), {
     results: [],
   });
+  console.log(results); //유저정보
 
   function onClickShowMore() {
     if (count <= offset) {
