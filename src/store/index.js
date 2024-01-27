@@ -1,7 +1,6 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import { persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
-import questionSlice from "./questionSlice";
 import subjectSlice from "./subjectSlice";
 
 const reducers = combineReducers({
