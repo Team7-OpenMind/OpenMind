@@ -7,6 +7,8 @@ import logo from "assets/logo.svg";
 import Dropdown from "components/button/Dropdown";
 import Button from "components/button/Button";
 import Arrow from "assets/Arrow.svg";
+import { copyClipboard } from "utils/share";
+import { Toast } from "components/toast/toast";
 
 const ListStyled = styled.div`
   display: flex;
@@ -19,6 +21,15 @@ const ListStyled = styled.div`
   padding-left: 24px; // TODO : change max(24px, ??)
   padding-right: 24px; // TODO : change max(24px, ??)
 
+  > * {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    width: 100%;
+  }
+
   @media screen and (min-width: 768px) {
     padding-left: minmax(32px, auto);
     padding-right: minmax(32px, auto);
@@ -26,13 +37,7 @@ const ListStyled = styled.div`
 `;
 
 const ListTop = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
   margin-bottom: 52px;
-
-  width: 100%;
 
   > img {
     width: 146px;
@@ -49,23 +54,9 @@ const ListTop = styled.div`
   }
 `;
 
-const ListMid = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+const ListMid = styled.div``;
 
-  width: 100%;
-`;
-
-const ListBot = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-
-  width: 100%;
-`;
+const ListBot = styled.div``;
 
 const AnswerButton = styled(Button)`
   display: flex;
@@ -85,7 +76,7 @@ const AnswerButton = styled(Button)`
 
   @media screen and (min-width: 768px) {
     font-size: 16px;
-    line-height: 22px; /* 137.5% */
+    line-height: 22px;
   }
 `;
 
@@ -101,7 +92,7 @@ const FilterStyled = styled.div`
   > div {
     color: var(--Grayscale-60, #000);
     text-align: center;
-    font-family: "Black Han Sans"; // TODO : add font
+    font-family: "Black Han Sans";
     font-size: 24px;
     font-weight: 400;
 
@@ -148,6 +139,7 @@ export function List() {
   const [showCardCount, setShowCardCount] = useState(8); // Info : 6 ~ 8개씩 보여줌
   const [pageIndex, setPageIndex] = useState(1); // Info : 1부터 시작
   const [orderNew, setOrderNew] = useState(true);
+  const [toastMsg, setToastMsg] = useState("");
 
   function onSelectOrder(key) {
     setOrderNew("최신순" === key);
@@ -172,7 +164,7 @@ export function List() {
   }, [showCardCount]);
 
   return (
-    <ListStyled onShowMore={onShowMore}>
+    <ListStyled>
       <ListTop>
         <img src={logo} alt="logo" onClick={onClickLogo} />
         <AnswerButton>
@@ -196,6 +188,7 @@ export function List() {
       <ListBot>
         <div>카드 리스트 인덱스</div>
       </ListBot>
+      <Toast msg={toastMsg} />
     </ListStyled>
   );
 }
