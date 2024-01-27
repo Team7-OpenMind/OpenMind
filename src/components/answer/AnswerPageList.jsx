@@ -1,17 +1,126 @@
 import React, { useState, useRef, useEffect } from "react";
-
+import styled from "styled-components";
+//api
 import { questionUrl } from "api/questionApi";
+import useQuery from "hooks/useQuery";
+//컴포넌트
+import Error from "components/error/Error";
+import AnswerPageCard from "./AnswerPageCard";
+import Loading from "components/loading/Loading";
+//이미지
 import emptySvg from "assets/Empty.svg";
 import messageSvg from "assets/Messages.svg";
 import arrowDownSvg from "assets/Arrow-down.svg";
 import { ReactComponent as infinitySvg } from "assets/infinity.svg";
 import { ReactComponent as toggleOnSvg } from "assets/toggle_on.svg";
 import { ReactComponent as toggleOffSvg } from "assets/toggle_off.svg";
-import Error from "components/error/Error";
-import FeedCard from "components/feedCard/FeedCard";
-import useQuery from "hooks/useQuery";
-import styled from "styled-components";
-import Loading from "components/loading/Loading";
+
+export function AnswerPageList(props) {
+  const {
+    notification,
+    question: { id, ...question }, // id를 제외한 name, imageSource, questionCount, createdAt은 question으로 받아옴
+  } = props;
+  const limitRef = useRef(8);
+  const [offset, setOffset] = useState(0);
+  const [questionItems, setQuestionItems] = useState([]);
+  const infinityRef = useRef(false);
+  const [drawTrigger, setDrawTrigger] = useState(false);
+
+  const {
+    data: { count, next, results },
+    isLoading,
+    error,
+  } = useQuery(questionUrl(id, limitRef.current, offset), {
+    results: [],
+  });
+
+  function onClickShowMore() {
+    if (count <= offset) {
+      setOffset(count);
+      return;
+    } else {
+      setOffset(offset + limitRef.current);
+    }
+  }
+
+  function onScroll() {
+    if (!infinityRef.current) return;
+
+    if (
+      window.innerHeight + window.scrollY >=
+      document.documentElement.scrollHeight - 100
+    ) {
+      if (!isLoading && next) onClickShowMore();
+    }
+  }
+
+  function onClickInfinityToggle(event, flag) {
+    console.log(flag);
+    infinityRef.current = flag;
+    setDrawTrigger(!drawTrigger);
+  }
+
+  useEffect(() => {
+    setQuestionItems([...questionItems, ...results]);
+    document.addEventListener("scroll", onScroll);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [results]);
+
+  if (error) {
+    return <Error />;
+  }
+
+  return (
+    <>
+      <QuestionContainer>
+        <Notification>
+          <img src={messageSvg} alt="message" />
+          {notification}
+          <InfinitySvg
+            src={infinitySvg}
+            isInfinity={infinityRef.current}
+            alt="infinity"
+          />
+          {infinityRef.current ? (
+            <ToggleOnSvg
+              onClick={(event) => onClickInfinityToggle(event, false)}
+            />
+          ) : (
+            <ToggleOffSvg
+              onClick={(event) => onClickInfinityToggle(event, true)}
+            />
+          )}
+        </Notification>
+        <FeedContainer>
+          {count === 0 ? (
+            <EmptySvg src={emptySvg} alt="empty" />
+          ) : (
+            questionItems.map((result) => (
+              <AnswerPageCard
+                key={result.id}
+                answer={result.answer}
+                content={result.content}
+                question={question}
+                questionId={result.id}
+              />
+            ))
+          )}
+          {isLoading ? (
+            <Loading />
+          ) : (
+            next && (
+              <img
+                src={arrowDownSvg}
+                alt="arrow-down"
+                onClick={onClickShowMore}
+              />
+            )
+          )}
+        </FeedContainer>
+      </QuestionContainer>
+    </>
+  );
+}
 
 const QuestionContainer = styled.div`
   display: flex;
@@ -19,7 +128,7 @@ const QuestionContainer = styled.div`
   justify-content: center;
   align-items: center;
   width: 100%;
-  margin: 353px 24px 126px;
+  margin: 38px 24px 126px;
   max-width: 900px;
   padding: 16px;
 
@@ -28,12 +137,12 @@ const QuestionContainer = styled.div`
   border: 1px solid var(--Brown-20);
 
   @media (min-width: 768px) {
-    margin: 423px 32px 0;
+    margin: 38px 32px 0;
     margin-bottom: 136px;
   }
 
   @media (min-width: 1201px) {
-    margin: 423px 32px 0;
+    margin: 38px 32px 0;
     margin-bottom: 136px;
   }
 `;
@@ -115,114 +224,4 @@ const ToggleOffSvg = styled(toggleOffSvg)`
   }
 `;
 
-export function QuestionList(props) {
-  const {
-    notification,
-    question: { id, ...question }, // id를 제외한 name, imageSource, questionCount, createdAt은 question으로 받아옴
-  } = props;
-  const limitRef = useRef(8);
-  const [offset, setOffset] = useState(0);
-  const [questionItems, setQuestionItems] = useState([]);
-  const infinityRef = useRef(false);
-  const [drawTrigger, setDrawTrigger] = useState(false);
-
-  const {
-    data: { count, next, results },
-    isLoading,
-    error,
-  } = useQuery(questionUrl(id, limitRef.current, offset), {
-    results: [],
-  });
-
-  function onClickShowMore() {
-    if (count <= offset) {
-      setOffset(count);
-      return;
-    } else {
-      setOffset(offset + limitRef.current);
-    }
-  }
-
-  function onScroll() {
-    if (!infinityRef.current) return;
-
-    if (
-      window.innerHeight + window.scrollY >=
-      document.documentElement.scrollHeight - 100
-    ) {
-      if (!isLoading && next) onClickShowMore();
-    }
-  }
-
-  function onClickInfinityToggle(event, flag) {
-    console.log(flag);
-    infinityRef.current = flag;
-    setDrawTrigger(!drawTrigger);
-  }
-
-  useEffect(() => {
-    setQuestionItems([...questionItems, ...results]);
-    document.addEventListener("scroll", onScroll);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [results]);
-
-  if (error) {
-    return <Error />;
-  }
-
-  return (
-    <>
-      <QuestionContainer>
-        <Notification>
-          <img src={messageSvg} alt="message" />
-          {notification}
-          <InfinitySvg
-            src={infinitySvg}
-            isInfinity={infinityRef.current}
-            alt="infinity"
-          />
-          {infinityRef.current ? (
-            <ToggleOnSvg
-              onClick={(event) => onClickInfinityToggle(event, false)}
-            />
-          ) : (
-            <ToggleOffSvg
-              onClick={(event) => onClickInfinityToggle(event, true)}
-            />
-          )}
-        </Notification>
-        <FeedContainer>
-          {count === 0 ? (
-            <EmptySvg src={emptySvg} alt="empty" />
-          ) : (
-            questionItems.map((result) => (
-              <FeedCard
-                key={result.id}
-                answer={result.answer}
-                content={result.content}
-                question={question}
-              />
-            ))
-          )}
-          {isLoading ? (
-            <Loading />
-          ) : (
-            next && (
-              <img
-                src={arrowDownSvg}
-                alt="arrow-down"
-                onClick={onClickShowMore}
-              />
-            )
-          )}
-        </FeedContainer>
-      </QuestionContainer>
-    </>
-  );
-}
-
-QuestionList.defaultProps = {
-  id: 2375,
-};
-
-export default QuestionList;
+export default AnswerPageList;

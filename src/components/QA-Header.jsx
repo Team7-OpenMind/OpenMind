@@ -3,13 +3,11 @@ import "../common.css";
 // 이미지 파일들
 import headerPng from "../assets/header.png";
 import logoSvg from "../assets/logo.svg";
-import personSvg from "../assets/Person.svg";
 import { ReactComponent as LinkSvg } from "../assets/Link.svg";
 import kakaotalkSvg from "../assets/Kakaotalk.svg";
 import { ReactComponent as FacebookSvg } from "../assets/Facebook.svg";
 
 function QaHeader({ question }) {
-  console.log(question);
   return (
     <header>
       <HeaderBg>
