@@ -97,7 +97,8 @@ const HrStyled = styled.hr`
 `;
 
 export function FeedCard(props) {
-  const { answer, content, like, dislike, createdAt, subject } = props;
+  const { answer, content, like, dislike, createdAt, subject, questionId } =
+    props;
   const { imageSource, name } = subject;
 
   let answerText, color;
@@ -134,7 +135,7 @@ export function FeedCard(props) {
         </AnswerWrapper>
       )}
       <HrStyled />
-      <Reaction like={like} dislike={dislike} />
+      <Reaction like={like} dislike={dislike} questionId={questionId} />
     </FeedCardStyled>
   );
 }

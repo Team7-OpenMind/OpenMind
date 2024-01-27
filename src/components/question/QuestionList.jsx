@@ -125,7 +125,6 @@ export function QuestionList(props) {
   const [questionItems, setQuestionItems] = useState([]);
   const infinityRef = useRef(false);
   const [drawTrigger, setDrawTrigger] = useState(false);
-
   const {
     data: { count, next, results },
     isLoading,
@@ -133,7 +132,6 @@ export function QuestionList(props) {
   } = useQuery(questionUrl(id, limitRef.current, offset), {
     results: [],
   });
-
   function onClickShowMore() {
     if (count <= offset) {
       setOffset(count);
@@ -203,6 +201,7 @@ export function QuestionList(props) {
                 dislike={result.dislike}
                 createdAt={result.createdAt}
                 subject={subject}
+                questionId={result.id}
               />
             ))
           )}

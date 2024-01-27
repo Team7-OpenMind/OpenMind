@@ -1,9 +1,9 @@
 import axios from "axios";
 
 //질문 가져오는 api
-export const getQuestion = async () => {
+export const getQuestion = async ({ questionId }) => {
   const res = await axios.get(
-    `https://openmind-api.vercel.app/3-7/questions/3693/`,
+    `https://openmind-api.vercel.app/3-7/questions/${questionId}/`,
   );
   const data = res.data;
   return data;
