@@ -6,8 +6,10 @@ import Loading from "components/loading/Loading";
 import QuestionList from "components/question/QuestionList";
 import useMediaQuery from "hooks/useMediaQuery";
 import useQuery from "hooks/useQuery";
-import { useRef, useEffect } from "react";
+import { useEffect, useRef } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
+import { selectSubjects, setSubject } from "store/subjectSlice";
 import styled from "styled-components";
 
 const QuestionButton = styled(FloatingButton)`
@@ -20,17 +22,19 @@ const QuestionButton = styled(FloatingButton)`
 `;
 
 function Post() {
+  const dispatch = useDispatch();
   const isMobile = useMediaQuery("(max-width: 767px)");
   const { subjectId } = useParams(); // router의 url parameter
   const mountRef = useRef(false);
+  const subjects = useSelector(selectSubjects);
+
+  console.log("cached:", subjects[subjectId]);
 
   const {
-    data: { questionCount, ...question },
+    data: { questionCount, ...subject },
     error,
     isLoading,
-  } = useQuery(subjectUrl(subjectId), {
-    data: [],
-  });
+  } = useQuery(subjectUrl(subjectId), subjects[subjectId] ?? {});
 
   useEffect(() => {
     mountRef.current = true;
@@ -39,6 +43,11 @@ function Post() {
       mountRef.current = false;
     };
   }, []);
+
+  useEffect(() => {
+    dispatch(setSubject({ ...subject, questionCount }));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [subject.id]);
 
   if (error) {
     const status = error.response?.status;
@@ -65,7 +74,7 @@ function Post() {
 
   return (
     <CenteredContainer>
-      <QuestionList notification={notification} question={question} />
+      <QuestionList notification={notification} subject={subject} />
       <QuestionButton className="shadow-2pt">{buttonText}</QuestionButton>
     </CenteredContainer>
   );

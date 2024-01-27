@@ -1,8 +1,14 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import App from "App";
-import "common.css";
+import { CenteredContainer } from "components";
+import Loading from "components/loading/Loading";
 import React from "react";
 import ReactDOM from "react-dom/client";
+import { Provider } from "react-redux";
+import { persistStore } from "redux-persist";
+import { PersistGate } from "redux-persist/integration/react";
+import store from "store";
+import "./common.css";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -14,11 +20,22 @@ const queryClient = new QueryClient({
   },
 });
 
+export let persistor = persistStore(store);
+
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
-  <React.StrictMode>
-    <QueryClientProvider client={queryClient}>
-      <App />
-    </QueryClientProvider>
-  </React.StrictMode>,
+  <QueryClientProvider client={queryClient}>
+    <Provider store={store}>
+      <PersistGate
+        loading={
+          <CenteredContainer>
+            <Loading />
+          </CenteredContainer>
+        }
+        persistor={persistor}
+      >
+        <App />
+      </PersistGate>
+    </Provider>
+  </QueryClientProvider>,
 );

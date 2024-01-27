@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import { getQuestion, countReaction } from "../../api/reactionApi";
 //css
 import "./reaction.css";
-// img
+// imgs
 import { ReactComponent as ThumbsUpSvg } from "assets/thumbs-up.svg";
 import { ReactComponent as ThumbsDownSvg } from "assets/thumbs-down.svg";
 

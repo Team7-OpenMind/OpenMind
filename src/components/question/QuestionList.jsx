@@ -118,7 +118,7 @@ const ToggleOffSvg = styled(toggleOffSvg)`
 export function QuestionList(props) {
   const {
     notification,
-    question: { id, ...question }, // id를 제외한 name, imageSource, questionCount, createdAt은 question으로 받아옴
+    subject: { id, ...subject }, // id를 제외한 name, imageSource, questionCount, createdAt은 question으로 받아옴
   } = props;
   const limitRef = useRef(8);
   const [offset, setOffset] = useState(0);
@@ -155,7 +155,6 @@ export function QuestionList(props) {
   }
 
   function onClickInfinityToggle(event, flag) {
-    console.log(flag);
     infinityRef.current = flag;
     setDrawTrigger(!drawTrigger);
   }
@@ -200,7 +199,10 @@ export function QuestionList(props) {
                 key={result.id}
                 answer={result.answer}
                 content={result.content}
-                question={question}
+                like={result.like}
+                dislike={result.dislike}
+                createdAt={result.createdAt}
+                subject={subject}
               />
             ))
           )}
