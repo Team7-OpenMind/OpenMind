@@ -7,6 +7,7 @@ import useQuery from "hooks/useQuery";
 import Error from "components/error/Error";
 import AnswerPageCard from "./AnswerPageCard";
 import Loading from "components/loading/Loading";
+import DeleteBtn from "./Delete";
 //이미지
 import emptySvg from "assets/Empty.svg";
 import messageSvg from "assets/Messages.svg";
@@ -33,7 +34,6 @@ export function AnswerPageList(props) {
   } = useQuery(questionUrl(id, limitRef.current, offset), {
     results: [],
   });
-
   function onClickShowMore() {
     if (count <= offset) {
       setOffset(count);
@@ -55,7 +55,6 @@ export function AnswerPageList(props) {
   }
 
   function onClickInfinityToggle(event, flag) {
-    console.log(flag);
     infinityRef.current = flag;
     setDrawTrigger(!drawTrigger);
   }
@@ -71,54 +70,55 @@ export function AnswerPageList(props) {
   }
 
   return (
-    <>
-      <QuestionContainer>
-        <Notification>
-          <img src={messageSvg} alt="message" />
-          {notification}
-          <InfinitySvg
-            src={infinitySvg}
-            isInfinity={infinityRef.current}
-            alt="infinity"
+    <QuestionContainer>
+      {questionItems.map((result) => (
+        <DeleteBtn key={result.id} questionId={result.id} />
+      ))}
+      <Notification>
+        <img src={messageSvg} alt="message" />
+        {notification}
+        <InfinitySvg
+          src={infinitySvg}
+          isInfinity={infinityRef.current}
+          alt="infinity"
+        />
+        {infinityRef.current ? (
+          <ToggleOnSvg
+            onClick={(event) => onClickInfinityToggle(event, false)}
           />
-          {infinityRef.current ? (
-            <ToggleOnSvg
-              onClick={(event) => onClickInfinityToggle(event, false)}
+        ) : (
+          <ToggleOffSvg
+            onClick={(event) => onClickInfinityToggle(event, true)}
+          />
+        )}
+      </Notification>
+      <FeedContainer>
+        {count === 0 ? (
+          <EmptySvg src={emptySvg} alt="empty" />
+        ) : (
+          questionItems.map((result) => (
+            <AnswerPageCard
+              key={result.id}
+              answer={result.answer}
+              content={result.content}
+              question={question}
+              questionId={result.id}
             />
-          ) : (
-            <ToggleOffSvg
-              onClick={(event) => onClickInfinityToggle(event, true)}
+          ))
+        )}
+        {isLoading ? (
+          <Loading />
+        ) : (
+          next && (
+            <img
+              src={arrowDownSvg}
+              alt="arrow-down"
+              onClick={onClickShowMore}
             />
-          )}
-        </Notification>
-        <FeedContainer>
-          {count === 0 ? (
-            <EmptySvg src={emptySvg} alt="empty" />
-          ) : (
-            questionItems.map((result) => (
-              <AnswerPageCard
-                key={result.id}
-                answer={result.answer}
-                content={result.content}
-                question={question}
-                questionId={result.id}
-              />
-            ))
-          )}
-          {isLoading ? (
-            <Loading />
-          ) : (
-            next && (
-              <img
-                src={arrowDownSvg}
-                alt="arrow-down"
-                onClick={onClickShowMore}
-              />
-            )
-          )}
-        </FeedContainer>
-      </QuestionContainer>
-    </>
+          )
+        )}
+      </FeedContainer>
+    </QuestionContainer>
   );
 }
 
@@ -131,6 +131,7 @@ const QuestionContainer = styled.div`
   margin: 38px 24px 126px;
   max-width: 900px;
   padding: 16px;
+  position: relative;
 
   border-radius: 16px;
   background-color: var(--Brown-10);

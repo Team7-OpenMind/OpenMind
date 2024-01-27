@@ -1,8 +1,7 @@
 import { useParams } from "react-router-dom";
-import styled from "styled-components";
 import "../common.css";
 //컴포넌트
-import Button from "components/button/Button";
+
 import QaHeader from "components/QA-Header";
 import AnswerPageList from "components/answer/AnswerPageList";
 import { CenteredContainer } from "components";
@@ -27,7 +26,6 @@ function Answer() {
   return (
     <>
       <QaHeader question={question} />
-      <DeleteButton>삭제하기</DeleteButton>
       <CenteredContainer>
         <AnswerPageList notification={notification} question={question} />
       </CenteredContainer>
@@ -35,20 +33,4 @@ function Answer() {
   );
 }
 
-const DeleteButton = styled(Button)`
-  text-align: center;
-  padding: 0;
-  width: 70px;
-  height: 25px;
-  font-family: Pretendard;
-  font-size: 10px;
-  font-weight: 400;
-  line-height: 25px;
-  border-radius: 200px;
-  @media (min-width: 375px) {
-    font-size: 15px;
-    width: 100px;
-    height: 35px;
-  }
-`;
 export default Answer;
