@@ -2,7 +2,6 @@ import styled from "styled-components";
 import { useState } from "react";
 import { getTimeAgo } from "utils/date";
 import AnswerComponent from "./AnswerComponent";
-import DeleteBtn from "./Delete";
 
 export function AnswerPageCard(props) {
   const { questionId, answer, content, question } = props;

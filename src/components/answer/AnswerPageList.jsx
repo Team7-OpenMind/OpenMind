@@ -3,11 +3,13 @@ import styled from "styled-components";
 //api
 import { questionUrl } from "api/questionApi";
 import useQuery from "hooks/useQuery";
+import { deleteQuestion } from "components/../api/answerApi";
 //컴포넌트
 import Error from "components/error/Error";
 import AnswerPageCard from "./AnswerPageCard";
 import Loading from "components/loading/Loading";
-import DeleteBtn from "./Delete";
+import Button from "components/button/Button";
+
 //이미지
 import emptySvg from "assets/Empty.svg";
 import messageSvg from "assets/Messages.svg";
@@ -34,6 +36,7 @@ export function AnswerPageList(props) {
   } = useQuery(questionUrl(id, limitRef.current, offset), {
     results: [],
   });
+
   function onClickShowMore() {
     if (count <= offset) {
       setOffset(count);
@@ -69,11 +72,15 @@ export function AnswerPageList(props) {
     return <Error />;
   }
 
+  const handleDeleteButton = () => {
+    questionItems.map((result) => deleteQuestion(result.id));
+  };
+
   return (
     <QuestionContainer>
-      {questionItems.map((result) => (
-        <DeleteBtn key={result.id} questionId={result.id} />
-      ))}
+      <DeleteButton count={count} onClick={handleDeleteButton}>
+        삭제하기
+      </DeleteButton>
       <Notification>
         <img src={messageSvg} alt="message" />
         {notification}
@@ -225,4 +232,25 @@ const ToggleOffSvg = styled(toggleOffSvg)`
   }
 `;
 
+const DeleteButton = styled(Button)`
+  text-align: center;
+  padding: 0;
+  width: 70px;
+  height: 25px;
+  font-size: 10px;
+  font-weight: 400;
+  line-height: 25px;
+  border-radius: 200px;
+  margin-top: 23px;
+  position: absolute;
+  top: -60px;
+  right: 0;
+  display: ${({ count }) => (count === 0 ? "none" : "")};
+  @media (min-width: 768px) {
+    top: -70px;
+    font-size: 15px;
+    width: 100px;
+    height: 35px;
+  }
+`;
 export default AnswerPageList;
