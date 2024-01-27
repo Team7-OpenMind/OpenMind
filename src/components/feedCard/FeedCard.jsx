@@ -1,3 +1,4 @@
+import Reaction from "components/reaction/Reaction";
 import styled from "styled-components";
 import { getTimeAgo } from "utils/date";
 
@@ -96,8 +97,8 @@ const HrStyled = styled.hr`
 `;
 
 export function FeedCard(props) {
-  const { answer, content, question } = props;
-  const { createdAt, imageSource, name } = question;
+  const { answer, content, like, dislike, createdAt, subject } = props;
+  const { imageSource, name } = subject;
 
   let answerText, color;
   if (answer === null) {
@@ -133,6 +134,7 @@ export function FeedCard(props) {
         </AnswerWrapper>
       )}
       <HrStyled />
+      <Reaction like={like} dislike={dislike} />
     </FeedCardStyled>
   );
 }

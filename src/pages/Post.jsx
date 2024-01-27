@@ -74,7 +74,7 @@ function Post() {
 
   return (
     <CenteredContainer>
-      <QuestionList notification={notification} question={subject} />
+      <QuestionList notification={notification} subject={subject} />
       <QuestionButton className="shadow-2pt">{buttonText}</QuestionButton>
     </CenteredContainer>
   );
