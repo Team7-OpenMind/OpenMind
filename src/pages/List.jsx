@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 import styled from "styled-components";
 import UserCardList from "components/userCard/UserCardList";
@@ -41,6 +42,10 @@ const ListTop = styled.div`
   > img {
     width: 146px;
     margin-bottom: 20px;
+
+    &:hover {
+      cursor: pointer;
+    }
   }
 
   @media screen and (min-width: 768px) {
@@ -54,7 +59,6 @@ const ListTop = styled.div`
 `;
 
 const ListMid = styled.div``;
-
 const ListBot = styled.div``;
 
 const AnswerButton = styled(Button)`
@@ -64,7 +68,7 @@ const AnswerButton = styled(Button)`
   align-items: center;
 
   font-size: 14px;
-  line-height: 18px; /* 128.571% */
+  line-height: 18px;
   color: var(--Brown-40, #542f1a);
   padding: 8px 12px;
   gap: 4px;
@@ -137,10 +141,11 @@ const UserCardListStyled = styled(UserCardList)`
 export function List() {
   const [showCardCount, setShowCardCount] = useState(8); // Info : 6 ~ 8개씩 보여줌
   const [pageIndex, setPageIndex] = useState(1); // Info : 1부터 시작
-  const [orderNew, setOrderNew] = useState(true);
+  const [order, setOrder] = useState("time");
+  const navigate = useNavigate();
 
   function onSelectOrder(key) {
-    setOrderNew("최신순" === key);
+    setOrder("최신순" === key ? "time" : "name");
   }
 
   function onShowMore(flag) {
@@ -152,7 +157,14 @@ export function List() {
     if (e.target.innerWidth > 1200) setShowCardCount(8);
   }
 
-  function onClickLogo() {}
+  function onClickLogo() {
+    navigate("/");
+  }
+
+  function onClickAnswer() {
+    const subjectId = localStorage.getItem("subjectId");
+    subjectId ? navigate(`/post/${subjectId}/answer`) : navigate("/");
+  }
 
   useEffect(() => {
     window.addEventListener("resize", onResize);
@@ -165,7 +177,7 @@ export function List() {
     <ListStyled>
       <ListTop>
         <img src={logo} alt="logo" onClick={onClickLogo} />
-        <AnswerButton>
+        <AnswerButton onClick={onClickAnswer}>
           <div>답변하러 가기</div>
           <img src={Arrow} />
         </AnswerButton>
@@ -179,7 +191,7 @@ export function List() {
           key={pageIndex}
           showCardCount={showCardCount}
           pageIndex={pageIndex}
-          orderNew={orderNew}
+          order={order}
           isShowMore={showCardCount === 8}
           onShowMore={onShowMore}
         />

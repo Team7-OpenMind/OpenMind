@@ -11,7 +11,7 @@ export function UserCardList({
   className,
   showCardCount: limit,
   pageIndex,
-  orderNew,
+  order,
   onShowMore,
 }) {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -20,7 +20,7 @@ export function UserCardList({
   const offset = (page - 1) * limit;
   const navigate = useNavigate();
 
-  const { data, isLoading } = useQuery(subjectListUrl(limit, offset), {
+  const { data, isLoading } = useQuery(subjectListUrl(limit, offset, order), {
     data: [],
   });
 
@@ -33,14 +33,6 @@ export function UserCardList({
   }
 
   if (!data.results) return;
-
-  data.results.sort((a, b) => {
-    if (orderNew) {
-      a.createAt - b.createAt;
-    } else {
-      a.name - b.name;
-    }
-  });
 
   const showCards = data.results.slice(0, limit);
 
