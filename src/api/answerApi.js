@@ -61,39 +61,23 @@ export const putUpdateAnswer = async (answerId, { content, isRejected }) => {
   // answerId, questionId, 수정내용, isRejected, createdAt줌
 };
 
-// // 답변 일부 수정하는 기능
-// export async function PartialUpdateAnswer(answerId) {
-//   const res = await axios.patch(
-//     `https://openmind-api.vercel.app/3-7/answers/${answerId}/`,
-//     {
-//       content:
-//         "답변내용 일부 수정 얘는 일부만 수정해도 나머지는 그대로 put은 없는 값은 null처리 된다",
-//       isRejected: true,
-//     },
-//     {
-//       headers: {
-//         "Content-Type": "application/json",
-//       },
-//     },
-//   );
-//   const result = res.json();
-//   // answerId, questionId, 수정내용, isRejected, createdAt줌
-// }
+// 질문 삭제하는 기능
+export const deleteQuestion = async (questionId) => {
+  const res = await axios.delete(
+    `https://openmind-api.vercel.app/3-7/questions/${questionId}/`,
+  );
+  const data = res;
+  window.location.reload();
+  return data;
+};
 
-// // 답변 삭제하는 기능
-// export async function DeleteAnswer(answerId) {
+// // 답변 삭제하는 기능 (질문삭제하면 답변도 같이 삭제됨)
+// export const DeleteAnswer = async (answerId) => {
 //   const res = await axios.delete(
 //     `https://openmind-api.vercel.app/3-7/answers/${answerId}/`,
 //   );
-//   const result = res.json();
+//   const data = res;
+//   console.log(data);
+//   return data;
 //   // result로 삭제 성공여부 받기
-// }
-
-// // 질문 삭제하는 기능
-// export async function DeleteQuestion(answerId) {
-//   const res = await axios.delete(
-//     `https://openmind-api.vercel.app/3-7/questions/${questionId}/`,
-//   );
-//   const result = res.json();
-//   // result로 삭제 성공여부 받기
-// }
+// };
