@@ -5,9 +5,9 @@ import styled from "styled-components";
 import Loading from "components/loading/Loading";
 import useQuery from "hooks/useQuery";
 
-import Card from "./Card";
+import UserCard from "./UserCard";
 
-export function CardList({
+export function UserCardList({
   className,
   showCardCount: limit,
   pageIndex,
@@ -42,14 +42,13 @@ export function CardList({
     }
   });
 
-  // INFO : 필요 없을 수도 있음 (페이지네이션) url string query로 대체 가능
   const showCards = data.results.slice(0, limit);
 
   // 카드 속성에 따라 카드 생성
   const resultCards = showCards.map((card) => {
     const { id, name, imageSource, questionCount } = card;
     return (
-      <CardStyled
+      <UserCardStyled
         key={id}
         name={name}
         imageSource={imageSource}
@@ -74,7 +73,7 @@ export function CardList({
   }
 }
 
-const CardStyled = styled(Card)`
+const UserCardStyled = styled(UserCard)`
   display: flex;
   flex-direction: column;
 
@@ -99,4 +98,4 @@ const CardStyled = styled(Card)`
   }
 `;
 
-export default CardList;
+export default UserCardList;
