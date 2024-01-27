@@ -1,14 +1,14 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { subjectListUrl } from "api/questionApi";
 import Loading from "components/loading/Loading";
 import { CenteredContainer } from "components";
 import useQuery from "hooks/useQuery";
 
-import Card from "./Card";
+import UserCard from "./UserCard";
 import { useNavigate, useSearchParams } from "react-router-dom";
 
-const CardStyled = styled(Card)`
+const UserCardStyled = styled(UserCard)`
   display: flex;
   flex-direction: column;
 
@@ -33,7 +33,7 @@ const CardStyled = styled(Card)`
   }
 `;
 
-export function CardList({
+export function UserCardList({
   className,
   showCardCount,
   pageIndex,
@@ -44,6 +44,14 @@ export function CardList({
   const [offset, setOffset] = useState(0);
   const [limit, setLimit] = useState(showCardCount);
   const navigate = useNavigate();
+
+  function handleClick(card) {
+    navigate(`/post/${card.id}`);
+  }
+
+  function onShowMoreCallback(flag) {
+    onShowMore(flag);
+  }
 
   const limitParam = searchParams.get("limit");
   const offsetParam = searchParams.get("offset");
@@ -58,14 +66,6 @@ export function CardList({
   const { data, isLoading } = useQuery(subjectListUrl(limit, offset), {
     data: [],
   });
-
-  function handleClick(card) {
-    navigate(`/post/${card.id}`);
-  }
-
-  function onShowMoreCallback(flag) {
-    onShowMore(flag);
-  }
 
   if (!data.results) return;
 
@@ -87,7 +87,7 @@ export function CardList({
   const resultCards = showCards.map((card) => {
     const { id, name, imageSource, questionCount } = card;
     return (
-      <CardStyled
+      <UserCardStyled
         key={id}
         name={name}
         imageSource={imageSource}
@@ -112,4 +112,4 @@ export function CardList({
   }
 }
 
-export default CardList;
+export default UserCardList;
