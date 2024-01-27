@@ -2,9 +2,10 @@ import styled from "styled-components";
 import { useState } from "react";
 import { getTimeAgo } from "utils/date";
 import AnswerComponent from "./AnswerComponent";
+import Reaction from "components/reaction/Reaction";
 
 export function AnswerPageCard(props) {
-  const { questionId, answer, content, question } = props;
+  const { questionId, answer, content, question, like, dislike } = props;
   const { createdAt, imageSource, name } = question;
 
   const [answerTextRn, setAnswerTextRn] = useState("");
@@ -81,6 +82,7 @@ export function AnswerPageCard(props) {
         ""
       )}
       <HrStyled />
+      <Reaction like={like} dislike={dislike} questionId={questionId} />
     </FeedCardStyled>
   );
 }
