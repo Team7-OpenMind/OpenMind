@@ -74,7 +74,7 @@ function Post() {
   return (
     <>
       <QaHeader question={subject} />
-      <CenteredContainer>
+      <CenteredContainer vertical={false}>
         <QuestionList notification={notification} subject={subject} />
         <QuestionButton className="shadow-2pt">{buttonText}</QuestionButton>
       </CenteredContainer>
