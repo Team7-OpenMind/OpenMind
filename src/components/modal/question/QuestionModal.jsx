@@ -17,9 +17,7 @@ function QuestionModal({ open, onClose, userInfo }) {
         </Form>
       </Modal.Body>
       <Modal.Footer>
-        <ButtonWrapper>
-          <Button>질문 보내기</Button>
-        </ButtonWrapper>
+        <ButtonWrapper>질문 보내기</ButtonWrapper>
       </Modal.Footer>
     </Modal>
   );
@@ -66,7 +64,6 @@ const ButtonWrapper = styled(Button)`
   margin-top: 8px;
   width: 100%;
   height: auto;
-  padding: 0;
   display: flex;
   justify-content: center;
   font-size: 16px;
