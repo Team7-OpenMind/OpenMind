@@ -44,17 +44,6 @@ const FeedContainer = styled.div`
   align-items: center;
   gap: 20px;
   width: 100%;
-
-  > img {
-    width: 30px;
-    height: 30px;
-
-    &:hover {
-      cursor: pointer;
-      transform: scale(1.3);
-      transition: transform 0.3s ease-in-out;
-    }
-  }
 `;
 
 const Notification = styled.div`
@@ -78,6 +67,17 @@ const EmptySvg = styled.img`
   }
   @media (min-width: 1201px) {
     margin: 120px;
+  }
+`;
+
+const ArrowDownSvg = styled.img`
+  width: 30px;
+  height: 30px;
+
+  &:hover {
+    cursor: pointer;
+    transform: scale(1.3);
+    transition: transform 0.3s ease-in-out;
   }
 `;
 
@@ -210,7 +210,7 @@ export function QuestionList(props) {
             <Loading />
           ) : (
             next && (
-              <img
+              <ArrowDownSvg
                 src={arrowDownSvg}
                 alt="arrow-down"
                 onClick={onClickShowMore}
