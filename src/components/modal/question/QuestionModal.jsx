@@ -9,8 +9,8 @@ function QuestionModal({ open, onClose, userInfo }) {
       <Modal.Body>
         <UserInfo>
           To.
-          <ProfileImg src={userInfo.imageSource} />
-          {userInfo.name}
+          <ProfileImg src={userInfo?.imageSource} />
+          {userInfo?.name}
         </UserInfo>
         <Form>
           <Input placeholder="질문을 입력해주세요" />
