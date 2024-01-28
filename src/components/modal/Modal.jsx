@@ -1,4 +1,4 @@
-import { createContext, useContext } from "react";
+import { createContext, useContext, useRef } from "react";
 import { ReactComponent as CloseSVG } from "assets/Close.svg";
 import { ReactComponent as MessageSVG } from "assets/Messages.svg";
 import ReactDOM from "react-dom";
@@ -7,12 +7,20 @@ import styled from "styled-components";
 const ModalContext = createContext();
 
 function Modal({ open, onClose, onSubmit, children }) {
+  const modalRef = useRef(null);
+
   if (!open) return;
+
+  const handleClickOutside = (e) => {
+    if (modalRef.current && !modalRef.current.contains(e.target)) {
+      onClose();
+    }
+  };
 
   return ReactDOM.createPortal(
     <ModalContext.Provider value={{ open, onClose, onSubmit }}>
-      <ModalBg>
-        <ModalContainer>{children}</ModalContainer>
+      <ModalBg onClick={handleClickOutside}>
+        <ModalContainer ref={modalRef}>{children}</ModalContainer>
       </ModalBg>
     </ModalContext.Provider>,
     document.getElementById("modal-container"),
