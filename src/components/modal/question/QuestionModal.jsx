@@ -6,16 +6,23 @@ import Button from "components/button/Button";
 import Modal from "components/modal/Modal";
 import styled from "styled-components";
 
-function QuestionModal({ open, onClose, userInfo }) {
-  const { subjectId } = useParams("subjectId");
+function QuestionModal({ userInfo }) {
+  const { subjectId } = useParams();
+  const navigate = useNavigate();
   const textAreaRef = useRef();
 
+  // 쿼리 스트링으로 모달 창을 열면 뒤로가기로 쉽게 모달 창 닫기 가능
+  const handleClose = () => {
+    navigate(-1);
+  };
+
+  // TODO: 질문 작성하고 바로 작성한 질문 확인할 수 있게 만들기
   const handleSubmit = async () => {
     try {
       await axios.post(questionUrl(subjectId), {
         content: textAreaRef.current.value,
       });
-      onClose();
+      handleClose();
     } catch (error) {
       alert(error.message);
       console.error(error);
@@ -23,7 +30,7 @@ function QuestionModal({ open, onClose, userInfo }) {
   };
 
   return (
-    <Modal open={open} onClose={onClose}>
+    <Modal onClose={handleClose}>
       <Modal.Header>질문을 작성하세요</Modal.Header>
       <Modal.Body>
         <UserInfo>

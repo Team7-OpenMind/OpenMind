@@ -6,11 +6,10 @@ import styled from "styled-components";
 
 const ModalContext = createContext();
 
-function Modal({ open, onClose, onSubmit, children }) {
+function Modal({ onClose, onSubmit, children }) {
   const modalRef = useRef(null);
 
-  if (!open) return;
-
+  // useRef를 이용해 모달창 바깥을 누르면 모달창 꺼지도록 함
   const handleClickOutside = (e) => {
     if (modalRef.current && !modalRef.current.contains(e.target)) {
       onClose();
@@ -18,7 +17,7 @@ function Modal({ open, onClose, onSubmit, children }) {
   };
 
   return ReactDOM.createPortal(
-    <ModalContext.Provider value={{ open, onClose, onSubmit }}>
+    <ModalContext.Provider value={{ onClose, onSubmit }}>
       <ModalBg onClick={handleClickOutside}>
         <ModalContainer ref={modalRef}>{children}</ModalContainer>
       </ModalBg>

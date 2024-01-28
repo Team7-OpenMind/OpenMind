@@ -1,6 +1,6 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { selectSubjects, setSubject } from "store/subjectSlice";
 import { subjectUrl } from "api/questionApi";
 import { CenteredContainer } from "components";
@@ -24,20 +24,17 @@ const QuestionButton = styled(FloatingButton)`
 `;
 
 function Post() {
-  const [open, setOpen] = useState(false);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const isModalOpen = searchParams.get("open");
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const isMobile = useMediaQuery("(max-width: 767px)");
   const { subjectId } = useParams(); // router의 url parameter
   const mountRef = useRef(false);
   const subjects = useSelector(selectSubjects);
 
-  const handleModalOpen = () => {
-    setOpen(true);
-  };
-
-  const handleModalClose = () => {
-    setOpen(false);
-  };
+  // 쿼리 스트링을 이용하여 open 값으로 모달 종류 선택 및 열고 닫기 가능
+  const handleModalOpen = () => navigate(`/post/${subjectId}?open=true`);
 
   const {
     data: { questionCount, ...subject },
@@ -89,11 +86,7 @@ function Post() {
         <QuestionButton className="shadow-2pt" onClick={handleModalOpen}>
           {buttonText}
         </QuestionButton>
-        <QuestionModal
-          open={open}
-          onClose={handleModalClose}
-          userInfo={subjects[subjectId]}
-        />
+        {isModalOpen && <QuestionModal userInfo={subjects[subjectId]} />}
       </CenteredContainer>
     </>
   );
