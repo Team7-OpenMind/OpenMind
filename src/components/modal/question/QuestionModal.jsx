@@ -1,23 +1,44 @@
+import { questionUrl } from "api/questionApi";
+import { useRef } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import axios from "axios";
 import Button from "components/button/Button";
 import Modal from "components/modal/Modal";
 import styled from "styled-components";
 
 function QuestionModal({ open, onClose, userInfo }) {
+  const { subjectId } = useParams("subjectId");
+  const textAreaRef = useRef();
+
+  const handleSubmit = async () => {
+    try {
+      await axios.post(questionUrl(subjectId), {
+        content: textAreaRef.current.value,
+      });
+      onClose();
+    } catch (error) {
+      alert(error.message);
+      console.error(error);
+    }
+  };
+
   return (
     <Modal open={open} onClose={onClose}>
-      <Modal.Header>질문해주세용</Modal.Header>
+      <Modal.Header>질문을 작성하세요</Modal.Header>
       <Modal.Body>
         <UserInfo>
           To.
           <ProfileImg src={userInfo?.imageSource} />
           {userInfo?.name}
         </UserInfo>
-        <Form>
-          <Input placeholder="질문을 입력해주세요" />
+        <Form onSubmit={(e) => e.preventDefault()}>
+          <TextArea placeholder="질문을 입력해주세요" ref={textAreaRef} />
         </Form>
       </Modal.Body>
       <Modal.Footer>
-        <ButtonWrapper>질문 보내기</ButtonWrapper>
+        <SubmitButton type="button" onClick={handleSubmit}>
+          질문 보내기
+        </SubmitButton>
       </Modal.Footer>
     </Modal>
   );
@@ -46,8 +67,6 @@ const ProfileImg = styled.img`
 const Form = styled.form`
   width: 100%;
   height: 358px;
-  border-radius: 8px;
-  background: var(--Grayscale-20, #f9f9f9);
 
   @media (min-width: 768px) {
     width: 532px;
@@ -55,11 +74,29 @@ const Form = styled.form`
   }
 `;
 
-const Input = styled.input`
+const TextArea = styled.textarea`
+  box-sizing: border-box;
+  overflow-wrap: break-word;
+  white-space: pre-wrap;
+  resize: none;
+  width: 100%;
+  height: 100%;
+  border-style: none;
+  border-radius: 8px;
   padding: 16px;
+  background: var(--Grayscale-20, #f9f9f9);
+  font-size: 16px;
+
+  &:focus {
+    outline: 2px solid var(--Brown-40);
+  }
+
+  @media (min-width: 768px) {
+    width: 532px;
+  }
 `;
 
-const ButtonWrapper = styled(Button)`
+const SubmitButton = styled(Button)`
   box-sizing: border-box;
   margin-top: 8px;
   width: 100%;
