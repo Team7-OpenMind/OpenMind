@@ -70,7 +70,7 @@ export const deleteQuestion = async (questionId) => {
   window.location.reload();
   return data;
 };
-
+//
 // // 답변 삭제하는 기능 (질문삭제하면 답변도 같이 삭제됨)
 // export const DeleteAnswer = async (answerId) => {
 //   const res = await axios.delete(
