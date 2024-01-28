@@ -1,3 +1,7 @@
+import { useEffect, useRef, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
+import { selectSubjects, setSubject } from "store/subjectSlice";
 import { subjectUrl } from "api/questionApi";
 import { CenteredContainer } from "components";
 import FloatingButton from "components/button/FloatingButton";
@@ -6,12 +10,9 @@ import Loading from "components/loading/Loading";
 import QuestionList from "components/question/QuestionList";
 import useMediaQuery from "hooks/useMediaQuery";
 import useQuery from "hooks/useQuery";
-import { useEffect, useRef } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
-import { selectSubjects, setSubject } from "store/subjectSlice";
 import styled from "styled-components";
 import QaHeader from "components/QA-Header";
+import QuestionModal from "components/modal/question/QuestionModal";
 
 const QuestionButton = styled(FloatingButton)`
   position: fixed;
@@ -23,11 +24,20 @@ const QuestionButton = styled(FloatingButton)`
 `;
 
 function Post() {
+  const [open, setOpen] = useState(false);
   const dispatch = useDispatch();
   const isMobile = useMediaQuery("(max-width: 767px)");
   const { subjectId } = useParams(); // router의 url parameter
   const mountRef = useRef(false);
   const subjects = useSelector(selectSubjects);
+
+  const handleModalOpen = () => {
+    setOpen(true);
+  };
+
+  const handleModalClose = () => {
+    setOpen(false);
+  };
 
   const {
     data: { questionCount, ...subject },
@@ -76,7 +86,14 @@ function Post() {
       <QaHeader question={subject} />
       <CenteredContainer vertical={false}>
         <QuestionList notification={notification} subject={subject} />
-        <QuestionButton className="shadow-2pt">{buttonText}</QuestionButton>
+        <QuestionButton className="shadow-2pt" onClick={handleModalOpen}>
+          {buttonText}
+        </QuestionButton>
+        <QuestionModal
+          open={open}
+          onClose={handleModalClose}
+          userInfo={subjects[subjectId]}
+        />
       </CenteredContainer>
     </>
   );
