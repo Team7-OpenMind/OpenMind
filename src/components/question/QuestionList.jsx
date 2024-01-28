@@ -140,7 +140,6 @@ export function QuestionList(props) {
     questionUrl(id, limitRef.current, offset),
     questionStore[id] ?? { results: [] },
   );
-  console.log({ questionStore });
 
   function onClickShowMore() {
     if (count <= offset) {
