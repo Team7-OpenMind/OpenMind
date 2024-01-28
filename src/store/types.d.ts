@@ -1,27 +1,17 @@
 import { PayloadAction } from "@reduxjs/toolkit";
 export { Slice } from "@reduxjs/toolkit";
 
-interface Answer {
-  id: number;
-  questionId: number;
-  content: string;
-  createdAt: string;
-}
-
-interface Question {
-  id: number;
-  subjectId: number;
-  content: string;
-  like: number;
-  dislike: number;
-  createdAt: string;
-  answer: Answer;
-}
-
 export type QuestionSlice = Slice<QuestionState>;
 
 export interface QuestionState {
-  [subjectId: number]: Question;
+  [subjectId: number]: SubjectQuestions;
+}
+
+export type SetQuestionsAction = PayloadAction<SetQuestionsPayload>;
+
+interface SetQuestionsPayload {
+  subjectId: number;
+  subjectQuestions: SubjectQuestions;
 }
 
 export type SetSubjectAction = PayloadAction<SetSubjectPayload>;
@@ -31,16 +21,14 @@ interface SetSubjectPayload {
   subject: Subject;
 }
 
-interface Subject {
-  id: number;
-  subjectId: number;
-  question: string;
-  answer: string;
-  options: string[];
+interface SubjectQuestions {
+  count: number;
+  next: string;
+  results: Question[];
 }
 
 export type SubjectSlice = Slice<SubjectState>;
 
-interface SubjectState {
-  [subjectId: number]: Question;
+export interface SubjectState {
+  [subjectId: number]: Subject;
 }

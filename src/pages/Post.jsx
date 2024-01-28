@@ -29,8 +29,6 @@ function Post() {
   const mountRef = useRef(false);
   const subjects = useSelector(selectSubjects);
 
-  console.log("cached:", subjects[subjectId]);
-
   const {
     data: { questionCount, ...subject },
     error,
@@ -76,7 +74,7 @@ function Post() {
   return (
     <>
       <QaHeader question={subject} />
-      <CenteredContainer>
+      <CenteredContainer vertical={false}>
         <QuestionList notification={notification} subject={subject} />
         <QuestionButton className="shadow-2pt">{buttonText}</QuestionButton>
       </CenteredContainer>

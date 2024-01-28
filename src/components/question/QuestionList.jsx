@@ -1,17 +1,20 @@
-import React, { useState, useRef, useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { questionUrl } from "api/questionApi";
+import arrowDownSvg from "assets/Arrow-down.svg";
 import emptySvg from "assets/Empty.svg";
 import messageSvg from "assets/Messages.svg";
-import arrowDownSvg from "assets/Arrow-down.svg";
 import { ReactComponent as infinitySvg } from "assets/infinity.svg";
-import { ReactComponent as toggleOnSvg } from "assets/toggle_on.svg";
 import { ReactComponent as toggleOffSvg } from "assets/toggle_off.svg";
+import { ReactComponent as toggleOnSvg } from "assets/toggle_on.svg";
 import Error from "components/error/Error";
 import FeedCard from "components/feedCard/FeedCard";
-import useQuery from "hooks/useQuery";
-import styled from "styled-components";
 import Loading from "components/loading/Loading";
+import useQuery from "hooks/useQuery";
+import { useDispatch, useSelector } from "react-redux";
+import { selectQuestions, setQuestions } from "store/questionSlice";
+import styled from "styled-components";
+import { CenteredContainer } from "components";
 
 const QuestionContainer = styled.div`
   display: flex;
@@ -125,13 +128,19 @@ export function QuestionList(props) {
   const [questionItems, setQuestionItems] = useState([]);
   const infinityRef = useRef(false);
   const [drawTrigger, setDrawTrigger] = useState(false);
+
+  const dispatch = useDispatch();
+  const questionStore = useSelector(selectQuestions);
+
   const {
     data: { count, next, results },
     isLoading,
     error,
-  } = useQuery(questionUrl(id, limitRef.current, offset), {
-    results: [],
-  });
+  } = useQuery(
+    questionUrl(id, limitRef.current, offset),
+    questionStore[id] ?? { results: [] },
+  );
+
   function onClickShowMore() {
     if (count <= offset) {
       setOffset(count);
@@ -162,6 +171,18 @@ export function QuestionList(props) {
     document.addEventListener("scroll", onScroll);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [results]);
+
+  // Redux store에 데이터를 업데이트 하는 역할을 하는 훅
+  useEffect(() => {
+    if (!results) return;
+    dispatch(
+      setQuestions({
+        subjectId: id,
+        subjectQuestions: { count, next, results },
+      }),
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [results]); // results가 바뀔 때마다 실행
 
   if (error) {
     return <Error />;
@@ -206,7 +227,9 @@ export function QuestionList(props) {
             ))
           )}
           {isLoading ? (
-            <Loading />
+            <CenteredContainer>
+              <Loading />
+            </CenteredContainer>
           ) : (
             next && (
               <ArrowDownSvg
@@ -221,9 +244,5 @@ export function QuestionList(props) {
     </>
   );
 }
-
-QuestionList.defaultProps = {
-  id: 2375,
-};
 
 export default QuestionList;
