@@ -22,7 +22,7 @@ const QuestionContainer = styled.div`
   justify-content: center;
   align-items: center;
   width: 100%;
-  margin: 353px 24px 126px;
+  margin: 38px 24px 126px;
   max-width: 900px;
   padding: 16px;
 
@@ -31,12 +31,12 @@ const QuestionContainer = styled.div`
   border: 1px solid var(--Brown-20);
 
   @media (min-width: 768px) {
-    margin: 423px 32px 0;
+    margin: 38px 32px 0;
     margin-bottom: 136px;
   }
 
   @media (min-width: 1201px) {
-    margin: 423px 32px 0;
+    margin: 38px 32px 0;
     margin-bottom: 136px;
   }
 `;
@@ -222,6 +222,7 @@ export function QuestionList(props) {
                 dislike={result.dislike}
                 createdAt={result.createdAt}
                 subject={subject}
+                questionId={result.id}
               />
             ))
           )}
