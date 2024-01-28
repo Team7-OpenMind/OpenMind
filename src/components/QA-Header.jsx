@@ -3,10 +3,34 @@ import "../common.css";
 // 이미지 파일들
 import headerPng from "../assets/header.png";
 import logoSvg from "../assets/logo.svg";
-import personSvg from "../assets/Person.svg";
 import { ReactComponent as LinkSvg } from "../assets/Link.svg";
 import kakaotalkSvg from "../assets/Kakaotalk.svg";
 import { ReactComponent as FacebookSvg } from "../assets/Facebook.svg";
+
+function QaHeader({ question }) {
+  return (
+    <header>
+      <HeaderBg>
+        <HeaderContentBox>
+          <Logo src={logoSvg} alt="로고" />
+          <UserImg src={question.imageSource} />
+          <UserName>{question.name}</UserName>
+          <ShareButtonBox>
+            <ShareButton icon="link">
+              <LinkSvg fill="white" />
+            </ShareButton>
+            <ShareButton icon="kakaotalk">
+              <img src={kakaotalkSvg} alt="카카오톡 아이콘" />
+            </ShareButton>
+            <ShareButton icon="facebook">
+              <FacebookSvg fill="white" />
+            </ShareButton>
+          </ShareButtonBox>
+        </HeaderContentBox>
+      </HeaderBg>
+    </header>
+  );
+}
 
 // Styled Component들
 const COLOR = {
@@ -41,7 +65,6 @@ const UserImg = styled.img`
   width: 104px;
   height: 104px;
   border-radius: 50%;
-  border: 1px solid black; //보더 나중에 삭제
 `;
 
 const UserName = styled.span`
@@ -67,31 +90,5 @@ const HeaderBg = styled.div`
   height: 177px;
   margin-bottom: 145px;
 `;
-
-// Todo: 유저 데이터 받아와야함 - 잠시 아이콘으로 대체함
-function QaHeader() {
-  return (
-    <header>
-      <HeaderBg>
-        <HeaderContentBox>
-          <Logo src={logoSvg} alt="로고" />
-          <UserImg src={personSvg} />
-          <UserName>유저명</UserName>
-          <ShareButtonBox>
-            <ShareButton icon="link">
-              <LinkSvg fill="white" />
-            </ShareButton>
-            <ShareButton icon="kakaotalk">
-              <img src={kakaotalkSvg} alt="카카오톡 아이콘" />
-            </ShareButton>
-            <ShareButton icon="facebook">
-              <FacebookSvg fill="white" />
-            </ShareButton>
-          </ShareButtonBox>
-        </HeaderContentBox>
-      </HeaderBg>
-    </header>
-  );
-}
 
 export default QaHeader;

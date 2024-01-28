@@ -11,6 +11,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { selectSubjects, setSubject } from "store/subjectSlice";
 import styled from "styled-components";
+import QaHeader from "components/QA-Header";
 
 const QuestionButton = styled(FloatingButton)`
   position: fixed;
@@ -73,10 +74,13 @@ function Post() {
   const buttonText = isMobile ? "질문 작성" : "질문 작성하기";
 
   return (
-    <CenteredContainer>
-      <QuestionList notification={notification} subject={subject} />
-      <QuestionButton className="shadow-2pt">{buttonText}</QuestionButton>
-    </CenteredContainer>
+    <>
+      <QaHeader question={subject} />
+      <CenteredContainer>
+        <QuestionList notification={notification} subject={subject} />
+        <QuestionButton className="shadow-2pt">{buttonText}</QuestionButton>
+      </CenteredContainer>
+    </>
   );
 }
 

@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { useEffect, useRef, useState } from "react";
-import { getQuestion, countReaction } from "../../api/reactionApi";
+import { countReaction } from "../../api/reactionApi";
 //css
 import "./reaction.css";
 // imgs
@@ -8,49 +8,37 @@ import { ReactComponent as ThumbsUpSvg } from "assets/thumbs-up.svg";
 import { ReactComponent as ThumbsDownSvg } from "assets/thumbs-down.svg";
 
 const SELECTED = "selected";
-const REACTION = "reaction";
 const LIKE = "like";
 const DISLIKE = "dislike";
 
-function Reaction() {
+function Reaction({ questionId }) {
   const likeRef = useRef();
   const dislikeRef = useRef();
-  const getKey = localStorage.getItem(REACTION);
+  const [selected, setSelected] = useState(false);
+  const [countLike, setCountLike] = useState(0);
+  const [countDislike, setCountDislike] = useState(0);
+  const [whatReaction, setWhatReaction] = useState("");
 
-  const [selected, setSelected] = useState(() => {
-    const getSelected = localStorage.getItem(SELECTED);
-    if (getSelected === "true") {
-      return true;
-    } else {
-      return false;
-    }
-  });
-  const [liked, setLiked] = useState(localStorage.getItem(LIKE));
-  const [disliked, setDisliked] = useState(localStorage.getItem(DISLIKE));
-
-  const question = async (reaction) => {
-    const { id } = await getQuestion();
-    const { like, dislike } = await countReaction(id, reaction);
-    setLiked(like);
-    setDisliked(dislike);
+  const reactionCount = async (reaction) => {
+    const { like, dislike } = await countReaction(questionId, reaction);
+    setCountLike(like);
+    setCountDislike(dislike);
   };
 
   function handleReactionClick(ref, className) {
-    const getReaction = localStorage.getItem(REACTION);
-    if (getReaction === className) {
+    if (whatReaction === className) {
       ref.current.children[0].classList.remove(className);
       ref.current.children[1].classList.remove(className);
       setSelected(false);
-      localStorage.setItem(SELECTED, false);
-      localStorage.setItem(REACTION, "");
+      setWhatReaction("");
     }
     if (!selected) {
+      //선택 안 했으면 실행
       ref.current.children[0].classList.add(className);
       ref.current.children[1].classList.add(className);
       setSelected(true);
-      question(className);
-      localStorage.setItem(SELECTED, true);
-      localStorage.setItem(REACTION, className);
+      reactionCount(className);
+      setWhatReaction(className);
     }
   }
 
@@ -62,6 +50,9 @@ function Reaction() {
     handleReactionClick(dislikeRef, DISLIKE);
   }
 
+  const ADD_LIKE_STYLE = whatReaction === LIKE ? LIKE : "";
+  const ADD_DISLIKE_STYLE = whatReaction === DISLIKE ? DISLIKE : "";
+
   return (
     <>
       <ReactionBox>
@@ -70,9 +61,9 @@ function Reaction() {
           onClick={handleLikeClick}
           ref={likeRef}
         >
-          <ThumbsUpSvg fill="#818181" className={getKey === LIKE ? LIKE : ""} />
-          <ReactionText className={getKey === LIKE ? LIKE : ""}>
-            좋아요 {selected ? (getKey === LIKE ? liked : "") : ""}
+          <ThumbsUpSvg fill="#818181" className={ADD_LIKE_STYLE} />
+          <ReactionText className={ADD_LIKE_STYLE}>
+            좋아요 {whatReaction === LIKE ? countLike : ""}
           </ReactionText>
         </ThumbsIconTextBox>
         <ThumbsIconTextBox
@@ -80,12 +71,9 @@ function Reaction() {
           onClick={handleDislikeClick}
           ref={dislikeRef}
         >
-          <ThumbsDownSvg
-            fill="#818181"
-            className={getKey === DISLIKE ? DISLIKE : ""}
-          />
-          <ReactionText className={getKey === DISLIKE ? DISLIKE : ""}>
-            싫어요 {selected ? (getKey === "dislike" ? disliked : "") : ""}
+          <ThumbsDownSvg fill="#818181" className={ADD_DISLIKE_STYLE} />
+          <ReactionText className={ADD_DISLIKE_STYLE}>
+            싫어요 {whatReaction === DISLIKE ? countDislike : ""}
           </ReactionText>
         </ThumbsIconTextBox>
       </ReactionBox>

@@ -19,7 +19,7 @@ const QuestionContainer = styled.div`
   justify-content: center;
   align-items: center;
   width: 100%;
-  margin: 353px 24px 126px;
+  margin: 38px 24px 126px;
   max-width: 900px;
   padding: 16px;
 
@@ -28,12 +28,12 @@ const QuestionContainer = styled.div`
   border: 1px solid var(--Brown-20);
 
   @media (min-width: 768px) {
-    margin: 423px 32px 0;
+    margin: 38px 32px 0;
     margin-bottom: 136px;
   }
 
   @media (min-width: 1201px) {
-    margin: 423px 32px 0;
+    margin: 38px 32px 0;
     margin-bottom: 136px;
   }
 `;
@@ -125,7 +125,6 @@ export function QuestionList(props) {
   const [questionItems, setQuestionItems] = useState([]);
   const infinityRef = useRef(false);
   const [drawTrigger, setDrawTrigger] = useState(false);
-
   const {
     data: { count, next, results },
     isLoading,
@@ -133,7 +132,6 @@ export function QuestionList(props) {
   } = useQuery(questionUrl(id, limitRef.current, offset), {
     results: [],
   });
-
   function onClickShowMore() {
     if (count <= offset) {
       setOffset(count);
@@ -203,6 +201,7 @@ export function QuestionList(props) {
                 dislike={result.dislike}
                 createdAt={result.createdAt}
                 subject={subject}
+                questionId={result.id}
               />
             ))
           )}
