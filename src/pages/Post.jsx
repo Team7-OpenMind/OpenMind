@@ -28,8 +28,6 @@ function Post() {
   const mountRef = useRef(false);
   const subjects = useSelector(selectSubjects);
 
-  console.log("cached:", subjects[subjectId]);
-
   const {
     data: { questionCount, ...subject },
     error,

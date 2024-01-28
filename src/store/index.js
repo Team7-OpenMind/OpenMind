@@ -2,9 +2,11 @@ import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import { persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import subjectSlice from "./subjectSlice";
+import questionSlice from "./questionSlice";
 
 const reducers = combineReducers({
   // 여러 reducer를 하나로 합쳐주는 역할
+  question: questionSlice.reducer,
   subject: subjectSlice.reducer,
 });
 
