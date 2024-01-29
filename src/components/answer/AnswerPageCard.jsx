@@ -1,8 +1,10 @@
 import styled from "styled-components";
 import { useState } from "react";
 import { getTimeAgo } from "utils/date";
+//컴포넌트
 import AnswerComponent from "./AnswerComponent";
 import Reaction from "components/reaction/Reaction";
+import { ReactComponent as pencilSvg } from "assets/pencil-square.svg";
 
 export function AnswerPageCard(props) {
   const { questionId, answer, content, question, like, dislike } = props;
@@ -31,7 +33,14 @@ export function AnswerPageCard(props) {
 
   return (
     <FeedCardStyled className="shadow-1pt">
-      <AnsweredStyled color={color}>{answerText}</AnsweredStyled>
+      <TagEditContainer>
+        <AnsweredStyled color={color}>{answerText}</AnsweredStyled>
+        {answerText === "답변 완료" ? (
+          <PencilSvg onClick={handleClickIsUpdateButton}></PencilSvg>
+        ) : (
+          ""
+        )}
+      </TagEditContainer>
       <QuestionContainer>
         <DateStyled>질문 · {getTimeAgo(createdAt)}</DateStyled>
         {content}
@@ -75,23 +84,39 @@ export function AnswerPageCard(props) {
       ) : (
         ""
       )}
-      {answerText === "답변 완료" ? (
-        //케밥으로 교체해야함
-        <button onClick={handleClickIsUpdateButton}>수정하기</button>
-      ) : (
-        ""
-      )}
+
       <HrStyled />
       <Reaction like={like} dislike={dislike} questionId={questionId} />
     </FeedCardStyled>
   );
 }
 
+const TagEditContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
+
 const colors = {
   answered: "var(--Brown-40)",
   rejected: "var(--Red-50)",
   unanswered: "var(--Grayscale-40)",
 };
+
+const PencilSvg = styled(pencilSvg)`
+  color: var(--Brown-40);
+  width: 30px;
+  height: 30px;
+
+  &:hover {
+    color: tomato;
+    cursor: pointer;
+    transform: scale(1.3);
+    transition:
+      transform 0.3s ease-in-out,
+      tomato 0.3s ease-in-out;
+  }
+`;
 
 const FeedCardStyled = styled.div`
   display: flex;

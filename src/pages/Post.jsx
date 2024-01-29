@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { selectSubjects, setSubject } from "store/subjectSlice";
@@ -24,6 +24,7 @@ const QuestionButton = styled(FloatingButton)`
 `;
 
 function Post() {
+  const [latestQuestionId, setLatestQuestionId] = useState(0);
   const [searchParams, setSearchParams] = useSearchParams();
   const isModalOpen = searchParams.get("open");
   const dispatch = useDispatch();
@@ -82,11 +83,20 @@ function Post() {
     <>
       <QaHeader question={subject} />
       <CenteredContainer vertical={false}>
-        <QuestionList notification={notification} subject={subject} />
+        <QuestionList
+          latestQuestionId={latestQuestionId}
+          notification={notification}
+          subject={subject}
+        />
         <QuestionButton className="shadow-2pt" onClick={handleModalOpen}>
           {buttonText}
         </QuestionButton>
-        {isModalOpen && <QuestionModal userInfo={subjects[subjectId]} />}
+        {isModalOpen && (
+          <QuestionModal
+            onClose={(questionId) => setLatestQuestionId(questionId)}
+            userInfo={subjects[subjectId]}
+          />
+        )}
       </CenteredContainer>
     </>
   );
