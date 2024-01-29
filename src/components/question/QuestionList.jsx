@@ -121,6 +121,7 @@ const ToggleOffSvg = styled(toggleOffSvg)`
 export function QuestionList(props) {
   const {
     notification,
+    latestQuestionId,
     subject: { id, ...subject }, // id를 제외한 name, imageSource, questionCount, createdAt은 question으로 받아옴
   } = props;
   const limitRef = useRef(8);
@@ -136,7 +137,13 @@ export function QuestionList(props) {
     data: { count, next, results },
     isLoading,
     error,
-  } = useQuery(questionUrl(id, limitRef.current, offset), { results: [] });
+  } = useQuery(
+    questionUrl(id, limitRef.current, offset),
+    { results: [] },
+    {
+      queryKey: ["questions", latestQuestionId, id, limitRef.current, offset],
+    },
+  );
 
   function onClickShowMore() {
     if (count <= offset) {
@@ -163,7 +170,22 @@ export function QuestionList(props) {
     setDrawTrigger(!drawTrigger);
   }
 
+  /* 글을 작성해서 latestQuestionId가 바뀌면 새로고침 */
   useEffect(() => {
+    setOffset(0);
+    setQuestionItems([]);
+    /* Redux에 저장된 데이터를 초기화 */
+    dispatch(
+      setQuestions({
+        subjectId: id,
+        subjectQuestions: { results: [] },
+      }),
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [latestQuestionId]);
+
+  useEffect(() => {
+    if (isLoading) return;
     /* questionItems에 results를 합치고 중복 제거 */
     const newQuestions = [...questionItems, ...results].filter(
       (question, idx, array) =>
