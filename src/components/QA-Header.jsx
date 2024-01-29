@@ -1,6 +1,6 @@
+import styled, { keyframes } from "styled-components";
+import { Link, useLocation } from "react-router-dom";
 import { useState } from "react";
-import { useLocation } from "react-router-dom";
-import styled from "styled-components";
 import "../common.css";
 
 // 이미지 파일들
@@ -35,8 +35,13 @@ function QaHeader({ question }) {
   return (
     <header>
       <HeaderBg>
+        <GoToListPage>
+          <Link to="/list"> {`Back To LIST`}</Link>
+        </GoToListPage>
         <HeaderContentBox>
-          <Logo src={logoSvg} alt="로고" />
+          <Link to="/">
+            <Logo src={logoSvg} alt="로고" />
+          </Link>
           <UserImg src={question.imageSource} />
           <UserName>{question.name}</UserName>
           <ShareButtonBox>
@@ -64,6 +69,37 @@ const COLOR = {
   facebook: "--Blue-50",
 };
 
+const animation = keyframes`
+  0% {
+    transform: rotateZ(8deg);
+  
+  }
+  50% {
+    transform: rotateZ(-8deg);
+  }
+  100%{
+    transform: rotateZ(8deg);
+
+  }
+`;
+
+const GoToListPage = styled.button`
+  position: absolute;
+  left: 12px;
+  top: 6px;
+  padding: 5px;
+  font-weight: 800;
+  font-size: 15px;
+
+  &:hover {
+    cursor: pointer;
+    animation: ${animation} 0.8s ease-in-out infinite;
+  }
+  @media (min-width: 768px) {
+    font-size: 18px;
+  }
+`;
+
 const ShareButton = styled.button`
   background-color: var(${({ icon }) => COLOR[icon]});
   border-radius: 50%;
@@ -84,6 +120,11 @@ const ShareButtonBox = styled.div`
 const Logo = styled.img`
   width: 124px;
   height: 49px;
+  cursor: pointer;
+  @media (min-width: 768px) {
+    width: 170px;
+    height: 67px;
+  }
 `;
 
 const UserImg = styled.img`
@@ -114,6 +155,7 @@ const HeaderBg = styled.div`
   background-position: center;
   height: 177px;
   margin-bottom: 145px;
+  position: relative;
 `;
 
 export default QaHeader;

@@ -4,6 +4,7 @@ import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { selectSubjects, setSubject } from "store/subjectSlice";
 import { subjectUrl } from "api/questionApi";
 import { CenteredContainer } from "components";
+import QaHeader from "components/QA-Header";
 import FloatingButton from "components/button/FloatingButton";
 import Error from "components/error/Error";
 import Loading from "components/loading/Loading";
@@ -11,7 +12,6 @@ import QuestionList from "components/question/QuestionList";
 import useMediaQuery from "hooks/useMediaQuery";
 import useQuery from "hooks/useQuery";
 import styled from "styled-components";
-import QaHeader from "components/QA-Header";
 import QuestionModal from "components/modal/question/QuestionModal";
 
 const QuestionButton = styled(FloatingButton)`

@@ -28,7 +28,7 @@ export function AnswerPageList(props) {
   const [questionItems, setQuestionItems] = useState([]);
   const infinityRef = useRef(false);
   const [drawTrigger, setDrawTrigger] = useState(false);
-  const [noQuetion, setNoQuestion] = useState(false);
+  const [noQuestion, setNoQuestion] = useState(false);
 
   const {
     data: { count, next, results },
@@ -80,20 +80,20 @@ export function AnswerPageList(props) {
   const handleDeleteButton = () => {
     questionItems.map((result) => deleteQA(result.id));
   };
-  console.log(noQuetion);
+  console.log(noQuestion);
 
   return (
     <QuestionContainer>
       <DeleteButton
         count={count}
-        noQuetion={noQuetion}
+        noQuetion={noQuestion}
         onClick={handleDeleteButton}
       >
         삭제하기
       </DeleteButton>
       <Notification>
         <img src={messageSvg} alt="message" />
-        {noQuetion ? "아직 질문이 없습니다" : notification}
+        {noQuestion ? "아직 질문이 없습니다" : notification}
         <InfinitySvg
           src={infinitySvg}
           isInfinity={infinityRef.current}
@@ -109,7 +109,7 @@ export function AnswerPageList(props) {
           />
         )}
       </Notification>
-      {noQuetion ? (
+      {noQuestion ? (
         <EmptySvg src={emptySvg} alt="empty" />
       ) : (
         <FeedContainer>
