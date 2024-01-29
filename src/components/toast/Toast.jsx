@@ -3,7 +3,7 @@ import styled from "styled-components";
 
 const ToastContainer = styled.div`
   position: fixed;
-  top: 20px;
+  bottom: 60px;
   left: 50%;
   transform: translateX(-50%);
 
@@ -25,13 +25,14 @@ const ToastContainer = styled.div`
   z-index: 10;
 `;
 
-export function Toast({ msg }) {
+export function Toast({ msg, onClose }) {
   const [message, setMessage] = useState("");
 
   useEffect(() => {
     setMessage(msg);
     const timer = setTimeout(() => {
       setMessage("");
+      onClose();
     }, 5000);
     return () => clearTimeout(timer);
   }, [msg]);
