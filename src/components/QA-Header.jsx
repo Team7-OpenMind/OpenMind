@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import "../common.css";
+import { Link } from "react-router-dom";
 // 이미지 파일들
 import headerPng from "../assets/header.png";
 import logoSvg from "../assets/logo.svg";
@@ -12,7 +13,9 @@ function QaHeader({ question }) {
     <header>
       <HeaderBg>
         <HeaderContentBox>
-          <Logo src={logoSvg} alt="로고" />
+          <Link to="/list">
+            <Logo src={logoSvg} alt="로고" />
+          </Link>
           <UserImg src={question.imageSource} />
           <UserName>{question.name}</UserName>
           <ShareButtonBox>
@@ -59,6 +62,7 @@ const ShareButtonBox = styled.div`
 const Logo = styled.img`
   width: 124px;
   height: 49px;
+  cursor: pointer;
 `;
 
 const UserImg = styled.img`
