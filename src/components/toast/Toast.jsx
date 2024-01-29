@@ -3,7 +3,7 @@ import styled from "styled-components";
 
 const ToastContainer = styled.div`
   position: fixed;
-  top: 20px;
+  bottom: 60px;
   left: 50%;
   transform: translateX(-50%);
 
