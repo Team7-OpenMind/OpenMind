@@ -5,14 +5,17 @@ import "components/../common.css";
 //컴포넌트
 import Button from "components/button/Button";
 //api
-import { createAnswer, putUpdateAnswer } from "components/../api/answerApi";
+import {
+  createAnswer,
+  putUpdateAnswer,
+  getAnswer,
+} from "components/../api/answerApi";
 
 function AnswerComponent({
   question,
   questionId,
   isUpdate,
   getAnswerId,
-  getAnswer,
   answerText,
   setAnswerText,
 }) {
