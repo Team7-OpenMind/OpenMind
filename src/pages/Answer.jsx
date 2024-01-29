@@ -1,22 +1,17 @@
 import { useParams } from "react-router-dom";
-import "../common.css";
 //컴포넌트
-
+import { CenteredContainer } from "components";
 import QaHeader from "components/QA-Header";
 import AnswerPageList from "components/answer/AnswerPageList";
-import { CenteredContainer } from "components";
 //api
-import useQuery from "hooks/useQuery";
 import { subjectUrl } from "api/questionApi";
-import { useState } from "react";
+import useQuery from "hooks/useQuery";
 
 function Answer() {
   const { subjectId } = useParams();
   const {
-    data: { questionCount, ...question },
-  } = useQuery(subjectUrl(subjectId), {
-    data: [],
-  });
+    data: { questionCount, ...subject },
+  } = useQuery(subjectUrl(subjectId), {});
 
   const notification =
     questionCount === 0
@@ -25,11 +20,11 @@ function Answer() {
 
   return (
     <>
-      <QaHeader question={question} />
+      <QaHeader subject={subject} back={`/post/${subjectId}`} />
       <CenteredContainer vertical={false}>
         <AnswerPageList
           notification={notification}
-          question={question}
+          subject={subject}
           subjectId={subjectId}
         />
       </CenteredContainer>
