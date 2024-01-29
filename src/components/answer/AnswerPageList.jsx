@@ -9,7 +9,7 @@ import Error from "components/error/Error";
 import AnswerPageCard from "./AnswerPageCard";
 import Loading from "components/loading/Loading";
 import Button from "components/button/Button";
-
+import { CenteredContainer } from "components";
 //이미지
 import emptySvg from "assets/Empty.svg";
 import messageSvg from "assets/Messages.svg";
@@ -28,6 +28,7 @@ export function AnswerPageList(props) {
   const [questionItems, setQuestionItems] = useState([]);
   const infinityRef = useRef(false);
   const [drawTrigger, setDrawTrigger] = useState(false);
+  const [noQuetion, setNoQuestion] = useState(false);
 
   const {
     data: { count, next, results },
@@ -71,19 +72,28 @@ export function AnswerPageList(props) {
   if (error) {
     return <Error />;
   }
+  const deleteQA = async (questionId) => {
+    const { status } = await deleteQuestion(questionId);
+    setNoQuestion(true);
+  };
 
   const handleDeleteButton = () => {
-    questionItems.map((result) => deleteQuestion(result.id));
+    questionItems.map((result) => deleteQA(result.id));
   };
+  console.log(noQuetion);
 
   return (
     <QuestionContainer>
-      <DeleteButton count={count} onClick={handleDeleteButton}>
+      <DeleteButton
+        count={count}
+        noQuetion={noQuetion}
+        onClick={handleDeleteButton}
+      >
         삭제하기
       </DeleteButton>
       <Notification>
         <img src={messageSvg} alt="message" />
-        {notification}
+        {noQuetion ? "아직 질문이 없습니다" : notification}
         <InfinitySvg
           src={infinitySvg}
           isInfinity={infinityRef.current}
@@ -99,32 +109,38 @@ export function AnswerPageList(props) {
           />
         )}
       </Notification>
-      <FeedContainer>
-        {count === 0 ? (
-          <EmptySvg src={emptySvg} alt="empty" />
-        ) : (
-          questionItems.map((result) => (
-            <AnswerPageCard
-              key={result.id}
-              answer={result.answer}
-              content={result.content}
-              question={question}
-              questionId={result.id}
-            />
-          ))
-        )}
-        {isLoading ? (
-          <Loading />
-        ) : (
-          next && (
-            <img
-              src={arrowDownSvg}
-              alt="arrow-down"
-              onClick={onClickShowMore}
-            />
-          )
-        )}
-      </FeedContainer>
+      {noQuetion ? (
+        <EmptySvg src={emptySvg} alt="empty" />
+      ) : (
+        <FeedContainer>
+          {count === 0 ? (
+            <EmptySvg src={emptySvg} alt="empty" />
+          ) : (
+            questionItems.map((result) => (
+              <AnswerPageCard
+                key={result.id}
+                answer={result.answer}
+                content={result.content}
+                question={question}
+                questionId={result.id}
+              />
+            ))
+          )}
+          {isLoading ? (
+            <CenteredContainer>
+              <Loading />
+            </CenteredContainer>
+          ) : (
+            next && (
+              <ArrowDownSvg
+                src={arrowDownSvg}
+                alt="arrow-down"
+                onClick={onClickShowMore}
+              />
+            )
+          )}
+        </FeedContainer>
+      )}
     </QuestionContainer>
   );
 }
@@ -161,17 +177,6 @@ const FeedContainer = styled.div`
   align-items: center;
   gap: 20px;
   width: 100%;
-
-  > img {
-    width: 30px;
-    height: 30px;
-
-    &:hover {
-      cursor: pointer;
-      transform: scale(1.3);
-      transition: transform 0.3s ease-in-out;
-    }
-  }
 `;
 
 const Notification = styled.div`
@@ -195,6 +200,17 @@ const EmptySvg = styled.img`
   }
   @media (min-width: 1201px) {
     margin: 120px;
+  }
+`;
+
+const ArrowDownSvg = styled.img`
+  width: 30px;
+  height: 30px;
+
+  &:hover {
+    cursor: pointer;
+    transform: scale(1.3);
+    transition: transform 0.3s ease-in-out;
   }
 `;
 
@@ -246,6 +262,7 @@ const DeleteButton = styled(Button)`
   top: -60px;
   right: 0;
   display: ${({ count }) => (count === 0 ? "none" : "")};
+  display: ${({ noQuetion }) => (noQuetion ? "none" : "")};
   @media (min-width: 768px) {
     top: -70px;
     font-size: 15px;
