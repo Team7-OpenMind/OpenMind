@@ -1,15 +1,11 @@
 import styled from "styled-components";
-import { useParams } from "react-router-dom";
+
 import { useState } from "react";
-import "components/../common.css";
+
 //컴포넌트
 import Button from "components/button/Button";
 //api
-import {
-  createAnswer,
-  putUpdateAnswer,
-  getAnswer,
-} from "components/../api/answerApi";
+import { createAnswer, putUpdateAnswer, getAnswer } from "api/answerApi";
 
 function AnswerComponent({
   question,
