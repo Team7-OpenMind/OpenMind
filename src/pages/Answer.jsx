@@ -26,7 +26,7 @@ function Answer() {
   return (
     <>
       <QaHeader question={question} />
-      <CenteredContainer>
+      <CenteredContainer vertical={false}>
         <AnswerPageList notification={notification} question={question} />
       </CenteredContainer>
     </>
