@@ -8,10 +8,10 @@ import { CenteredContainer } from "components";
 //api
 import useQuery from "hooks/useQuery";
 import { subjectUrl } from "api/questionApi";
+import { useState } from "react";
 
 function Answer() {
   const { subjectId } = useParams();
-
   const {
     data: { questionCount, ...question },
   } = useQuery(subjectUrl(subjectId), {
@@ -27,7 +27,11 @@ function Answer() {
     <>
       <QaHeader question={question} />
       <CenteredContainer vertical={false}>
-        <AnswerPageList notification={notification} question={question} />
+        <AnswerPageList
+          notification={notification}
+          question={question}
+          subjectId={subjectId}
+        />
       </CenteredContainer>
     </>
   );

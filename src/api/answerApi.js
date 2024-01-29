@@ -67,7 +67,6 @@ export const deleteQuestion = async (questionId) => {
     `https://openmind-api.vercel.app/3-7/questions/${questionId}/`,
   );
   const data = res;
-  window.location.reload();
   return data;
 };
 //
