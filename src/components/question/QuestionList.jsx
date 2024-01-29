@@ -7,6 +7,7 @@ import messageSvg from "assets/Messages.svg";
 import { ReactComponent as infinitySvg } from "assets/infinity.svg";
 import { ReactComponent as toggleOffSvg } from "assets/toggle_off.svg";
 import { ReactComponent as toggleOnSvg } from "assets/toggle_on.svg";
+import { CenteredContainer } from "components";
 import Error from "components/error/Error";
 import FeedCard from "components/feedCard/FeedCard";
 import Loading from "components/loading/Loading";
@@ -14,7 +15,6 @@ import useQuery from "hooks/useQuery";
 import { useDispatch, useSelector } from "react-redux";
 import { selectQuestions, setQuestions } from "store/questionSlice";
 import styled from "styled-components";
-import { CenteredContainer } from "components";
 
 const QuestionContainer = styled.div`
   display: flex;
@@ -121,6 +121,7 @@ const ToggleOffSvg = styled(toggleOffSvg)`
 export function QuestionList(props) {
   const {
     notification,
+    latestQuestionId,
     subject: { id, ...subject }, // id를 제외한 name, imageSource, questionCount, createdAt은 question으로 받아옴
   } = props;
   const limitRef = useRef(8);
@@ -138,7 +139,10 @@ export function QuestionList(props) {
     error,
   } = useQuery(
     questionUrl(id, limitRef.current, offset),
-    questionStore[id] ?? { results: [] },
+    { results: [] },
+    {
+      queryKey: ["questions", latestQuestionId, id, limitRef.current, offset],
+    },
   );
 
   function onClickShowMore() {
@@ -166,8 +170,28 @@ export function QuestionList(props) {
     setDrawTrigger(!drawTrigger);
   }
 
+  /* 글을 작성해서 latestQuestionId가 바뀌면 새로고침 */
   useEffect(() => {
-    setQuestionItems([...questionItems, ...results]);
+    setOffset(0);
+    setQuestionItems([]);
+    /* Redux에 저장된 데이터를 초기화 */
+    dispatch(
+      setQuestions({
+        subjectId: id,
+        subjectQuestions: { results: [] },
+      }),
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [latestQuestionId]);
+
+  useEffect(() => {
+    if (isLoading) return;
+    /* questionItems에 results를 합치고 중복 제거 */
+    const newQuestions = [...questionItems, ...results].filter(
+      (question, idx, array) =>
+        idx === array.findIndex((item) => item.id === question.id),
+    );
+    setQuestionItems(newQuestions);
     document.addEventListener("scroll", onScroll);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [results]);
@@ -187,6 +211,21 @@ export function QuestionList(props) {
   if (error) {
     return <Error />;
   }
+
+  let questions = (
+    questionItems.length ? questionItems : questionStore[id]?.results ?? []
+  ).map((result) => (
+    <FeedCard
+      key={result.id}
+      answer={result.answer}
+      content={result.content}
+      like={result.like}
+      dislike={result.dislike}
+      createdAt={result.createdAt}
+      subject={subject}
+      questionId={result.id}
+    />
+  ));
 
   return (
     <>
@@ -210,22 +249,7 @@ export function QuestionList(props) {
           )}
         </Notification>
         <FeedContainer>
-          {count === 0 ? (
-            <EmptySvg src={emptySvg} alt="empty" />
-          ) : (
-            questionItems.map((result) => (
-              <FeedCard
-                key={result.id}
-                answer={result.answer}
-                content={result.content}
-                like={result.like}
-                dislike={result.dislike}
-                createdAt={result.createdAt}
-                subject={subject}
-                questionId={result.id}
-              />
-            ))
-          )}
+          {count === 0 ? <EmptySvg src={emptySvg} alt="empty" /> : questions}
           {isLoading ? (
             <CenteredContainer>
               <Loading />

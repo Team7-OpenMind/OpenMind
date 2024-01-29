@@ -1,28 +1,29 @@
 import { questionUrl } from "api/questionApi";
-import { useRef } from "react";
-import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import Button from "components/button/Button";
 import Modal from "components/modal/Modal";
+import { useRef } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 
-function QuestionModal({ userInfo }) {
+function QuestionModal({ onClose, userInfo }) {
   const { subjectId } = useParams();
   const navigate = useNavigate();
   const textAreaRef = useRef();
 
   // 쿼리 스트링으로 모달 창을 열면 뒤로가기로 쉽게 모달 창 닫기 가능
-  const handleClose = () => {
+  const handleClose = (questionId) => {
+    onClose(questionId);
     navigate(-1);
   };
 
   // TODO: 질문 작성하고 바로 작성한 질문 확인할 수 있게 만들기
   const handleSubmit = async () => {
     try {
-      await axios.post(questionUrl(subjectId), {
+      const { data } = await axios.post(questionUrl(subjectId), {
         content: textAreaRef.current.value,
       });
-      handleClose();
+      handleClose(data.id);
     } catch (error) {
       alert(error.message);
       console.error(error);

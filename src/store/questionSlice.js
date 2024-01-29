@@ -15,7 +15,10 @@ export const questionSlice = createSlice({
     // 여러 액션을 처리할 리듀서들을 정의
     setQuestions: (state, action) => {
       const { subjectId, subjectQuestions } = action.payload; // action의 payload에서 subjectId와 subjectQuestions를 가져옴
-      state[subjectId] = subjectQuestions; // state를 변경하는 함수
+      return {
+        ...state,
+        [subjectId]: subjectQuestions, // state에 subjectId를 key로 하고 subjectQuestions를 value로 하는 객체를 추가
+      };
     },
   },
 });
