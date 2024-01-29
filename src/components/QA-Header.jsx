@@ -1,13 +1,37 @@
+import { useState } from "react";
+import { useLocation } from "react-router-dom";
 import styled from "styled-components";
 import "../common.css";
+
 // 이미지 파일들
 import headerPng from "../assets/header.png";
 import logoSvg from "../assets/logo.svg";
 import { ReactComponent as LinkSvg } from "../assets/Link.svg";
 import kakaotalkSvg from "../assets/Kakaotalk.svg";
 import { ReactComponent as FacebookSvg } from "../assets/Facebook.svg";
+import { BASE_URL } from "api";
+import { copyClipboard, shareFacebook, shareKakao } from "utils/share";
+import { Toast } from "./toast/Toast";
 
 function QaHeader({ question }) {
+  const [toastMsg, setToastMsg] = useState("");
+  const location = useLocation();
+  const url = `${BASE_URL}${location.pathname}${location.search}`;
+
+  function onClickLink() {
+    copyClipboard(url)
+      .then(() => {
+        setToastMsg(`${url}이(가) 복사되었습니다.`);
+      })
+      .catch(() => {
+        setToastMsg("클립보드 복사에 실패했습니다.");
+      });
+  }
+
+  function onCloseToast() {
+    setToastMsg("");
+  }
+
   return (
     <header>
       <HeaderBg>
@@ -16,18 +40,19 @@ function QaHeader({ question }) {
           <UserImg src={question.imageSource} />
           <UserName>{question.name}</UserName>
           <ShareButtonBox>
-            <ShareButton icon="link">
+            <ShareButton icon="link" onClick={onClickLink}>
               <LinkSvg fill="white" />
             </ShareButton>
-            <ShareButton icon="kakaotalk">
+            <ShareButton icon="kakaotalk" onClick={() => shareKakao(url)}>
               <img src={kakaotalkSvg} alt="카카오톡 아이콘" />
             </ShareButton>
-            <ShareButton icon="facebook">
+            <ShareButton icon="facebook" onClick={() => shareFacebook(url)}>
               <FacebookSvg fill="white" />
             </ShareButton>
           </ShareButtonBox>
         </HeaderContentBox>
       </HeaderBg>
+      <Toast msg={toastMsg} onClose={onCloseToast} />
     </header>
   );
 }
