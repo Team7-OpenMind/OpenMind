@@ -1,10 +1,20 @@
+import { useEffect, useRef, useState } from "react";
+
 import { questionUrl } from "api/questionApi";
+import arrowDownSvg from "assets/Arrow-down.svg";
 import emptySvg from "assets/Empty.svg";
 import messageSvg from "assets/Messages.svg";
+import { ReactComponent as infinitySvg } from "assets/infinity.svg";
+import { ReactComponent as toggleOffSvg } from "assets/toggle_off.svg";
+import { ReactComponent as toggleOnSvg } from "assets/toggle_on.svg";
 import Error from "components/error/Error";
 import FeedCard from "components/feedCard/FeedCard";
+import Loading from "components/loading/Loading";
 import useQuery from "hooks/useQuery";
+import { useDispatch, useSelector } from "react-redux";
+import { selectQuestions, setQuestions } from "store/questionSlice";
 import styled from "styled-components";
+import { CenteredContainer } from "components";
 
 const QuestionContainer = styled.div`
   display: flex;
@@ -12,7 +22,7 @@ const QuestionContainer = styled.div`
   justify-content: center;
   align-items: center;
   width: 100%;
-  margin: 353px 24px 126px;
+  margin: 38px 24px 126px;
   max-width: 900px;
   padding: 16px;
 
@@ -21,12 +31,12 @@ const QuestionContainer = styled.div`
   border: 1px solid var(--Brown-20);
 
   @media (min-width: 768px) {
-    margin: 423px 32px 0;
+    margin: 38px 32px 0;
     margin-bottom: 136px;
   }
 
   @media (min-width: 1201px) {
-    margin: 423px 32px 0;
+    margin: 38px 32px 0;
     margin-bottom: 136px;
   }
 `;
@@ -34,13 +44,16 @@ const QuestionContainer = styled.div`
 const FeedContainer = styled.div`
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: 20px;
   width: 100%;
 `;
 
 const Notification = styled.div`
+  position: relative;
   display: flex;
   justify-content: center;
+  align-items: center;
   width: 100%;
   gap: 8px;
   margin: 0 0 16px;
@@ -60,17 +73,116 @@ const EmptySvg = styled.img`
   }
 `;
 
+const ArrowDownSvg = styled.img`
+  width: 30px;
+  height: 30px;
+
+  &:hover {
+    cursor: pointer;
+    transform: scale(1.3);
+    transition: transform 0.3s ease-in-out;
+  }
+`;
+
+const InfinitySvg = styled(infinitySvg)`
+  position: absolute;
+
+  right: 52px;
+  width: 32px;
+  height: 32px;
+  path {
+    fill: ${(props) =>
+      props.isInfinity ? "var(--Brown-40)" : "var(--Grayscale-30)"};
+  }
+`;
+
+const ToggleOnSvg = styled(toggleOnSvg)`
+  position: absolute;
+
+  right: 0;
+  width: 48px;
+  height: 48px;
+  path {
+    fill: var(--Blue-50);
+  }
+`;
+
+const ToggleOffSvg = styled(toggleOffSvg)`
+  position: absolute;
+
+  right: 0;
+  width: 48px;
+  height: 48px;
+  path {
+    fill: var(--Red-50);
+  }
+`;
+
 export function QuestionList(props) {
   const {
     notification,
-    question: { id, ...question }, // id를 제외한 name, imageSource, questionCount, createdAt은 question으로 받아옴
+    subject: { id, ...subject }, // id를 제외한 name, imageSource, questionCount, createdAt은 question으로 받아옴
   } = props;
+  const limitRef = useRef(8);
+  const [offset, setOffset] = useState(0);
+  const [questionItems, setQuestionItems] = useState([]);
+  const infinityRef = useRef(false);
+  const [drawTrigger, setDrawTrigger] = useState(false);
+
+  const dispatch = useDispatch();
+  const questionStore = useSelector(selectQuestions);
+
   const {
-    data: { count, results },
+    data: { count, next, results },
+    isLoading,
     error,
-  } = useQuery(questionUrl(id), {
-    results: [],
-  });
+  } = useQuery(
+    questionUrl(id, limitRef.current, offset),
+    questionStore[id] ?? { results: [] },
+  );
+
+  function onClickShowMore() {
+    if (count <= offset) {
+      setOffset(count);
+      return;
+    } else {
+      setOffset(offset + limitRef.current);
+    }
+  }
+
+  function onScroll() {
+    if (!infinityRef.current) return;
+
+    if (
+      window.innerHeight + window.scrollY >=
+      document.documentElement.scrollHeight - 100
+    ) {
+      if (!isLoading && next) onClickShowMore();
+    }
+  }
+
+  function onClickInfinityToggle(event, flag) {
+    infinityRef.current = flag;
+    setDrawTrigger(!drawTrigger);
+  }
+
+  useEffect(() => {
+    setQuestionItems([...questionItems, ...results]);
+    document.addEventListener("scroll", onScroll);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [results]);
+
+  // Redux store에 데이터를 업데이트 하는 역할을 하는 훅
+  useEffect(() => {
+    if (!results) return;
+    dispatch(
+      setQuestions({
+        subjectId: id,
+        subjectQuestions: { count, next, results },
+      }),
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [results]); // results가 바뀔 때마다 실행
 
   if (error) {
     return <Error />;
@@ -82,28 +194,55 @@ export function QuestionList(props) {
         <Notification>
           <img src={messageSvg} alt="message" />
           {notification}
+          <InfinitySvg
+            src={infinitySvg}
+            isInfinity={infinityRef.current}
+            alt="infinity"
+          />
+          {infinityRef.current ? (
+            <ToggleOnSvg
+              onClick={(event) => onClickInfinityToggle(event, false)}
+            />
+          ) : (
+            <ToggleOffSvg
+              onClick={(event) => onClickInfinityToggle(event, true)}
+            />
+          )}
         </Notification>
         <FeedContainer>
           {count === 0 ? (
             <EmptySvg src={emptySvg} alt="empty" />
           ) : (
-            results.map((result) => (
+            questionItems.map((result) => (
               <FeedCard
                 key={result.id}
                 answer={result.answer}
                 content={result.content}
-                question={question}
+                like={result.like}
+                dislike={result.dislike}
+                createdAt={result.createdAt}
+                subject={subject}
+                questionId={result.id}
               />
             ))
+          )}
+          {isLoading ? (
+            <CenteredContainer>
+              <Loading />
+            </CenteredContainer>
+          ) : (
+            next && (
+              <ArrowDownSvg
+                src={arrowDownSvg}
+                alt="arrow-down"
+                onClick={onClickShowMore}
+              />
+            )
           )}
         </FeedContainer>
       </QuestionContainer>
     </>
   );
 }
-
-QuestionList.defaultProps = {
-  id: 2375,
-};
 
 export default QuestionList;

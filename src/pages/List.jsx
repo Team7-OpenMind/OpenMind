@@ -1,12 +1,14 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 import styled from "styled-components";
-import CardList from "components/CardList";
+import UserCardList from "components/userCard/UserCardList";
 
 import logo from "assets/logo.svg";
-import Dropdown from "components/userCard/Dropdown";
+import Dropdown from "components/button/Dropdown";
 import Button from "components/button/Button";
 import Arrow from "assets/Arrow.svg";
+import Pagination from "components/pagination/Pagination";
 
 const ListStyled = styled.div`
   display: flex;
@@ -19,6 +21,15 @@ const ListStyled = styled.div`
   padding-left: 24px; // TODO : change max(24px, ??)
   padding-right: 24px; // TODO : change max(24px, ??)
 
+  > * {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    width: 100%;
+  }
+
   @media screen and (min-width: 768px) {
     padding-left: minmax(32px, auto);
     padding-right: minmax(32px, auto);
@@ -26,17 +37,15 @@ const ListStyled = styled.div`
 `;
 
 const ListTop = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
   margin-bottom: 52px;
-
-  width: 100%;
 
   > img {
     width: 146px;
     margin-bottom: 20px;
+
+    &:hover {
+      cursor: pointer;
+    }
   }
 
   @media screen and (min-width: 768px) {
@@ -49,23 +58,8 @@ const ListTop = styled.div`
   }
 `;
 
-const ListMid = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-
-  width: 100%;
-`;
-
-const ListBot = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-
-  width: 100%;
-`;
+const ListMid = styled.div``;
+const ListBot = styled.div``;
 
 const AnswerButton = styled(Button)`
   display: flex;
@@ -74,7 +68,7 @@ const AnswerButton = styled(Button)`
   align-items: center;
 
   font-size: 14px;
-  line-height: 18px; /* 128.571% */
+  line-height: 18px;
   color: var(--Brown-40, #542f1a);
   padding: 8px 12px;
   gap: 4px;
@@ -85,7 +79,7 @@ const AnswerButton = styled(Button)`
 
   @media screen and (min-width: 768px) {
     font-size: 16px;
-    line-height: 22px; /* 137.5% */
+    line-height: 22px;
   }
 `;
 
@@ -101,7 +95,7 @@ const FilterStyled = styled.div`
   > div {
     color: var(--Grayscale-60, #000);
     text-align: center;
-    font-family: "Black Han Sans"; // TODO : add font
+    font-family: "Black Han Sans";
     font-size: 24px;
     font-weight: 400;
 
@@ -120,7 +114,7 @@ const FilterStyled = styled.div`
   }
 `;
 
-const CardListStyled = styled(CardList)`
+const UserCardListStyled = styled(UserCardList)`
   position: relative;
 
   display: grid;
@@ -147,10 +141,11 @@ const CardListStyled = styled(CardList)`
 export function List() {
   const [showCardCount, setShowCardCount] = useState(8); // Info : 6 ~ 8개씩 보여줌
   const [pageIndex, setPageIndex] = useState(1); // Info : 1부터 시작
-  const [orderNew, setOrderNew] = useState(true);
+  const [order, setOrder] = useState("time");
+  const navigate = useNavigate();
 
   function onSelectOrder(key) {
-    setOrderNew("최신순" === key);
+    setOrder("최신순" === key ? "time" : "name");
   }
 
   function onShowMore(flag) {
@@ -162,7 +157,14 @@ export function List() {
     if (e.target.innerWidth > 1200) setShowCardCount(8);
   }
 
-  function onClickLogo() {}
+  function onClickLogo() {
+    navigate("/");
+  }
+
+  function onClickAnswer() {
+    const subjectId = localStorage.getItem("subjectId");
+    subjectId ? navigate(`/post/${subjectId}/answer`) : navigate("/");
+  }
 
   useEffect(() => {
     window.addEventListener("resize", onResize);
@@ -172,10 +174,10 @@ export function List() {
   }, [showCardCount]);
 
   return (
-    <ListStyled onShowMore={onShowMore}>
+    <ListStyled>
       <ListTop>
         <img src={logo} alt="logo" onClick={onClickLogo} />
-        <AnswerButton>
+        <AnswerButton onClick={onClickAnswer}>
           <div>답변하러 가기</div>
           <img src={Arrow} />
         </AnswerButton>
@@ -183,18 +185,23 @@ export function List() {
       <ListMid>
         <FilterStyled>
           <div>누구에게 질문할까요?</div>
-          <Dropdown items={["이름순", "최신순"]} onSelect={onSelectOrder} />
+          <Dropdown items={["최신순", "이름순"]} onSelect={onSelectOrder} />
         </FilterStyled>
-        <CardListStyled
+        <UserCardListStyled
+          key={pageIndex}
           showCardCount={showCardCount}
           pageIndex={pageIndex}
-          orderNew={orderNew}
+          order={order}
           isShowMore={showCardCount === 8}
           onShowMore={onShowMore}
         />
       </ListMid>
       <ListBot>
-        <div>카드 리스트 인덱스</div>
+        <Pagination
+          showCardCount={showCardCount}
+          initPage={pageIndex}
+          onClick={setPageIndex}
+        />
       </ListBot>
     </ListStyled>
   );

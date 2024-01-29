@@ -1,3 +1,7 @@
+import { useEffect, useRef } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
+import { selectSubjects, setSubject } from "store/subjectSlice";
 import { subjectUrl } from "api/questionApi";
 import { CenteredContainer } from "components";
 import QaHeader from "components/QA-Header";
@@ -7,8 +11,9 @@ import Loading from "components/loading/Loading";
 import QuestionList from "components/question/QuestionList";
 import useMediaQuery from "hooks/useMediaQuery";
 import useQuery from "hooks/useQuery";
-import { useParams } from "react-router-dom";
 import styled from "styled-components";
+import QaHeader from "components/QA-Header";
+import QuestionModal from "components/modal/question/QuestionModal";
 
 const QuestionButton = styled(FloatingButton)`
   position: fixed;
@@ -20,16 +25,36 @@ const QuestionButton = styled(FloatingButton)`
 `;
 
 function Post() {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const isModalOpen = searchParams.get("open");
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const isMobile = useMediaQuery("(max-width: 767px)");
   const { subjectId } = useParams(); // router의 url parameter
+  const mountRef = useRef(false);
+  const subjects = useSelector(selectSubjects);
+
+  // 쿼리 스트링을 이용하여 open 값으로 모달 종류 선택 및 열고 닫기 가능
+  const handleModalOpen = () => navigate(`/post/${subjectId}?open=true`);
 
   const {
-    data: { questionCount, ...question },
+    data: { questionCount, ...subject },
     error,
     isLoading,
-  } = useQuery(subjectUrl(subjectId), {
-    data: [],
-  });
+  } = useQuery(subjectUrl(subjectId), subjects[subjectId] ?? {});
+
+  useEffect(() => {
+    mountRef.current = true;
+
+    return () => {
+      mountRef.current = false;
+    };
+  }, []);
+
+  useEffect(() => {
+    dispatch(setSubject({ ...subject, questionCount }));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [subject.id]);
 
   if (error) {
     const status = error.response?.status;
@@ -39,7 +64,7 @@ function Post() {
     return <Error message={message} />;
   }
 
-  if (isLoading) {
+  if (isLoading && mountRef.current) {
     return (
       <CenteredContainer>
         <Loading />
@@ -56,10 +81,13 @@ function Post() {
 
   return (
     <>
-      <QaHeader />
-      <CenteredContainer>
-        <QuestionList notification={notification} question={question} />
-        <QuestionButton className="shadow-2pt">{buttonText}</QuestionButton>
+      <QaHeader question={subject} />
+      <CenteredContainer vertical={false}>
+        <QuestionList notification={notification} subject={subject} />
+        <QuestionButton className="shadow-2pt" onClick={handleModalOpen}>
+          {buttonText}
+        </QuestionButton>
+        {isModalOpen && <QuestionModal userInfo={subjects[subjectId]} />}
       </CenteredContainer>
     </>
   );

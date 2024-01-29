@@ -50,6 +50,10 @@ body {
   font-size: 20px;
 }
 
+textarea {
+  font-family: "Pretendard", sans-serif;
+}
+
 h1 {
   font-size: 40px;
 }
@@ -62,7 +66,7 @@ h3 {
   font-size: 24px;
 }
 
-regular {
+.regular {
   font-size: 16px;
 }
 
