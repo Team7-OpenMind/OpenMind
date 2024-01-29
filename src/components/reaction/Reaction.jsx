@@ -18,11 +18,15 @@ function Reaction({ questionId }) {
   const [countLike, setCountLike] = useState(0);
   const [countDislike, setCountDislike] = useState(0);
   const [whatReaction, setWhatReaction] = useState("");
+  const [resetLike, setResetLike] = useState(false);
+  const [resetDislike, setResetDislike] = useState(false);
 
   const reactionCount = async (reaction) => {
     const { like, dislike } = await countReaction(questionId, reaction);
     setCountLike(like);
     setCountDislike(dislike);
+    localStorage.setItem(`${questionId}_like`, like);
+    localStorage.setItem(`${questionId}_dislike`, dislike);
   };
 
   function handleReactionClick(ref, className) {
@@ -30,15 +34,25 @@ function Reaction({ questionId }) {
       ref.current.children[0].classList.remove(className);
       ref.current.children[1].classList.remove(className);
       setSelected(false);
+
       setWhatReaction("");
+
+      className === LIKE ? setResetLike(true) : setResetDislike(true);
     }
     if (!selected) {
       //선택 안 했으면 실행
       ref.current.children[0].classList.add(className);
       ref.current.children[1].classList.add(className);
       setSelected(true);
-      reactionCount(className);
+
       setWhatReaction(className);
+
+      if (localStorage.getItem(`${questionId}_${className}_on`) === "0") {
+        reactionCount(className);
+      }
+      localStorage.setItem(`${questionId}_${className}_on`, "1");
+
+      className === LIKE ? setResetLike(false) : setResetDislike(false);
     }
   }
 
@@ -53,6 +67,14 @@ function Reaction({ questionId }) {
   const ADD_LIKE_STYLE = whatReaction === LIKE ? LIKE : "";
   const ADD_DISLIKE_STYLE = whatReaction === DISLIKE ? DISLIKE : "";
 
+  useEffect(() => {
+    localStorage.setItem(`${questionId}_like_on`, "0");
+    localStorage.setItem(`${questionId}_dislike_on`, "0");
+
+    setCountLike(localStorage.getItem(`${questionId}_like`));
+    setCountDislike(localStorage.getItem(`${questionId}_dislike`));
+  }, [questionId]);
+
   return (
     <>
       <ReactionBox>
@@ -63,7 +85,7 @@ function Reaction({ questionId }) {
         >
           <ThumbsUpSvg fill="#818181" className={ADD_LIKE_STYLE} />
           <ReactionText className={ADD_LIKE_STYLE}>
-            좋아요 {whatReaction === LIKE ? countLike : ""}
+            좋아요 {countLike - (resetLike ? 1 : 0)}
           </ReactionText>
         </ThumbsIconTextBox>
         <ThumbsIconTextBox
@@ -73,7 +95,7 @@ function Reaction({ questionId }) {
         >
           <ThumbsDownSvg fill="#818181" className={ADD_DISLIKE_STYLE} />
           <ReactionText className={ADD_DISLIKE_STYLE}>
-            싫어요 {whatReaction === DISLIKE ? countDislike : ""}
+            싫어요 {countDislike - (resetDislike ? 1 : 0)}
           </ReactionText>
         </ThumbsIconTextBox>
       </ReactionBox>
