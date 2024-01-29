@@ -90,7 +90,6 @@ const InfinitySvg = styled(infinitySvg)`
 
   right: 52px;
   width: clamp(16px, 8%, 32px);
-  height: clamp(16px, 8%, 32px);
   path {
     fill: ${(props) =>
       props.isInfinity ? "var(--Brown-40)" : "var(--Grayscale-30)"};
