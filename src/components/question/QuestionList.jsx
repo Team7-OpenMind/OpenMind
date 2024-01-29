@@ -52,13 +52,14 @@ const FeedContainer = styled.div`
 const Notification = styled.div`
   position: relative;
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   width: 100%;
   gap: 8px;
   margin: 0 0 16px;
   color: var(--Brown-40);
-  font-size: 1.1em;
+  font-size: clamp(0.7em, 4.5vw, 1.1em);
+  text-align: left;
 `;
 
 const EmptySvg = styled.img`
@@ -88,8 +89,7 @@ const InfinitySvg = styled(infinitySvg)`
   position: absolute;
 
   right: 52px;
-  width: 32px;
-  height: 32px;
+  width: clamp(16px, 8%, 32px);
   path {
     fill: ${(props) =>
       props.isInfinity ? "var(--Brown-40)" : "var(--Grayscale-30)"};
