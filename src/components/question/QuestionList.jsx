@@ -7,6 +7,7 @@ import messageSvg from "assets/Messages.svg";
 import { ReactComponent as infinitySvg } from "assets/infinity.svg";
 import { ReactComponent as toggleOffSvg } from "assets/toggle_off.svg";
 import { ReactComponent as toggleOnSvg } from "assets/toggle_on.svg";
+import { CenteredContainer } from "components";
 import Error from "components/error/Error";
 import FeedCard from "components/feedCard/FeedCard";
 import Loading from "components/loading/Loading";
@@ -14,7 +15,6 @@ import useQuery from "hooks/useQuery";
 import { useDispatch, useSelector } from "react-redux";
 import { selectQuestions, setQuestions } from "store/questionSlice";
 import styled from "styled-components";
-import { CenteredContainer } from "components";
 
 const QuestionContainer = styled.div`
   display: flex;
@@ -136,10 +136,7 @@ export function QuestionList(props) {
     data: { count, next, results },
     isLoading,
     error,
-  } = useQuery(
-    questionUrl(id, limitRef.current, offset),
-    questionStore[id] ?? { results: [] },
-  );
+  } = useQuery(questionUrl(id, limitRef.current, offset), { results: [] });
 
   function onClickShowMore() {
     if (count <= offset) {
@@ -167,7 +164,12 @@ export function QuestionList(props) {
   }
 
   useEffect(() => {
-    setQuestionItems([...questionItems, ...results]);
+    /* questionItems에 results를 합치고 중복 제거 */
+    const newQuestions = [...questionItems, ...results].filter(
+      (question, idx, array) =>
+        idx === array.findIndex((item) => item.id === question.id),
+    );
+    setQuestionItems(newQuestions);
     document.addEventListener("scroll", onScroll);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [results]);
@@ -187,6 +189,21 @@ export function QuestionList(props) {
   if (error) {
     return <Error />;
   }
+
+  let questions = (
+    questionItems.length ? questionItems : questionStore[id]?.results ?? []
+  ).map((result) => (
+    <FeedCard
+      key={result.id}
+      answer={result.answer}
+      content={result.content}
+      like={result.like}
+      dislike={result.dislike}
+      createdAt={result.createdAt}
+      subject={subject}
+      questionId={result.id}
+    />
+  ));
 
   return (
     <>
@@ -210,22 +227,7 @@ export function QuestionList(props) {
           )}
         </Notification>
         <FeedContainer>
-          {count === 0 ? (
-            <EmptySvg src={emptySvg} alt="empty" />
-          ) : (
-            questionItems.map((result) => (
-              <FeedCard
-                key={result.id}
-                answer={result.answer}
-                content={result.content}
-                like={result.like}
-                dislike={result.dislike}
-                createdAt={result.createdAt}
-                subject={subject}
-                questionId={result.id}
-              />
-            ))
-          )}
+          {count === 0 ? <EmptySvg src={emptySvg} alt="empty" /> : questions}
           {isLoading ? (
             <CenteredContainer>
               <Loading />
