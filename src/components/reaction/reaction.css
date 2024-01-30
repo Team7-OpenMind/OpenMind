@@ -1,0 +1,9 @@
+.like {
+  color: var(--Blue-50);
+  fill: var(--Blue-50);
+}
+
+.dislike {
+  color: var(--Red-50);
+  fill: var(--Red-50);
+}
