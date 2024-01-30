@@ -23,6 +23,16 @@ const QuestionButton = styled(FloatingButton)`
   padding: 15px 40px;
 `;
 
+const AnswerButton = styled(FloatingButton)`
+  position: fixed;
+  left: 24px;
+  bottom: 24px;
+  font-size: 0.9em;
+  font-weight: 300;
+  padding: 15px 40px;
+  background-color: var(--Brown-30);
+`;
+
 function Post() {
   const [latestQuestionId, setLatestQuestionId] = useState(0);
   const [searchParams, setSearchParams] = useSearchParams();
@@ -36,6 +46,8 @@ function Post() {
 
   // 쿼리 스트링을 이용하여 open 값으로 모달 종류 선택 및 열고 닫기 가능
   const handleModalOpen = () => navigate(`/post/${subjectId}?open=true`);
+
+  const handleMoveAnswer = () => navigate(`/post/${subjectId}/answer`);
 
   const {
     data: { questionCount, ...subject },
@@ -77,11 +89,12 @@ function Post() {
       ? "아직 질문이 없습니다"
       : `${questionCount}개의 질문이 있습니다.`;
 
-  const buttonText = isMobile ? "질문 작성" : "질문 작성하기";
+  const writeButtonText = isMobile ? "질문 작성" : "질문 작성하기";
+  const answerButtonText = isMobile ? "답변 작성" : "답변 작성하기";
 
   return (
     <>
-      <QaHeader question={subject} />
+      <QaHeader subject={subject} />
       <CenteredContainer vertical={false}>
         <QuestionList
           latestQuestionId={latestQuestionId}
@@ -89,8 +102,13 @@ function Post() {
           subject={subject}
         />
         <QuestionButton className="shadow-2pt" onClick={handleModalOpen}>
-          {buttonText}
+          {writeButtonText}
         </QuestionButton>
+        {questionCount > 0 && (
+          <AnswerButton className="shadow-2pt" onClick={handleMoveAnswer}>
+            {answerButtonText}
+          </AnswerButton>
+        )}
         {isModalOpen && (
           <QuestionModal
             onClose={(questionId) => setLatestQuestionId(questionId)}
