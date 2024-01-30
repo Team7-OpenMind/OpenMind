@@ -18,11 +18,15 @@ function Reaction({ questionId }) {
   const [countLike, setCountLike] = useState(0);
   const [countDislike, setCountDislike] = useState(0);
   const [whatReaction, setWhatReaction] = useState("");
+  const [tempLike, setTempLike] = useState(false);
+  const [tempDislike, setTempDislike] = useState(false);
 
   const reactionCount = async (reaction) => {
     const { like, dislike } = await countReaction(questionId, reaction);
     setCountLike(like);
     setCountDislike(dislike);
+    localStorage.setItem(`${questionId}_like`, like);
+    localStorage.setItem(`${questionId}_dislike`, dislike);
   };
 
   function handleReactionClick(ref, className) {
@@ -30,15 +34,23 @@ function Reaction({ questionId }) {
       ref.current.children[0].classList.remove(className);
       ref.current.children[1].classList.remove(className);
       setSelected(false);
+
       setWhatReaction("");
+
+      localStorage.removeItem(`${questionId}_reaction`);
+      className === LIKE ? setTempLike(false) : setTempDislike(false);
     }
     if (!selected) {
       //선택 안 했으면 실행
       ref.current.children[0].classList.add(className);
       ref.current.children[1].classList.add(className);
       setSelected(true);
-      reactionCount(className);
+
       setWhatReaction(className);
+
+      localStorage.setItem(`${questionId}_reaction`, `${className}`);
+
+      className === LIKE ? setTempLike(true) : setTempDislike(true);
     }
   }
 
@@ -53,6 +65,20 @@ function Reaction({ questionId }) {
   const ADD_LIKE_STYLE = whatReaction === LIKE ? LIKE : "";
   const ADD_DISLIKE_STYLE = whatReaction === DISLIKE ? DISLIKE : "";
 
+  // INFO : 새로고침 시 localStorage reaction값 초기화
+  // TODO : 로그인 기능 추가 시 수정필요
+  useEffect(() => {
+    const reaction = localStorage.getItem(`${questionId}_reaction`);
+    if (reaction) {
+      console.log(reaction);
+      localStorage.removeItem(`${questionId}_reaction`);
+      reactionCount(reaction);
+    }
+
+    setCountLike(Number(localStorage.getItem(`${questionId}_like`)));
+    setCountDislike(Number(localStorage.getItem(`${questionId}_dislike`)));
+  }, [questionId]);
+
   return (
     <>
       <ReactionBox>
@@ -63,7 +89,7 @@ function Reaction({ questionId }) {
         >
           <ThumbsUpSvg fill="#818181" className={ADD_LIKE_STYLE} />
           <ReactionText className={ADD_LIKE_STYLE}>
-            좋아요 {whatReaction === LIKE ? countLike : ""}
+            좋아요 {countLike + Number(tempLike)}
           </ReactionText>
         </ThumbsIconTextBox>
         <ThumbsIconTextBox
@@ -73,7 +99,7 @@ function Reaction({ questionId }) {
         >
           <ThumbsDownSvg fill="#818181" className={ADD_DISLIKE_STYLE} />
           <ReactionText className={ADD_DISLIKE_STYLE}>
-            싫어요 {whatReaction === DISLIKE ? countDislike : ""}
+            싫어요 {countDislike + Number(tempDislike)}
           </ReactionText>
         </ThumbsIconTextBox>
       </ReactionBox>
