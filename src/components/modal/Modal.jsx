@@ -1,6 +1,7 @@
-import { createContext, useContext, useRef } from "react";
+import { createContext, useRef } from "react";
 import { ReactComponent as CloseSVG } from "assets/Close.svg";
 import { ReactComponent as MessageSVG } from "assets/Messages.svg";
+import { useNavigate } from "react-router-dom";
 import ReactDOM from "react-dom";
 import styled from "styled-components";
 
@@ -33,7 +34,7 @@ Modal.Body = Body;
 Modal.Footer = Footer;
 
 function Header({ children }) {
-  const { onClose } = useContext(ModalContext);
+  const navigate = useNavigate();
 
   return (
     <HeaderWrapper>
@@ -41,7 +42,7 @@ function Header({ children }) {
         <MessageSVG />
         {children}
       </TextWrapper>
-      <CloseButton onClick={onClose}>
+      <CloseButton onClick={() => navigate(-1)}>
         <Close />
       </CloseButton>
     </HeaderWrapper>
@@ -49,13 +50,11 @@ function Header({ children }) {
 }
 
 function Body({ children }) {
-  return <div>{children}</div>;
+  return <>{children}</>;
 }
 
 function Footer({ children }) {
-  const { onSubmit } = useContext(ModalContext);
-
-  return <button onClick={onSubmit}>{children}</button>;
+  return <>{children}</>;
 }
 
 const ModalBg = styled.div`

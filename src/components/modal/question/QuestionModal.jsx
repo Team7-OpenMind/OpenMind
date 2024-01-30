@@ -1,15 +1,15 @@
+import { useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import { questionUrl } from "api/questionApi";
 import axios from "axios";
 import Button from "components/button/Button";
 import Modal from "components/modal/Modal";
-import { useRef } from "react";
-import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 
 function QuestionModal({ onClose, userInfo }) {
+  const [textValue, setTextValue] = useState("");
   const { subjectId } = useParams();
   const navigate = useNavigate();
-  const textAreaRef = useRef();
 
   // 쿼리 스트링으로 모달 창을 열면 뒤로가기로 쉽게 모달 창 닫기 가능
   const handleClose = (questionId) => {
@@ -17,11 +17,17 @@ function QuestionModal({ onClose, userInfo }) {
     navigate(-1);
   };
 
+  const handleChange = (e) => {
+    setTextValue(e.target.value);
+  };
+
   // TODO: 질문 작성하고 바로 작성한 질문 확인할 수 있게 만들기
   const handleSubmit = async () => {
+    if (textValue === "") return;
+
     try {
       const { data } = await axios.post(questionUrl(subjectId), {
-        content: textAreaRef.current.value,
+        content: textValue,
       });
       handleClose(data.id);
     } catch (error) {
@@ -40,11 +46,19 @@ function QuestionModal({ onClose, userInfo }) {
           {userInfo?.name}
         </UserInfo>
         <Form onSubmit={(e) => e.preventDefault()}>
-          <TextArea placeholder="질문을 입력해주세요" ref={textAreaRef} />
+          <TextArea
+            placeholder="질문을 입력해주세요"
+            value={textValue}
+            onChange={handleChange}
+          />
         </Form>
       </Modal.Body>
       <Modal.Footer>
-        <SubmitButton type="button" onClick={handleSubmit}>
+        <SubmitButton
+          className={textValue === "" ? "disabled" : ""}
+          type="button"
+          onClick={handleSubmit}
+        >
           질문 보내기
         </SubmitButton>
       </Modal.Footer>
@@ -112,4 +126,9 @@ const SubmitButton = styled(Button)`
   display: flex;
   justify-content: center;
   font-size: 16px;
+
+  &.disabled {
+    background-color: var(--Brown-30);
+    outline: none;
+  }
 `;
