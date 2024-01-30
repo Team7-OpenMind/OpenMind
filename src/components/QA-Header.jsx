@@ -13,7 +13,7 @@ import { BASE_URL } from "api";
 import { copyClipboard, shareFacebook, shareKakao } from "utils/share";
 import { Toast } from "./toast/Toast";
 
-function QaHeader({ question }) {
+function QaHeader({ subject, back = "/list" }) {
   const [toastMsg, setToastMsg] = useState("");
   const location = useLocation();
   const url = `${BASE_URL}${location.pathname}${location.search}`;
@@ -36,14 +36,14 @@ function QaHeader({ question }) {
     <header>
       <HeaderBg>
         <GoToListPage>
-          <Link to="/list"> {`Back To LIST`}</Link>
+          <Link to={back}> {`Back To LIST`}</Link>
         </GoToListPage>
         <HeaderContentBox>
           <Link to="/">
             <Logo src={logoSvg} alt="로고" />
           </Link>
-          <UserImg src={question.imageSource} />
-          <UserName>{question.name}</UserName>
+          <UserImg src={subject.imageSource} />
+          <UserName>{subject.name}</UserName>
           <ShareButtonBox>
             <ShareButton icon="link" onClick={onClickLink}>
               <LinkSvg fill="white" />
@@ -72,7 +72,7 @@ const COLOR = {
 const animation = keyframes`
   0% {
     transform: rotateZ(8deg);
-  
+
   }
   50% {
     transform: rotateZ(-8deg);

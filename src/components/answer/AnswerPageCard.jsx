@@ -7,8 +7,9 @@ import Reaction from "components/reaction/Reaction";
 import { ReactComponent as pencilSvg } from "assets/pencil-square.svg";
 
 export function AnswerPageCard(props) {
-  const { questionId, answer, content, question, like, dislike } = props;
-  const { createdAt, imageSource, name } = question;
+  const { questionId, answer, content, question, subject, like, dislike } =
+    props;
+  const { imageSource, name } = subject;
 
   const [answerTextRn, setAnswerTextRn] = useState("");
   const [isUpdate, setIsUpdate] = useState(false);
@@ -42,7 +43,7 @@ export function AnswerPageCard(props) {
         )}
       </TagEditContainer>
       <QuestionContainer>
-        <DateStyled>질문 · {getTimeAgo(createdAt)}</DateStyled>
+        <DateStyled>질문 · {getTimeAgo(question.createdAt)}</DateStyled>
         {content}
       </QuestionContainer>
       {answer && (
@@ -59,25 +60,13 @@ export function AnswerPageCard(props) {
           </AnswerStyled>
         </AnswerWrapper>
       )}
-      {answer === null ? (
+      {answer === null || isUpdate ? (
         <AnswerComponent
           questionId={questionId}
-          question={question}
+          subject={subject}
           answerTag={answerText}
           isUpdate={isUpdate}
-          answerText={answerTextRn}
-          setAnswerText={setAnswerTextRn}
-        />
-      ) : (
-        ""
-      )}
-      {isUpdate === true ? (
-        <AnswerComponent
-          questionId={questionId}
-          question={question}
-          answerTag={answerText}
-          isUpdate={isUpdate}
-          getAnswerId={answer.id}
+          getAnswerId={answer?.id}
           answerText={answerTextRn}
           setAnswerText={setAnswerTextRn}
         />

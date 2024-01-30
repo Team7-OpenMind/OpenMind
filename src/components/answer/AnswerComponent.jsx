@@ -8,7 +8,7 @@ import Button from "components/button/Button";
 import { createAnswer, putUpdateAnswer, getAnswer } from "api/answerApi";
 
 function AnswerComponent({
-  question,
+  subject,
   questionId,
   isUpdate,
   getAnswerId,
@@ -58,9 +58,9 @@ function AnswerComponent({
   return (
     <>
       <ImgNameTextBox getStatusCode={getStatusCode}>
-        <UserImg src={question.imageSource} />
+        <UserImg src={subject.imageSource} />
         <NameTextBox>
-          <UserName>{question.name}</UserName>
+          <UserName>{subject.name}</UserName>
           <TextArea
             onChange={handleOnChange}
             name="answer"

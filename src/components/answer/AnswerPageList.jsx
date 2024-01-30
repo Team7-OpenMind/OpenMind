@@ -21,7 +21,7 @@ import { ReactComponent as toggleOffSvg } from "assets/toggle_off.svg";
 export function AnswerPageList(props) {
   const {
     notification,
-    question: { id, ...question }, // id를 제외한 name, imageSource, questionCount, createdAt은 question으로 받아옴
+    subject: { id, ...subject }, // subject는 subjectId, name, imageSource를 가지고 있음
   } = props;
   const limitRef = useRef(8);
   const [offset, setOffset] = useState(0);
@@ -121,8 +121,9 @@ export function AnswerPageList(props) {
                 key={result.id}
                 answer={result.answer}
                 content={result.content}
-                question={question}
+                question={result}
                 questionId={result.id}
+                subject={subject}
               />
             ))
           )}
