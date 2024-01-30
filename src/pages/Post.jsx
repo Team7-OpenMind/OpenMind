@@ -17,7 +17,7 @@ import QuestionModal from "components/modal/question/QuestionModal";
 const QuestionButton = styled(FloatingButton)`
   position: fixed;
   right: 24px;
-  bottom: 24px;
+  bottom: ${({ questionCount }) => (questionCount === 0 ? "24px" : "80px")};
   font-size: 0.9em;
   font-weight: 300;
   padding: 15px 40px;
@@ -25,12 +25,12 @@ const QuestionButton = styled(FloatingButton)`
 
 const AnswerButton = styled(FloatingButton)`
   position: fixed;
-  left: 24px;
+  right: 24px;
   bottom: 24px;
   font-size: 0.9em;
   font-weight: 300;
   padding: 15px 40px;
-  background-color: var(--Brown-30);
+  background-color: var(--Brown-50);
 `;
 
 function Post() {
@@ -101,7 +101,11 @@ function Post() {
           notification={notification}
           subject={subject}
         />
-        <QuestionButton className="shadow-2pt" onClick={handleModalOpen}>
+        <QuestionButton
+          className="shadow-2pt"
+          onClick={handleModalOpen}
+          questionCount={questionCount}
+        >
           {writeButtonText}
         </QuestionButton>
         {questionCount > 0 && (
