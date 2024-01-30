@@ -6,14 +6,14 @@
 ## 🔍 프로젝트 정보
 * React로 만듬
 * 개발기간: 2023.1.18 ~ 2024.1.31(2주)
-* 개발인원: 4인
-* 역할: ...
+
 <br/>
 
 ## 📖 주요기능
-* ...
-* ...
-* ...
+* 질문받을 대상을 등록
+* 질문대상에 대한 전체 질문목록 조회 및 질문 등록, 수정 및 삭제 기능 구현
+* 질문에 대한 답변하기 기능 구현
+* 좋아요, 싫어요 기능 구현
 <br/>
 
 ## 🔥 개발 중 겪었던 이슈
@@ -24,7 +24,7 @@
 <br/>
 
 ## ✏ 기술스택
-<img src="https://img.shields.io/badge/javascript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black"> <img src="https://img.shields.io/badge/styledcomponents-efac97?style=for-the-badge&logo=styledcomponents&logoColor=black"> <img src="https://img.shields.io/badge/react-black?style=for-the-badge&logo=react&logoColor=61DAFB"> <img src="https://img.shields.io/badge/redux-7f42c1?style=for-the-badge&logo=redux&logoColor=white">  
+<img src="https://img.shields.io/badge/javascript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black"> <img src="https://img.shields.io/badge/styledcomponents-efac97?style=for-the-badge&logo=styledcomponents&logoColor=black"> <img src="https://img.shields.io/badge/react-black?style=for-the-badge&logo=react&logoColor=61DAFB"> <img src="https://img.shields.io/badge/redux-7f42c1?style=for-the-badge&logo=redux&logoColor=white"> <img src="https://img.shields.io/badge/webpack-black?style=for-the-badge&logo=webpack&logoColor=#8ED5FA">  
 <br/>
 
 ## 🎮 배포 주소
@@ -32,10 +32,8 @@
 <br/>
 
 ## 📝 Notion
-> notion url
+> [Notion 바로가기](https://www.notion.so/ada25783baab447fb9b2727b565946bf?pvs=4)
 <br/>
-
-## ⛵ 이후 업데이트
 
 
 ## 담당 기능
@@ -48,4 +46,7 @@ https://jinahp.notion.site/57dbc5b81c344b5faa253bd0ef37b2c4
 
 ## 커밋 컨벤션
 
-https://jinahp.notion.site/443d8c8d3d194214ba88e8dac938e6cf
+https://jinahp.notion.site/443d8c8d3d194214ba88e8dac938e6cf  
+<br/>
+
+## ⛵ 이후 업데이트
