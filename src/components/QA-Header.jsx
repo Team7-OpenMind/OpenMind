@@ -9,14 +9,14 @@ import logoSvg from "../assets/logo.svg";
 import { ReactComponent as LinkSvg } from "../assets/Link.svg";
 import kakaotalkSvg from "../assets/Kakaotalk.svg";
 import { ReactComponent as FacebookSvg } from "../assets/Facebook.svg";
-import { BASE_URL } from "api";
+import { DOMAIN_URL } from "api";
 import { copyClipboard, shareFacebook, shareKakao } from "utils/share";
 import { Toast } from "./toast/Toast";
 
 function QaHeader({ subject, back = "/list" }) {
   const [toastMsg, setToastMsg] = useState("");
   const location = useLocation();
-  const url = `${BASE_URL}${location.pathname}${location.search}`;
+  const url = `${DOMAIN_URL}${location.pathname}${location.search}`;
 
   function onClickLink() {
     copyClipboard(url)
