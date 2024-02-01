@@ -1,7 +1,7 @@
 import { subjectListUrl } from "api/questionApi";
 import { getCurrentPageArray } from "utils/pagination";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import useQuery from "hooks/useQuery";
+import { useGetQuery } from "hooks/query";
 import styled from "styled-components";
 import PrevButton from "./button/PrevButton";
 import NextButton from "./button/NextButton";
@@ -11,7 +11,7 @@ function Pagination({ showCardCount: limit, initPage, onClick }) {
   const pageParam = searchParams.get("page");
   const page = Number(pageParam >= 1 ? pageParam : initPage);
   const offset = (page - 1) * limit;
-  const { data } = useQuery(subjectListUrl(limit, offset), { data: [] });
+  const { data } = useGetQuery(subjectListUrl(limit, offset), { data: [] });
 
   const { count, next, previous } = data;
   const currentPageArray = getCurrentPageArray(page, count, limit);

@@ -3,7 +3,7 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import { CenteredContainer } from "components";
 import styled from "styled-components";
 import Loading from "components/loading/Loading";
-import useQuery from "hooks/useQuery";
+import { useGetQuery } from "hooks/query";
 
 import UserCard from "./UserCard";
 
@@ -14,15 +14,18 @@ export function UserCardList({
   order,
   onShowMore,
 }) {
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
   const pageParam = searchParams.get("page");
   const page = Number(pageParam >= 1 ? pageParam : pageIndex);
   const offset = (page - 1) * limit;
   const navigate = useNavigate();
 
-  const { data, isLoading } = useQuery(subjectListUrl(limit, offset, order), {
-    data: [],
-  });
+  const { data, isLoading } = useGetQuery(
+    subjectListUrl(limit, offset, order),
+    {
+      data: [],
+    },
+  );
 
   function handleClick(card) {
     navigate(`/post/${card.id}`);

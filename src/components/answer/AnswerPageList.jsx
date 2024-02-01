@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import styled from "styled-components";
 //api
 import { questionUrl } from "api/questionApi";
-import useQuery from "hooks/useQuery";
+import { useGetQuery } from "hooks/query";
 import { deleteQuestion } from "components/../api/answerApi";
 //컴포넌트
 import Error from "components/error/Error";
@@ -34,7 +34,7 @@ export function AnswerPageList(props) {
     data: { count, next, results },
     isLoading,
     error,
-  } = useQuery(questionUrl(id, limitRef.current, offset), {
+  } = useGetQuery(questionUrl(id, limitRef.current, offset), {
     results: [],
   });
 

@@ -1,18 +1,18 @@
-import { useEffect, useRef, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { useNavigate, useParams, useSearchParams } from "react-router-dom";
-import { selectSubjects, setSubject } from "store/subjectSlice";
 import { subjectUrl } from "api/questionApi";
 import { CenteredContainer } from "components";
 import QaHeader from "components/QA-Header";
 import FloatingButton from "components/button/FloatingButton";
 import Error from "components/error/Error";
 import Loading from "components/loading/Loading";
-import QuestionList from "components/question/QuestionList";
-import useMediaQuery from "hooks/useMediaQuery";
-import useQuery from "hooks/useQuery";
-import styled from "styled-components";
 import QuestionModal from "components/modal/question/QuestionModal";
+import QuestionList from "components/question/QuestionList";
+import { useGetQuery } from "hooks/query";
+import useMediaQuery from "hooks/useMediaQuery";
+import { useEffect, useRef, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
+import { selectSubjects, setSubject } from "store/subjectSlice";
+import styled from "styled-components";
 
 const QuestionButton = styled(FloatingButton)`
   position: fixed;
@@ -53,7 +53,7 @@ function Post() {
     data: { questionCount, ...subject },
     error,
     isLoading,
-  } = useQuery(subjectUrl(subjectId), subjects[subjectId] ?? {});
+  } = useGetQuery(subjectUrl(subjectId), {});
 
   useEffect(() => {
     mountRef.current = true;
@@ -76,7 +76,7 @@ function Post() {
     return <Error message={message} />;
   }
 
-  if (isLoading && mountRef.current) {
+  if (isLoading || !mountRef.current) {
     return (
       <CenteredContainer>
         <Loading />

@@ -1,5 +1,3 @@
-import { useEffect, useRef, useState } from "react";
-
 import { questionUrl } from "api/questionApi";
 import arrowDownSvg from "assets/Arrow-down.svg";
 import emptySvg from "assets/Empty.svg";
@@ -11,7 +9,8 @@ import { CenteredContainer } from "components";
 import Error from "components/error/Error";
 import FeedCard from "components/feedCard/FeedCard";
 import Loading from "components/loading/Loading";
-import useQuery from "hooks/useQuery";
+import { useGetQuery } from "hooks/query";
+import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { selectQuestions, setQuestions } from "store/questionSlice";
 import styled from "styled-components";
@@ -137,7 +136,7 @@ export function QuestionList(props) {
     data: { count, next, results },
     isLoading,
     error,
-  } = useQuery(
+  } = useGetQuery(
     questionUrl(id, limitRef.current, offset),
     { results: [] },
     {
