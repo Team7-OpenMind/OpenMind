@@ -12,8 +12,6 @@ import Error from "components/error/Error";
 import FeedCard from "components/feedCard/FeedCard";
 import Loading from "components/loading/Loading";
 import useQuery from "hooks/useQuery";
-import { useDispatch, useSelector } from "react-redux";
-import { selectQuestions, setQuestions } from "store/questionSlice";
 import styled from "styled-components";
 
 const QuestionContainer = styled.div`
@@ -130,9 +128,6 @@ export function QuestionList(props) {
   const infinityRef = useRef(false);
   const [drawTrigger, setDrawTrigger] = useState(false);
 
-  const dispatch = useDispatch();
-  const questionStore = useSelector(selectQuestions);
-
   const {
     data: { count, next, results },
     isLoading,
@@ -170,18 +165,9 @@ export function QuestionList(props) {
     setDrawTrigger(!drawTrigger);
   }
 
-  /* 글을 작성해서 latestQuestionId가 바뀌면 새로고침 */
   useEffect(() => {
     setOffset(0);
     setQuestionItems([]);
-    /* Redux에 저장된 데이터를 초기화 */
-    dispatch(
-      setQuestions({
-        subjectId: id,
-        subjectQuestions: { results: [] },
-      }),
-    );
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [latestQuestionId]);
 
   useEffect(() => {
@@ -196,25 +182,11 @@ export function QuestionList(props) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [results]);
 
-  // Redux store에 데이터를 업데이트 하는 역할을 하는 훅
-  useEffect(() => {
-    if (!results) return;
-    dispatch(
-      setQuestions({
-        subjectId: id,
-        subjectQuestions: { count, next, results },
-      }),
-    );
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [results]); // results가 바뀔 때마다 실행
-
   if (error) {
     return <Error />;
   }
 
-  let questions = (
-    questionItems.length ? questionItems : questionStore[id]?.results ?? []
-  ).map((result) => (
+  let questions = (questionItems.length ? questionItems : []).map((result) => (
     <FeedCard
       key={result.id}
       answer={result.answer}
