@@ -100,6 +100,7 @@ function Post() {
           latestQuestionId={latestQuestionId}
           notification={notification}
           subject={subject}
+          subjectId={subjectId}
         />
         <QuestionButton
           className="shadow-2pt"

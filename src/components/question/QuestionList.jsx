@@ -118,11 +118,7 @@ const ToggleOffSvg = styled(toggleOffSvg)`
 `;
 
 export function QuestionList(props) {
-  const {
-    notification,
-    latestQuestionId,
-    subject: { id, ...subject }, // id를 제외한 name, imageSource, questionCount, createdAt은 question으로 받아옴
-  } = props;
+  const { notification, latestQuestionId, subject, subjectId } = props;
   const limitRef = useRef(8);
   const [offset, setOffset] = useState(0);
   const [questionItems, setQuestionItems] = useState([]);
@@ -137,10 +133,16 @@ export function QuestionList(props) {
     isLoading,
     error,
   } = useGetQuery(
-    questionUrl(id, limitRef.current, offset),
+    questionUrl(subjectId, limitRef.current, offset),
     { results: [] },
     {
-      queryKey: ["questions", latestQuestionId, id, limitRef.current, offset],
+      queryKey: [
+        "questions",
+        latestQuestionId,
+        subjectId,
+        limitRef.current,
+        offset,
+      ],
     },
   );
 
@@ -176,7 +178,7 @@ export function QuestionList(props) {
     /* Redux에 저장된 데이터를 초기화 */
     dispatch(
       setQuestions({
-        subjectId: id,
+        subjectId: subjectId,
         subjectQuestions: { results: [] },
       }),
     );
@@ -200,7 +202,7 @@ export function QuestionList(props) {
     if (!results) return;
     dispatch(
       setQuestions({
-        subjectId: id,
+        subjectId: subjectId,
         subjectQuestions: { count, next, results },
       }),
     );
@@ -212,7 +214,9 @@ export function QuestionList(props) {
   }
 
   let questions = (
-    questionItems.length ? questionItems : questionStore[id]?.results ?? []
+    questionItems.length
+      ? questionItems
+      : questionStore[subjectId]?.results ?? []
   ).map((result) => (
     <FeedCard
       key={result.id}
