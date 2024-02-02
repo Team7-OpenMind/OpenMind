@@ -4,7 +4,7 @@ import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { selectSubjects, setSubject } from "store/subjectSlice";
 import { subjectUrl } from "api/questionApi";
 import { CenteredContainer } from "components";
-import QaHeader from "components/QA-Header";
+import QaHeader from "components/QaHeader";
 import FloatingButton from "components/button/FloatingButton";
 import Error from "components/error/Error";
 import Loading from "components/loading/Loading";
