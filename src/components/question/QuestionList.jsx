@@ -7,7 +7,7 @@ import messageSvg from "assets/Messages.svg";
 import { ReactComponent as infinitySvg } from "assets/infinity.svg";
 import { ReactComponent as toggleOffSvg } from "assets/toggle_off.svg";
 import { ReactComponent as toggleOnSvg } from "assets/toggle_on.svg";
-import { CenteredContainer } from "components";
+import { CenteredContainer, DeferredImage } from "components";
 import Error from "components/error/Error";
 import FeedCard from "components/feedCard/FeedCard";
 import Loading from "components/loading/Loading";
@@ -231,8 +231,11 @@ export function QuestionList(props) {
     <>
       <QuestionContainer>
         <Notification>
-          <img src={messageSvg} alt="message" />
-          {notification}
+          {!isLoading && (
+            <DeferredImage src={messageSvg} alt="message">
+              {notification}
+            </DeferredImage>
+          )}
           <InfinitySvg
             src={infinitySvg}
             isInfinity={infinityRef.current}
