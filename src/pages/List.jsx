@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 import styled from "styled-components";
 import UserCardList from "components/userCard/UserCardList";
@@ -9,6 +9,83 @@ import Dropdown from "components/button/Dropdown";
 import Button from "components/button/Button";
 import Arrow from "assets/Arrow.svg";
 import Pagination from "components/pagination/Pagination";
+
+export function List() {
+  const [showCardCount, setShowCardCount] = useState(8); // Info : 6 ~ 8개씩 보여줌
+  const [pageIndex, setPageIndex] = useState(1); // Info : 1부터 시작
+  const [searchParams, setSearchParams] = useSearchParams();
+  const order = searchParams.get("order");
+  const navigate = useNavigate();
+
+  function onSelectOrder(key) {
+    setSearchParams((prevSearchParams) => {
+      prevSearchParams.set("order", key === "최신순" ? "createdAt" : "name");
+      return new URLSearchParams(prevSearchParams);
+    });
+  }
+
+  function onShowMore(flag) {
+    if (flag) setShowCardCount(8);
+    else setShowCardCount(6);
+  }
+
+  function onResize(e) {
+    if (e.target.innerWidth > 1200) {
+      setShowCardCount(8);
+    }
+  }
+
+  function onClickLogo() {
+    navigate("/");
+  }
+
+  function onClickAnswer() {
+    const subjectId = localStorage.getItem("subjectId");
+    subjectId ? navigate(`/post/${subjectId}/answer`) : navigate("/");
+  }
+
+  useEffect(() => {
+    window.addEventListener("resize", onResize);
+    return () => {
+      window.removeEventListener("resize", onResize);
+    };
+  }, [showCardCount]);
+
+  return (
+    <ListStyled>
+      <ListTop>
+        <img src={logo} alt="logo" onClick={onClickLogo} />
+        <AnswerButton onClick={onClickAnswer}>
+          <div>답변하러 가기</div>
+          <img src={Arrow} />
+        </AnswerButton>
+      </ListTop>
+      <ListMid>
+        <FilterStyled>
+          <div>누구에게 질문할까요?</div>
+          <Dropdown items={["최신순", "이름순"]} onSelect={onSelectOrder} />
+        </FilterStyled>
+        <UserCardListStyled
+          key={pageIndex}
+          showCardCount={showCardCount}
+          pageIndex={pageIndex}
+          order={order}
+          isShowMore={showCardCount === 8}
+          onShowMore={onShowMore}
+        />
+      </ListMid>
+      <ListBot>
+        <Pagination
+          showCardCount={showCardCount}
+          initPage={pageIndex}
+          onClick={setPageIndex}
+        />
+      </ListBot>
+    </ListStyled>
+  );
+}
+
+export default List;
 
 const ListStyled = styled.div`
   display: flex;
@@ -137,74 +214,3 @@ const UserCardListStyled = styled(UserCardList)`
     grid-template-columns: repeat(4, 220px);
   }
 `;
-
-export function List() {
-  const [showCardCount, setShowCardCount] = useState(8); // Info : 6 ~ 8개씩 보여줌
-  const [pageIndex, setPageIndex] = useState(1); // Info : 1부터 시작
-  const [order, setOrder] = useState("time");
-  const navigate = useNavigate();
-
-  function onSelectOrder(key) {
-    setOrder("최신순" === key ? "time" : "name");
-  }
-
-  function onShowMore(flag) {
-    if (flag) setShowCardCount(8);
-    else setShowCardCount(6);
-  }
-
-  function onResize(e) {
-    if (e.target.innerWidth > 1200) setShowCardCount(8);
-  }
-
-  function onClickLogo() {
-    navigate("/");
-  }
-
-  function onClickAnswer() {
-    const subjectId = localStorage.getItem("subjectId");
-    subjectId ? navigate(`/post/${subjectId}/answer`) : navigate("/");
-  }
-
-  useEffect(() => {
-    window.addEventListener("resize", onResize);
-    return () => {
-      window.removeEventListener("resize", onResize);
-    };
-  }, [showCardCount]);
-
-  return (
-    <ListStyled>
-      <ListTop>
-        <img src={logo} alt="logo" onClick={onClickLogo} />
-        <AnswerButton onClick={onClickAnswer}>
-          <div>답변하러 가기</div>
-          <img src={Arrow} />
-        </AnswerButton>
-      </ListTop>
-      <ListMid>
-        <FilterStyled>
-          <div>누구에게 질문할까요?</div>
-          <Dropdown items={["최신순", "이름순"]} onSelect={onSelectOrder} />
-        </FilterStyled>
-        <UserCardListStyled
-          key={pageIndex}
-          showCardCount={showCardCount}
-          pageIndex={pageIndex}
-          order={order}
-          isShowMore={showCardCount === 8}
-          onShowMore={onShowMore}
-        />
-      </ListMid>
-      <ListBot>
-        <Pagination
-          showCardCount={showCardCount}
-          initPage={pageIndex}
-          onClick={setPageIndex}
-        />
-      </ListBot>
-    </ListStyled>
-  );
-}
-
-export default List;
