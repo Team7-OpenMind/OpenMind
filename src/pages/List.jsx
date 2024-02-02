@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 import styled from "styled-components";
 import UserCardList from "components/userCard/UserCardList";
@@ -141,11 +141,16 @@ const UserCardListStyled = styled(UserCardList)`
 export function List() {
   const [showCardCount, setShowCardCount] = useState(8); // Info : 6 ~ 8개씩 보여줌
   const [pageIndex, setPageIndex] = useState(1); // Info : 1부터 시작
-  const [order, setOrder] = useState("time");
+  const [searchParams, setSearchParams] = useSearchParams();
+  const order = searchParams.get("order");
   const navigate = useNavigate();
+  console.log("listPage");
 
   function onSelectOrder(key) {
-    setOrder("최신순" === key ? "time" : "name");
+    setSearchParams((prevSearchParams) => {
+      prevSearchParams.set("order", key === "최신순" ? "createdAt" : "name");
+      return new URLSearchParams(prevSearchParams);
+    });
   }
 
   function onShowMore(flag) {
@@ -154,7 +159,9 @@ export function List() {
   }
 
   function onResize(e) {
-    if (e.target.innerWidth > 1200) setShowCardCount(8);
+    if (e.target.innerWidth > 1200) {
+      setShowCardCount(8);
+    }
   }
 
   function onClickLogo() {

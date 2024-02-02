@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
-import styled from "styled-components";
 import { ReactComponent as arrowUp } from "assets/Arrow-up.svg";
+import { useSearchParams } from "react-router-dom";
+import styled from "styled-components";
 
 // style
 const DropdownStyled = styled.div`
@@ -95,8 +96,9 @@ const DropdownItems = styled.div`
 
 // component
 export function Dropdown({ items, onSelect }) {
-  const [item, setItem] = useState("");
   const [isOpen, setIsOpen] = useState(false);
+  const [searchParam, setSearchParam] = useSearchParams();
+  const order = searchParam.get("order");
   const arrowRef = useRef(null);
   const dropdownRef = useRef(null);
 
@@ -115,8 +117,8 @@ export function Dropdown({ items, onSelect }) {
 
   function onClickDropdownItem(e) {
     e.stopPropagation();
-    setItem(e.target.innerText);
     openDropdown(false);
+    onSelect(e.target.innerText);
   }
 
   function onClickWindow() {
@@ -140,20 +142,13 @@ export function Dropdown({ items, onSelect }) {
   }
 
   useEffect(() => {
-    if (item == "" && items.length > 0) {
-      setItem(items[0]);
-    }
-    onSelect(item); // FIXME : warning cause
-  }, [item, items]);
-
-  useEffect(() => {
     document.addEventListener("click", onClickWindow);
   });
 
   return (
     <DropdownStyled>
       <SelectItem onClick={onClickDropdown} isOpen={isOpen}>
-        <div>{item}</div>
+        <div>{order === "name" ? "이름순" : "최신순"}</div>
         <Arrow src={arrowUp} ref={arrowRef} isOpen={isOpen} />
       </SelectItem>
       <DropdownItems ref={dropdownRef}>{dropDownItems()}</DropdownItems>
