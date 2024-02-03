@@ -1,6 +1,21 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 
+export function Toast({ msg, onClose }) {
+  const [message, setMessage] = useState("");
+
+  useEffect(() => {
+    setMessage(msg);
+    const timer = setTimeout(() => {
+      setMessage("");
+      onClose();
+    }, 5000);
+    return () => clearTimeout(timer);
+  }, [msg]);
+  if (message === "") return <></>;
+
+  return <ToastContainer>{message}</ToastContainer>;
+}
 const ToastContainer = styled.div`
   position: fixed;
   bottom: 60px;
@@ -24,19 +39,3 @@ const ToastContainer = styled.div`
 
   z-index: 10;
 `;
-
-export function Toast({ msg, onClose }) {
-  const [message, setMessage] = useState("");
-
-  useEffect(() => {
-    setMessage(msg);
-    const timer = setTimeout(() => {
-      setMessage("");
-      onClose();
-    }, 5000);
-    return () => clearTimeout(timer);
-  }, [msg]);
-  if (message === "") return <></>;
-
-  return <ToastContainer>{message}</ToastContainer>;
-}

@@ -1,5 +1,13 @@
 import styled from "styled-components";
 
+function Button({ className, children, onClick }) {
+  return (
+    <StyledButton className={className} onClick={onClick}>
+      {children}
+    </StyledButton>
+  );
+}
+
 const StyledButton = styled.button`
   cursor: pointer;
   outline: 1px solid var(--Brown-40);
@@ -18,13 +26,5 @@ const StyledButton = styled.button`
     background-color: var(--Brown-50);
   }
 `;
-
-function Button({ className, children, onClick }) {
-  return (
-    <StyledButton className={className} onClick={onClick}>
-      {children}
-    </StyledButton>
-  );
-}
 
 export default Button;
