@@ -5,10 +5,11 @@ import messageSvg from "assets/Messages.svg";
 import { ReactComponent as infinitySvg } from "assets/infinity.svg";
 import { ReactComponent as toggleOffSvg } from "assets/toggle_off.svg";
 import { ReactComponent as toggleOnSvg } from "assets/toggle_on.svg";
-import { CenteredContainer } from "components";
+import { CenteredContainer, DeferredImage } from "components";
 import Error from "components/error/Error";
 import FeedCard from "components/feedCard/FeedCard";
 import Loading from "components/loading/Loading";
+
 import { useGetQuery } from "hooks/query";
 import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -125,9 +126,6 @@ export function QuestionList(props) {
   const infinityRef = useRef(false);
   const [drawTrigger, setDrawTrigger] = useState(false);
 
-  const dispatch = useDispatch();
-  const questionStore = useSelector(selectQuestions);
-
   const {
     data: { count, next, results },
     isLoading,
@@ -171,7 +169,6 @@ export function QuestionList(props) {
     setDrawTrigger(!drawTrigger);
   }
 
-  /* 글을 작성해서 latestQuestionId가 바뀌면 새로고침 */
   useEffect(() => {
     setOffset(0);
     setQuestionItems([]);
@@ -208,7 +205,6 @@ export function QuestionList(props) {
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [results]); // results가 바뀔 때마다 실행
-
   if (error) {
     return <Error />;
   }
@@ -234,8 +230,11 @@ export function QuestionList(props) {
     <>
       <QuestionContainer>
         <Notification>
-          <img src={messageSvg} alt="message" />
-          {notification}
+          {!isLoading && (
+            <DeferredImage src={messageSvg} alt="message">
+              {notification}
+            </DeferredImage>
+          )}
           <InfinitySvg
             src={infinitySvg}
             isInfinity={infinityRef.current}

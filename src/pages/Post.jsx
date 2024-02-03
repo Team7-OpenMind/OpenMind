@@ -1,6 +1,6 @@
 import { subjectUrl } from "api/questionApi";
 import { CenteredContainer } from "components";
-import QaHeader from "components/QA-Header";
+import QaHeader from "components/QaHeader";
 import FloatingButton from "components/button/FloatingButton";
 import Error from "components/error/Error";
 import Loading from "components/loading/Loading";
@@ -37,12 +37,10 @@ function Post() {
   const [latestQuestionId, setLatestQuestionId] = useState(0);
   const [searchParams, setSearchParams] = useSearchParams();
   const isModalOpen = searchParams.get("open");
-  const dispatch = useDispatch();
   const navigate = useNavigate();
   const isMobile = useMediaQuery("(max-width: 767px)");
   const { subjectId } = useParams(); // router의 url parameter
   const mountRef = useRef(false);
-  const subjects = useSelector(selectSubjects);
 
   // 쿼리 스트링을 이용하여 open 값으로 모달 종류 선택 및 열고 닫기 가능
   const handleModalOpen = () => navigate(`/post/${subjectId}?open=true`);
@@ -63,11 +61,6 @@ function Post() {
     };
   }, []);
 
-  useEffect(() => {
-    dispatch(setSubject({ ...subject, questionCount }));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [subject.id]);
-
   if (error) {
     const status = error.response?.status;
     const message = status
@@ -87,7 +80,9 @@ function Post() {
   const notification =
     questionCount === 0
       ? "아직 질문이 없습니다"
-      : `${questionCount}개의 질문이 있습니다.`;
+      : questionCount
+        ? `${questionCount}개의 질문이 있습니다.`
+        : null;
 
   const writeButtonText = isMobile ? "질문 작성" : "질문 작성하기";
   const answerButtonText = isMobile ? "답변 작성" : "답변 작성하기";
@@ -117,7 +112,7 @@ function Post() {
         {isModalOpen && (
           <QuestionModal
             onClose={(questionId) => setLatestQuestionId(questionId)}
-            userInfo={subjects[subjectId]}
+            userInfo={subject}
           />
         )}
       </CenteredContainer>

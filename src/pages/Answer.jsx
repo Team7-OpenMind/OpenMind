@@ -1,7 +1,7 @@
 import { useParams } from "react-router-dom";
 //컴포넌트
 import { CenteredContainer } from "components";
-import QaHeader from "components/QA-Header";
+import QaHeader from "components/QaHeader";
 import AnswerPageList from "components/answer/AnswerPageList";
 //api
 import { subjectUrl } from "api/questionApi";
