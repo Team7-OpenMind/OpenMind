@@ -5,13 +5,13 @@ import QaHeader from "components/QaHeader";
 import AnswerPageList from "components/answer/AnswerPageList";
 //api
 import { subjectUrl } from "api/questionApi";
-import useQuery from "hooks/useQuery";
+import { useGetQuery } from "hooks/query";
 
 function Answer() {
   const { subjectId } = useParams();
   const {
     data: { questionCount, ...subject },
-  } = useQuery(subjectUrl(subjectId), {});
+  } = useGetQuery(subjectUrl(subjectId), {});
 
   const notification =
     questionCount === 0
