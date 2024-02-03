@@ -1,6 +1,20 @@
 import { ReactComponent as PersonSVG } from "assets/Person.svg";
 import styled from "styled-components";
 
+function SignInputBar({ placeholder, value, onChange }) {
+  return (
+    <>
+      <Person />
+      <Input
+        name="name"
+        placeholder={placeholder}
+        value={value}
+        onChange={onChange}
+      />
+    </>
+  );
+}
+
 const Person = styled(PersonSVG)`
   position: absolute;
   top: 35px;
@@ -25,19 +39,5 @@ const Input = styled.input`
   font-size: 16px;
   line-height: 22px;
 `;
-
-function SignInputBar({ placeholder, value, onChange }) {
-  return (
-    <>
-      <Person />
-      <Input
-        name="name"
-        placeholder={placeholder}
-        value={value}
-        onChange={onChange}
-      />
-    </>
-  );
-}
 
 export default SignInputBar;

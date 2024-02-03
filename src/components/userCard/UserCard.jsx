@@ -2,66 +2,6 @@ import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import message from "assets/Messages.svg";
 
-const ProfileContainer = styled.div``;
-
-const ProfileImage = styled.div`
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
-  overflow: hidden;
-  margin-bottom: 12px;
-
-  > img {
-    width: 100%;
-    height: 100%;
-  }
-`;
-
-const ProfileName = styled.div`
-  color: var(--Grayscale-60);
-  font-family: Actor; // TODO : add font
-  font-size: 18px;
-  font-weight: 400;
-  line-height: 24px; /* 133.333% */
-`;
-
-const QuestionContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-
-  width: 100%;
-
-  > div {
-    color: var(--Grayscale-40);
-    font-family: Pretendard;
-    font-size: 14px;
-    font-weight: 400;
-    line-height: 18px; /* 128.571% */
-  }
-`;
-
-const QuestionTitle = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-
-  gap: 4px;
-
-  > img {
-    width: 16px;
-    height: 16px;
-  }
-
-  > div {
-    color: var(--Grayscale-40);
-    font-family: Pretendard;
-    font-size: 14px;
-    font-weight: 400;
-    line-height: 18px; /* 128.571% */
-  }
-`;
-
 export function UserCard({
   className,
   name,
@@ -159,5 +99,65 @@ export function UserCard({
     </div>
   );
 }
+
+const ProfileContainer = styled.div``;
+
+const ProfileImage = styled.div`
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  overflow: hidden;
+  margin-bottom: 12px;
+
+  > img {
+    width: 100%;
+    height: 100%;
+  }
+`;
+
+const ProfileName = styled.div`
+  color: var(--Grayscale-60);
+  font-family: Actor; // TODO : add font
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 24px; /* 133.333% */
+`;
+
+const QuestionContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+
+  width: 100%;
+
+  > div {
+    color: var(--Grayscale-40);
+    font-family: Pretendard;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 18px; /* 128.571% */
+  }
+`;
+
+const QuestionTitle = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+  gap: 4px;
+
+  > img {
+    width: 16px;
+    height: 16px;
+  }
+
+  > div {
+    color: var(--Grayscale-40);
+    font-family: Pretendard;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 18px; /* 128.571% */
+  }
+`;
 
 export default UserCard;

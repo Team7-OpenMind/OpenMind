@@ -2,6 +2,50 @@ import Reaction from "components/reaction/Reaction";
 import styled from "styled-components";
 import { getTimeAgo } from "utils/date";
 
+export function FeedCard(props) {
+  const { answer, content, like, dislike, createdAt, subject, questionId } =
+    props;
+  const { imageSource, name } = subject;
+
+  let answerText, color;
+  if (answer === null) {
+    answerText = "미답변";
+    color = "unanswered";
+  } else if (answer.isRejected) {
+    answerText = "답변 거절";
+    color = "rejected";
+  } else {
+    answerText = "답변 완료";
+    color = "answered";
+  }
+
+  return (
+    <FeedCardStyled className="shadow-1pt">
+      <AnsweredStyled color={color}>{answerText}</AnsweredStyled>
+      <QuestionContainer>
+        <DateStyled>질문 · {getTimeAgo(createdAt)}</DateStyled>
+        {content}
+      </QuestionContainer>
+      {answer && (
+        <AnswerWrapper>
+          <img src={imageSource} alt="Respondent" />
+          <AnswerStyled>
+            {name}
+            <DateStyled>{getTimeAgo(answer.createdAt)}</DateStyled>
+            {answer.isRejected ? (
+              <NoAnswerContent>답변 거절</NoAnswerContent>
+            ) : (
+              <AnswerContent>{answer.content}</AnswerContent>
+            )}
+          </AnswerStyled>
+        </AnswerWrapper>
+      )}
+      <HrStyled />
+      <Reaction like={like} dislike={dislike} questionId={questionId} />
+    </FeedCardStyled>
+  );
+}
+
 const colors = {
   answered: "var(--Brown-40)",
   rejected: "var(--Red-50)",
@@ -95,49 +139,5 @@ const HrStyled = styled.hr`
   margin: 8px 0;
   border: 1px solid var(--Grayscale-30);
 `;
-
-export function FeedCard(props) {
-  const { answer, content, like, dislike, createdAt, subject, questionId } =
-    props;
-  const { imageSource, name } = subject;
-
-  let answerText, color;
-  if (answer === null) {
-    answerText = "미답변";
-    color = "unanswered";
-  } else if (answer.isRejected) {
-    answerText = "답변 거절";
-    color = "rejected";
-  } else {
-    answerText = "답변 완료";
-    color = "answered";
-  }
-
-  return (
-    <FeedCardStyled className="shadow-1pt">
-      <AnsweredStyled color={color}>{answerText}</AnsweredStyled>
-      <QuestionContainer>
-        <DateStyled>질문 · {getTimeAgo(createdAt)}</DateStyled>
-        {content}
-      </QuestionContainer>
-      {answer && (
-        <AnswerWrapper>
-          <img src={imageSource} alt="Respondent" />
-          <AnswerStyled>
-            {name}
-            <DateStyled>{getTimeAgo(answer.createdAt)}</DateStyled>
-            {answer.isRejected ? (
-              <NoAnswerContent>답변 거절</NoAnswerContent>
-            ) : (
-              <AnswerContent>{answer.content}</AnswerContent>
-            )}
-          </AnswerStyled>
-        </AnswerWrapper>
-      )}
-      <HrStyled />
-      <Reaction like={like} dislike={dislike} questionId={questionId} />
-    </FeedCardStyled>
-  );
-}
 
 export default FeedCard;
