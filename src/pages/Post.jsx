@@ -9,9 +9,7 @@ import QuestionList from "components/question/QuestionList";
 import { useGetQuery } from "hooks/query";
 import useMediaQuery from "hooks/useMediaQuery";
 import { useEffect, useRef, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
-import { selectSubjects, setSubject } from "store/subjectSlice";
 import styled from "styled-components";
 
 const QuestionButton = styled(FloatingButton)`

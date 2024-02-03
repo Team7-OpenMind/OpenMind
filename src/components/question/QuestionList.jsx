@@ -12,8 +12,6 @@ import Loading from "components/loading/Loading";
 
 import { useGetQuery } from "hooks/query";
 import { useEffect, useRef, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { selectQuestions, setQuestions } from "store/questionSlice";
 import styled from "styled-components";
 
 const QuestionContainer = styled.div`
@@ -172,14 +170,6 @@ export function QuestionList(props) {
   useEffect(() => {
     setOffset(0);
     setQuestionItems([]);
-    /* Redux에 저장된 데이터를 초기화 */
-    dispatch(
-      setQuestions({
-        subjectId: subjectId,
-        subjectQuestions: { results: [] },
-      }),
-    );
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [latestQuestionId]);
 
   useEffect(() => {
@@ -194,26 +184,11 @@ export function QuestionList(props) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [results]);
 
-  // Redux store에 데이터를 업데이트 하는 역할을 하는 훅
-  useEffect(() => {
-    if (!results) return;
-    dispatch(
-      setQuestions({
-        subjectId: subjectId,
-        subjectQuestions: { count, next, results },
-      }),
-    );
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [results]); // results가 바뀔 때마다 실행
   if (error) {
     return <Error />;
   }
 
-  let questions = (
-    questionItems.length
-      ? questionItems
-      : questionStore[subjectId]?.results ?? []
-  ).map((result) => (
+  let questions = (questionItems.length ? questionItems : []).map((result) => (
     <FeedCard
       key={result.id}
       answer={result.answer}
