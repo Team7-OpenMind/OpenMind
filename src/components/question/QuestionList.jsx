@@ -1,3 +1,5 @@
+import { useEffect, useRef, useState } from "react";
+
 import { questionUrl } from "api/questionApi";
 import arrowDownSvg from "assets/Arrow-down.svg";
 import emptySvg from "assets/Empty.svg";
@@ -9,11 +11,7 @@ import { CenteredContainer, DeferredImage } from "components";
 import Error from "components/error/Error";
 import FeedCard from "components/feedCard/FeedCard";
 import Loading from "components/loading/Loading";
-
-import { useGetQuery } from "hooks/query";
-import { useEffect, useRef, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { selectQuestions, setQuestions } from "store/questionSlice";
+import useQuery from "hooks/useQuery";
 import styled from "styled-components";
 
 const QuestionContainer = styled.div`
@@ -119,7 +117,11 @@ const ToggleOffSvg = styled(toggleOffSvg)`
 `;
 
 export function QuestionList(props) {
-  const { notification, latestQuestionId, subject, subjectId } = props;
+  const {
+    notification,
+    latestQuestionId,
+    subject: { id, ...subject }, // id를 제외한 name, imageSource, questionCount, createdAt은 question으로 받아옴
+  } = props;
   const limitRef = useRef(8);
   const [offset, setOffset] = useState(0);
   const [questionItems, setQuestionItems] = useState([]);
@@ -130,17 +132,11 @@ export function QuestionList(props) {
     data: { count, next, results },
     isLoading,
     error,
-  } = useGetQuery(
-    questionUrl(subjectId, limitRef.current, offset),
+  } = useQuery(
+    questionUrl(id, limitRef.current, offset),
     { results: [] },
     {
-      queryKey: [
-        "questions",
-        latestQuestionId,
-        subjectId,
-        limitRef.current,
-        offset,
-      ],
+      queryKey: ["questions", latestQuestionId, id, limitRef.current, offset],
     },
   );
 
@@ -172,14 +168,6 @@ export function QuestionList(props) {
   useEffect(() => {
     setOffset(0);
     setQuestionItems([]);
-    /* Redux에 저장된 데이터를 초기화 */
-    dispatch(
-      setQuestions({
-        subjectId: subjectId,
-        subjectQuestions: { results: [] },
-      }),
-    );
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [latestQuestionId]);
 
   useEffect(() => {
@@ -194,26 +182,11 @@ export function QuestionList(props) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [results]);
 
-  // Redux store에 데이터를 업데이트 하는 역할을 하는 훅
-  useEffect(() => {
-    if (!results) return;
-    dispatch(
-      setQuestions({
-        subjectId: subjectId,
-        subjectQuestions: { count, next, results },
-      }),
-    );
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [results]); // results가 바뀔 때마다 실행
   if (error) {
     return <Error />;
   }
 
-  let questions = (
-    questionItems.length
-      ? questionItems
-      : questionStore[subjectId]?.results ?? []
-  ).map((result) => (
+  let questions = (questionItems.length ? questionItems : []).map((result) => (
     <FeedCard
       key={result.id}
       answer={result.answer}

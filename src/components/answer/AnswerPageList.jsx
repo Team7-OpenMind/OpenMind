@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import styled from "styled-components";
 //api
 import { questionUrl } from "api/questionApi";
-import { useGetQuery } from "hooks/query";
+import useQuery from "hooks/useQuery";
 import { deleteQuestion } from "components/../api/answerApi";
 //컴포넌트
 import Error from "components/error/Error";
@@ -19,7 +19,10 @@ import { ReactComponent as toggleOnSvg } from "assets/toggle_on.svg";
 import { ReactComponent as toggleOffSvg } from "assets/toggle_off.svg";
 
 export function AnswerPageList(props) {
-  const { notification, subject, subjectId } = props;
+  const {
+    notification,
+    subject: { id, ...subject }, // subject는 subjectId, name, imageSource를 가지고 있음
+  } = props;
   const limitRef = useRef(8);
   const [offset, setOffset] = useState(0);
   const [questionItems, setQuestionItems] = useState([]);
@@ -31,7 +34,7 @@ export function AnswerPageList(props) {
     data: { count, next, results },
     isLoading,
     error,
-  } = useGetQuery(questionUrl(subjectId, limitRef.current, offset), {
+  } = useQuery(questionUrl(id, limitRef.current, offset), {
     results: [],
   });
 
@@ -77,6 +80,7 @@ export function AnswerPageList(props) {
   const handleDeleteButton = () => {
     questionItems.map((result) => deleteQA(result.id));
   };
+  console.log(noQuestion);
 
   return (
     <QuestionContainer>

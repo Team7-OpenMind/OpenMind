@@ -1,4 +1,4 @@
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useQuery as useReactQuery } from "@tanstack/react-query";
 import axios from "axios";
 
 /**
@@ -7,9 +7,8 @@ import axios from "axios";
  * @param {import("@tanstack/react-query").UseQueryOptions} options
  * @returns
  */
-export function useGetQuery(url, initialData, options = {}) {
-  const { data, error, isFetching, isLoading } = useQuery({
-    // react-query의 useQuery 옵션
+export function useQuery(url, initialData, options = {}) {
+  const { data, error, isFetching, isLoading } = useReactQuery({
     url,
     initialData,
 
@@ -30,26 +29,6 @@ export function useGetQuery(url, initialData, options = {}) {
   return { data, error, isLoading: isFetching || isLoading };
 }
 
-export function usePostMutation(url, options = {}) {
-  const mutation = useMutation(async (data) => {
-    const res = await axios.post(url, data, {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-    return res.data;
-  }, options);
-
-  return mutation;
-}
-
-axios.interceptors.request.use((config) => {
-  if (config.method.toLowerCase() != "get") {
-    config.headers["Content-Type"] = "application/json";
-  }
-  return config;
-});
-
 axios.interceptors.response.use(
   (response) => {
     const { status, statusText } = response;
@@ -65,3 +44,5 @@ axios.interceptors.response.use(
     return Promise.reject(error);
   },
 );
+
+export default useQuery;
