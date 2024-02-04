@@ -3,6 +3,20 @@ import Button from "components/button/Button";
 import styled from "styled-components";
 import LogoSVG from "./logo/Logo";
 
+function Header({ onClick }) {
+  return (
+    <Wrapper>
+      <ButtonWrapper>
+        <StyledButton onClick={onClick}>
+          질문하러 가기
+          <Arrow />
+        </StyledButton>
+      </ButtonWrapper>
+      <Logo />
+    </Wrapper>
+  );
+}
+
 const Wrapper = styled.header`
   width: 100%;
 `;
@@ -51,19 +65,5 @@ const Logo = styled(LogoSVG)`
   width: 100%;
   margin: 70px auto 0;
 `;
-
-function Header({ onClick }) {
-  return (
-    <Wrapper>
-      <ButtonWrapper>
-        <StyledButton onClick={onClick}>
-          질문하러 가기
-          <Arrow />
-        </StyledButton>
-      </ButtonWrapper>
-      <Logo />
-    </Wrapper>
-  );
-}
 
 export default Header;

@@ -1,82 +1,53 @@
 import axios from "axios";
 
-// // 질문 가져오는 api
-// export const getQuestion = async () => {
-//   const res = await axios.get(
-//     `https://openmind-api.vercel.app/3-7/questions/3715/`,
-//   );
-//   const data = res.data;
-//   return data; //questionID줌
-// };
-
-// 질문 생성하면 questionId가 생김 이거 받아와서 쓰면 된다
+/**
+ * 답변을 생성하는 함수
+ * @param {object} answerData 생성할 답변의 데이터를 포함하는 객체
+ * @param {string} answerData.questionId 답변이 속한 질문의 ID
+ * @param {string} answerData.content 생성할 답변의 내용
+ * @param {boolean} answerData.isRejected 답변의 거절 상태 (true: 거절됨, false: 거절되지 않음)
+ * @param {string} answerData.team 답변을 생성하는 팀의 ID 또는 이름
+ * @returns {Promise} Axios 요청의 응답 데이터를 포함하는 프로미스 객체
+ */
 export const createAnswer = async ({
   questionId,
   content,
   isRejected,
   team,
 }) => {
-  const res = await axios.post(
-    `https://openmind-api.vercel.app/3-7/questions/${questionId}/answers/`,
-    {
-      questionId,
-      content,
-      isRejected,
-      team,
-    },
-    {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    },
-  );
+  const res = await axios.post(`/questions/${questionId}/answers/`, {
+    questionId,
+    content,
+    isRejected,
+    team,
+  });
   const data = res.data;
   return data;
-  // result의 id가 answerId임
-};
-export const getAnswer = async (answerId) => {
-  const res = await axios.get(
-    `https://openmind-api.vercel.app/3-7/answers/${answerId}/`,
-  );
-  const data = res;
-  return data;
 };
 
-// 답변 수정하는 기능
-export const putUpdateAnswer = async (answerId, { content, isRejected }) => {
-  const res = await axios.put(
-    `https://openmind-api.vercel.app/3-7/answers/${answerId}/`,
-    {
-      content,
-      isRejected,
-    },
-    {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    },
-  );
-  const data = res;
-  return data;
-  // answerId, questionId, 수정내용, isRejected, createdAt줌
-};
+/**
+ * 특정 답변을 가져오는 함수
+ * @param {string} answerId 가져올 답변의 ID
+ * @returns {Promise} Axios 요청의 응답 데이터를 포함하는 프로미스 객체
+ */
+export const getAnswer = async (answerId) =>
+  await axios.get(`/answers/${answerId}/`);
 
-// 질문 삭제하는 기능
-export const deleteQuestion = async (questionId) => {
-  const res = await axios.delete(
-    `https://openmind-api.vercel.app/3-7/questions/${questionId}/`,
-  );
-  const data = res;
-  return data;
-};
-//
-// // 답변 삭제하는 기능 (질문삭제하면 답변도 같이 삭제됨)
-// export const DeleteAnswer = async (answerId) => {
-//   const res = await axios.delete(
-//     `https://openmind-api.vercel.app/3-7/answers/${answerId}/`,
-//   );
-//   const data = res;
-//   console.log(data);
-//   return data;
-//   // result로 삭제 성공여부 받기
-// };
+/**
+ * 답변을 수정하는 함수
+ * @param {string} answerId 수정할 답변의 ID
+ * @param {object} data 수정할 내용과 상태를 포함하는 객체
+ * @param {string} data.content 수정할 답변의 내용
+ * @param {boolean} data.isRejected 수정할 답변의 거절 상태 (true: 거절됨, false: 거절되지 않음)
+ * @returns {Promise} Axios 요청의 응답 데이터를 포함하는 프로미스 객체
+ */
+export const putUpdateAnswer = async (answerId, { content, isRejected }) =>
+  await axios.put(`/answers/${answerId}/`, { content, isRejected });
+
+/**
+ * 질문을 삭제하는 함수
+ * @param {string} questionId 삭제할 질문의 ID
+ * @returns {Promise} Axios 요청의 응답 데이터를 포함하는 프로미스 객체
+ */
+export const deleteQuestion = async (questionId) =>
+  await axios.delete(`/questions/${questionId}/`);

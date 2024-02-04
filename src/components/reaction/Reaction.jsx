@@ -1,13 +1,10 @@
 import styled from "styled-components";
 import { useEffect, useRef, useState } from "react";
 import { countReaction } from "../../api/reactionApi";
-//css
-import "./reaction.css";
 // imgs
-import { ReactComponent as ThumbsUpSvg } from "assets/thumbs-up.svg";
-import { ReactComponent as ThumbsDownSvg } from "assets/thumbs-down.svg";
+import { ReactComponent as thumbsUpSvg } from "assets/thumbs-up.svg";
+import { ReactComponent as thumbsDownSvg } from "assets/thumbs-down.svg";
 
-const SELECTED = "selected";
 const LIKE = "like";
 const DISLIKE = "dislike";
 
@@ -34,7 +31,6 @@ function Reaction({ questionId }) {
       ref.current.children[0].classList.remove(className);
       ref.current.children[1].classList.remove(className);
       setSelected(false);
-
       setWhatReaction("");
 
       localStorage.removeItem(`${questionId}_reaction`);
@@ -87,27 +83,56 @@ function Reaction({ questionId }) {
           onClick={handleLikeClick}
           ref={likeRef}
         >
-          <ThumbsUpSvg fill="#818181" className={ADD_LIKE_STYLE} />
-          <ReactionText className={ADD_LIKE_STYLE}>
+          <ThumbsUpSvg
+            fill="#818181"
+            className={ADD_LIKE_STYLE}
+            tempLike={tempLike}
+          />
+          <LikeText className={ADD_LIKE_STYLE} tempLike={tempLike}>
             좋아요 {countLike + Number(tempLike)}
-          </ReactionText>
+          </LikeText>
         </ThumbsIconTextBox>
         <ThumbsIconTextBox
           className="dislike"
           onClick={handleDislikeClick}
           ref={dislikeRef}
         >
-          <ThumbsDownSvg fill="#818181" className={ADD_DISLIKE_STYLE} />
-          <ReactionText className={ADD_DISLIKE_STYLE}>
+          <ThumbsDownSvg
+            fill="#818181"
+            className={ADD_DISLIKE_STYLE}
+            tempDislike={tempDislike}
+          />
+          <DislikeText className={ADD_DISLIKE_STYLE} tempDislike={tempDislike}>
             싫어요 {countDislike + Number(tempDislike)}
-          </ReactionText>
+          </DislikeText>
         </ThumbsIconTextBox>
       </ReactionBox>
     </>
   );
 }
 
-//Todo: 폰트관련 속성 나중에 rem으로 변경
+const ThumbsUpSvg = styled(thumbsUpSvg)`
+  fill: ${({ tempLike }) => (tempLike ? "var(--Blue-50)  " : "")};
+`;
+
+const ThumbsDownSvg = styled(thumbsDownSvg)`
+  fill: ${({ tempDislike }) => (tempDislike ? "var(--Red-50)" : "")};
+`;
+
+const LikeText = styled.span`
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 18px;
+  color: ${({ tempLike }) => (tempLike ? "var(--Blue-50)" : "")};
+`;
+
+const DislikeText = styled.span`
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 18px;
+  color: ${({ tempDislike }) => (tempDislike ? "var(--Red-50)" : "")};
+`;
+
 const ReactionBox = styled.span`
   display: flex;
   gap: 32px;
@@ -117,16 +142,10 @@ const ThumbsIconTextBox = styled.div`
   display: flex;
   gap: 6px;
   color: var(--Grayscale-40);
-  /* Todo: 나중에 애니메이션 추가하면 좋을 듯 */
+
   &:hover {
     cursor: pointer;
   }
-`;
-
-const ReactionText = styled.span`
-  font-size: 14px;
-  font-weight: 500;
-  line-height: 18px;
 `;
 
 export default Reaction;

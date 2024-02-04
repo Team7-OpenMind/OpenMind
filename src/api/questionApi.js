@@ -1,11 +1,18 @@
-import { BASE_URL } from "./index";
-
-export const createSubjectUrl = () => `${BASE_URL}/subjects/`;
+export const createSubjectUrl = () => `/subjects/`; // POST
 
 export const subjectListUrl = (limit, offset, order) => {
-  return `${BASE_URL}/subjects/?limit=${limit}&offset=${offset}&sort=${order}`;
-};
-export const subjectUrl = (subjectId) => `${BASE_URL}/subjects/${subjectId}/`;
+  const params = new URLSearchParams();
+  params.append("limit", limit);
+  params.append("offset", offset);
+  params.append("sort", order);
+  return `/subjects/?${params.toString()}`;
+}; // GET
 
-export const questionUrl = (subjectId, limit, offset) =>
-  `${BASE_URL}/subjects/${subjectId}/questions/?limit=${limit}&offset=${offset}`;
+export const subjectUrl = (subjectId) => `/subjects/${subjectId}/`; // GET
+
+export const questionUrl = (subjectId, limit, offset) => {
+  const params = new URLSearchParams();
+  params.append("limit", limit);
+  params.append("offset", offset);
+  return `/subjects/${subjectId}/questions/?${params.toString()}`;
+}; // GET

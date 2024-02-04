@@ -3,6 +3,18 @@ import Button from "components/button/Button";
 import styled from "styled-components";
 import LogoSVGMobile from "./logo/LogoMobile";
 
+function HeaderMobile({ onClick }) {
+  return (
+    <Wrapper>
+      <LogoSVGMobile />
+      <StyledButton onClick={onClick}>
+        질문하러 가기
+        <Arrow />
+      </StyledButton>
+    </Wrapper>
+  );
+}
+
 const Wrapper = styled.header`
   display: flex;
   align-items: center;
@@ -38,17 +50,5 @@ const Arrow = styled(ArrowSVG)`
     fill: var(--Brown-40);
   }
 `;
-
-function HeaderMobile({ onClick }) {
-  return (
-    <Wrapper>
-      <LogoSVGMobile />
-      <StyledButton onClick={onClick}>
-        질문하러 가기
-        <Arrow />
-      </StyledButton>
-    </Wrapper>
-  );
-}
 
 export default HeaderMobile;

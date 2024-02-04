@@ -1,7 +1,7 @@
 import { subjectListUrl } from "api/questionApi";
 import { getCurrentPageArray } from "utils/pagination";
-import { useNavigate, useSearchParams } from "react-router-dom";
-import useQuery from "hooks/useQuery";
+import { useSearchParams } from "react-router-dom";
+import { useGetQuery } from "hooks/query";
 import styled from "styled-components";
 import PrevButton from "./button/PrevButton";
 import NextButton from "./button/NextButton";
@@ -9,16 +9,22 @@ import NextButton from "./button/NextButton";
 function Pagination({ showCardCount: limit, initPage, onClick }) {
   const [searchParams, setSearchParams] = useSearchParams();
   const pageParam = searchParams.get("page");
+  const orderParam = searchParams.get("order");
   const page = Number(pageParam >= 1 ? pageParam : initPage);
   const offset = (page - 1) * limit;
-  const { data } = useQuery(subjectListUrl(limit, offset), { data: [] });
+  const { data } = useGetQuery(subjectListUrl(limit, offset, orderParam), {
+    data: [],
+  });
 
   const { count, next, previous } = data;
   const currentPageArray = getCurrentPageArray(page, count, limit);
 
   const handlePageClick = (pageIndex) => {
     onClick(pageIndex);
-    setSearchParams({ page: pageIndex });
+    setSearchParams((prevSearchParams) => {
+      prevSearchParams.set("page", pageIndex);
+      return new URLSearchParams(prevSearchParams);
+    });
   };
 
   const handlePrevClick = () => {
@@ -49,12 +55,10 @@ function Pagination({ showCardCount: limit, initPage, onClick }) {
 }
 
 function PageIndex({ className, pageIndex, onClick, page }) {
-  const navigate = useNavigate();
   const isNow = page == pageIndex;
 
   const handleClick = () => {
     onClick(pageIndex);
-    navigate(`/list?page=${pageIndex}`);
   };
 
   return (

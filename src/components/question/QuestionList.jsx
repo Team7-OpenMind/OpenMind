@@ -1,5 +1,3 @@
-import { useEffect, useRef, useState } from "react";
-
 import { questionUrl } from "api/questionApi";
 import arrowDownSvg from "assets/Arrow-down.svg";
 import emptySvg from "assets/Empty.svg";
@@ -7,13 +5,13 @@ import messageSvg from "assets/Messages.svg";
 import { ReactComponent as infinitySvg } from "assets/infinity.svg";
 import { ReactComponent as toggleOffSvg } from "assets/toggle_off.svg";
 import { ReactComponent as toggleOnSvg } from "assets/toggle_on.svg";
-import { CenteredContainer } from "components";
+import { CenteredContainer, DeferredImage } from "components";
 import Error from "components/error/Error";
 import FeedCard from "components/feedCard/FeedCard";
 import Loading from "components/loading/Loading";
-import useQuery from "hooks/useQuery";
-import { useDispatch, useSelector } from "react-redux";
-import { selectQuestions, setQuestions } from "store/questionSlice";
+
+import { useGetQuery } from "hooks/query";
+import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 
 const QuestionContainer = styled.div`
@@ -119,29 +117,28 @@ const ToggleOffSvg = styled(toggleOffSvg)`
 `;
 
 export function QuestionList(props) {
-  const {
-    notification,
-    latestQuestionId,
-    subject: { id, ...subject }, // id를 제외한 name, imageSource, questionCount, createdAt은 question으로 받아옴
-  } = props;
+  const { notification, latestQuestionId, subject, subjectId } = props;
   const limitRef = useRef(8);
   const [offset, setOffset] = useState(0);
   const [questionItems, setQuestionItems] = useState([]);
   const infinityRef = useRef(false);
   const [drawTrigger, setDrawTrigger] = useState(false);
 
-  const dispatch = useDispatch();
-  const questionStore = useSelector(selectQuestions);
-
   const {
     data: { count, next, results },
     isLoading,
     error,
-  } = useQuery(
-    questionUrl(id, limitRef.current, offset),
+  } = useGetQuery(
+    questionUrl(subjectId, limitRef.current, offset),
     { results: [] },
     {
-      queryKey: ["questions", latestQuestionId, id, limitRef.current, offset],
+      queryKey: [
+        "questions",
+        latestQuestionId,
+        subjectId,
+        limitRef.current,
+        offset,
+      ],
     },
   );
 
@@ -170,18 +167,9 @@ export function QuestionList(props) {
     setDrawTrigger(!drawTrigger);
   }
 
-  /* 글을 작성해서 latestQuestionId가 바뀌면 새로고침 */
   useEffect(() => {
     setOffset(0);
     setQuestionItems([]);
-    /* Redux에 저장된 데이터를 초기화 */
-    dispatch(
-      setQuestions({
-        subjectId: id,
-        subjectQuestions: { results: [] },
-      }),
-    );
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [latestQuestionId]);
 
   useEffect(() => {
@@ -196,25 +184,11 @@ export function QuestionList(props) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [results]);
 
-  // Redux store에 데이터를 업데이트 하는 역할을 하는 훅
-  useEffect(() => {
-    if (!results) return;
-    dispatch(
-      setQuestions({
-        subjectId: id,
-        subjectQuestions: { count, next, results },
-      }),
-    );
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [results]); // results가 바뀔 때마다 실행
-
   if (error) {
     return <Error />;
   }
 
-  let questions = (
-    questionItems.length ? questionItems : questionStore[id]?.results ?? []
-  ).map((result) => (
+  let questions = (questionItems.length ? questionItems : []).map((result) => (
     <FeedCard
       key={result.id}
       answer={result.answer}
@@ -231,8 +205,11 @@ export function QuestionList(props) {
     <>
       <QuestionContainer>
         <Notification>
-          <img src={messageSvg} alt="message" />
-          {notification}
+          {!isLoading && (
+            <DeferredImage src={messageSvg} alt="message">
+              {notification}
+            </DeferredImage>
+          )}
           <InfinitySvg
             src={infinitySvg}
             isInfinity={infinityRef.current}

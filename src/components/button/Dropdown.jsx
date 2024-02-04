@@ -1,8 +1,71 @@
 import React, { useState, useEffect, useRef } from "react";
-import styled from "styled-components";
 import { ReactComponent as arrowUp } from "assets/Arrow-up.svg";
+import { useSearchParams } from "react-router-dom";
+import styled from "styled-components";
 
-// style
+export function Dropdown({ items, onSelect }) {
+  const [isOpen, setIsOpen] = useState(false);
+  const [searchParam, setSearchParam] = useSearchParams();
+  const order = searchParam.get("order");
+  const arrowRef = useRef(null);
+  const dropdownRef = useRef(null);
+
+  function dropDownItems() {
+    return items.map((item, index) => (
+      <div key={index} onClick={onClickDropdownItem}>
+        {item}
+      </div>
+    ));
+  }
+
+  function onClickDropdown(e) {
+    e.stopPropagation();
+    openDropdown(!isOpen);
+  }
+
+  function onClickDropdownItem(e) {
+    e.stopPropagation();
+    openDropdown(false);
+    onSelect(e.target.innerText);
+  }
+
+  function onClickWindow() {
+    openDropdown(false);
+  }
+
+  function openDropdown(flag) {
+    const element = dropdownRef?.current;
+    const arrow = arrowRef?.current;
+    if (!element || !arrow) return;
+
+    if (flag) {
+      arrow.style.transform = "rotate(-180deg)";
+      element.style.transform = "scaleY(1)";
+      setIsOpen(true);
+    } else {
+      arrow.style.transform = "rotate(0deg)";
+      element.style.transform = "scaleY(0)";
+      setIsOpen(false);
+    }
+  }
+
+  useEffect(() => {
+    document.addEventListener("click", onClickWindow);
+  });
+
+  return (
+    <DropdownStyled>
+      <SelectItem onClick={onClickDropdown} isOpen={isOpen}>
+        <div>{order === "name" ? "이름순" : "최신순"}</div>
+        <Arrow src={arrowUp} ref={arrowRef} isOpen={isOpen} />
+      </SelectItem>
+      <DropdownItems ref={dropdownRef}>{dropDownItems()}</DropdownItems>
+    </DropdownStyled>
+  );
+}
+
+export default Dropdown;
+
 const DropdownStyled = styled.div`
   position: relative;
   display: flex;
@@ -92,73 +155,3 @@ const DropdownItems = styled.div`
     color: var(--Blue-50);
   }
 `;
-
-// component
-export function Dropdown({ items, onSelect }) {
-  const [item, setItem] = useState("");
-  const [isOpen, setIsOpen] = useState(false);
-  const arrowRef = useRef(null);
-  const dropdownRef = useRef(null);
-
-  function dropDownItems() {
-    return items.map((item, index) => (
-      <div key={index} onClick={onClickDropdownItem}>
-        {item}
-      </div>
-    ));
-  }
-
-  function onClickDropdown(e) {
-    e.stopPropagation();
-    openDropdown(!isOpen);
-  }
-
-  function onClickDropdownItem(e) {
-    e.stopPropagation();
-    setItem(e.target.innerText);
-    openDropdown(false);
-  }
-
-  function onClickWindow() {
-    openDropdown(false);
-  }
-
-  function openDropdown(flag) {
-    const element = dropdownRef?.current;
-    const arrow = arrowRef?.current;
-    if (!element || !arrow) return;
-
-    if (flag) {
-      arrow.style.transform = "rotate(-180deg)";
-      element.style.transform = "scaleY(1)";
-      setIsOpen(true);
-    } else {
-      arrow.style.transform = "rotate(0deg)";
-      element.style.transform = "scaleY(0)";
-      setIsOpen(false);
-    }
-  }
-
-  useEffect(() => {
-    if (item == "" && items.length > 0) {
-      setItem(items[0]);
-    }
-    onSelect(item); // FIXME : warning cause
-  }, [item, items]);
-
-  useEffect(() => {
-    document.addEventListener("click", onClickWindow);
-  });
-
-  return (
-    <DropdownStyled>
-      <SelectItem onClick={onClickDropdown} isOpen={isOpen}>
-        <div>{item}</div>
-        <Arrow src={arrowUp} ref={arrowRef} isOpen={isOpen} />
-      </SelectItem>
-      <DropdownItems ref={dropdownRef}>{dropDownItems()}</DropdownItems>
-    </DropdownStyled>
-  );
-}
-
-export default Dropdown;
